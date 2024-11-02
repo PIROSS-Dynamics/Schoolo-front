@@ -1,0 +1,93 @@
+/* ---------------------------------------------------------------------Search Section-------------------------------------------------------------------*/
+
+/* Search section title */
+#search-section-title {
+    padding-left: 21%; 
+}
+
+/* Search section styling */
+.search-form-inline {
+    max-width: 60%; 
+    margin: 0 auto; 
+    padding: 0.5%;
+    background: #dceee9;
+    border-radius: 20px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-left: 2%;
+}
+
+/* Inline search form styling */
+.search-form-inline {
+    display: flex; 
+    align-items: center; /* center verticaly */
+    gap: 1%; 
+    flex-wrap: wrap; /* wrap if needed */
+}
+
+/* Individual form group styling */
+.form-group-inline {
+    display: flex;
+    flex-direction: column; 
+    flex: 1; 
+    min-width: 100px; 
+    max-width: 200px; 
+}
+
+/* Input and select field styling */
+.form-group-inline input,
+.form-group-inline select {
+    padding: 8px; 
+    border: 1px solid #ccc;
+    border-radius: 8px; 
+    width: 100%; 
+    box-sizing: border-box; 
+    
+}
+
+
+
+/* Button styling */
+.btn-search {
+    padding: 4%;
+    align-items: center; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Image styling */
+.search-icon {
+    width: 35%;     
+    max-width: 35px;
+}
+
+/* Button container alignment */
+.form-group-button {
+
+    flex-grow: 0; /* don't let buttons grows */
+    
+
+}
+/* Hover effect for button */
+.btn-search:hover .search-icon {
+    filter: brightness(0.8); 
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .search-form-inline {
+        flex-direction: column; 
+        align-items: center; 
+        padding: 0;
+    }
+
+    .form-group-inline {
+        width: 100%; 
+        max-width: none; 
+    }
+
+    .btn-search {
+        width: 100%; 
+    }
+}

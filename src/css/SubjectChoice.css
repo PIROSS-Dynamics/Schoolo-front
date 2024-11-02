@@ -1,0 +1,55 @@
+.subject-choice {
+    list-style-type: none; /* Remove default list bullets */
+    padding: 0;
+    margin: 0;
+    display: flex; /* Make the list items display in a row */
+    justify-content: center; /* Center the list items horizontally */
+    align-items: center; /* Center the list items vertically */
+    flex-wrap: wrap; /* Allow wrapping to new lines if there are too many items */
+}
+
+.subject-choice-container {
+    margin-top: 2%;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+.subject-choice li {
+    margin: 0px; /* Add spacing between the list items */
+}
+
+
+.subject-choice a {
+    text-decoration: none; /* Remove underline from links */
+    color: black; /* Set text color */
+}
+
+.subject-choice img {
+    display: block; /* Display the image as a block element */
+    margin: 0 auto; /* Center the image horizontally */
+    width: 330px;
+}
+
+.subject-choice p {
+    position: relative;
+    margin-top: 10px; /* Add some space between the image and the text */
+    font-size: 16px; /* Set the font size */
+    color: black; /* Set the text color */
+    left: 26%; /* at 26 % frome the image */
+}
+
+.mathematiques:hover img{
+    content: url(/images/mathsGuyChosen.png);
+}
+
+.history-geo:hover img{
+    content: url(/images/historyGuyChosen.png);
+}
+
+.french:hover img{
+    content: url(/images/frenchGirlChosen.png);
+}
+
+.english:hover img{
+    content: url(/images/englishGuyChosen.png);
+}

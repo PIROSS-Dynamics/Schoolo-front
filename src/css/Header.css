@@ -1,0 +1,111 @@
+header {
+    color: white;
+    padding: 0 20px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    height: 70px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* Important for positioning the phone menu */
+}
+
+/* Logo */
+.logo img {
+    height: 70px;
+}
+
+/* Navigation Menu (Desktop) */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Connexion / Inscription Button */
+.header-actions .btn {
+
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 90%;
+}
+
+/* Menu toggle icon */
+.menu-toggle {
+    position: relative;
+    z-index: 10; /* Ensure the toggle icon is in front */
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: none;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: none;
+}
+
+/* Phone menu styling */
+.phone-menu {
+    position: absolute; 
+    top: 35px; /* Just below the header */
+    right: 0;
+    left: 17%;
+    background-color: #333; 
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 100px;
+    z-index: 9; /* Ensure it appears in front of other content */
+}
+
+.phone-menu li a {
+    color: #ffffff; 
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Responsive styles for small screens */
+@media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+  
+    .menu-toggle {
+        position: relative;
+        z-index: 10; /* Ensure the toggle icon is in front */
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: block;
+    }
+    
+    .menu-icon {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: block;
+    }
+
+    .phone-menu.active {
+        display: flex;
+    }
+
+    .header-actions .btn {
+
+
+        font-size: 70%;
+    }
+
+}
