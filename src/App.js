@@ -8,6 +8,7 @@ import Footer from './components/Footer'; // Import Footer
 import UploadImage from './components/UploadImage'; 
 import LessonList from './components/LessonList'; 
 import LessonDetail from './components/LessonDetail'; 
+import AddLesson from './components/AddLesson';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/lessons" element={<LessonList />} /> {/* Utilise element au lieu de component */}
           <Route path="/lessons/subject/:subject" element={<LessonList />} /> {/* Utilise element au lieu de component */}
           <Route path="/lessons/detail/:lessonId" element={<LessonDetail />} /> {/* Utilise element au lieu de component */}
+          <Route path="/lessons/add" element={<AddLesson />} />
           
         
 
