@@ -35,7 +35,7 @@ const Header = () => {
         {isMenuOpen && (
           <ul className="phone-menu">
             <li><a href="/">Accueil</a></li>
-            <li><a href="/events">Événements</a></li>
+            <li><a href="/calendar">Calendrier</a></li>
             <li><a href="/about">À Propos</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
@@ -45,7 +45,7 @@ const Header = () => {
         <nav>
           <ul className= "nav-links">
             <li><a href="/">Accueil</a></li>
-            <li><a href="/events">Événements</a></li>
+            <li><a href="/calendar">Calendrier</a></li>
             <li><a href="/about">À Propos</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
