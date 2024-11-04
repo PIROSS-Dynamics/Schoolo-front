@@ -27,7 +27,9 @@ function App() {
           } />
 
           <Route path="/lessons" element={<LessonList />} /> {/* Utilise element au lieu de component */}
-          <Route path="/lessons/:lessonId" element={<LessonDetail />} /> {/* Utilise element au lieu de component */}
+          <Route path="/lessons/subject/:subject" element={<LessonList />} /> {/* Utilise element au lieu de component */}
+          <Route path="/lessons/detail/:lessonId" element={<LessonDetail />} /> {/* Utilise element au lieu de component */}
+          
         
 
           <Route path="/lessons" element={<LessonList />} />

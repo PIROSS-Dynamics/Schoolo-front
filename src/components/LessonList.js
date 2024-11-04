@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Remplace useHistory par useNavigate
+import { useNavigate, useParams } from 'react-router-dom';
 
 function LessonList() {
     const [lessons, setLessons] = useState([]);
-    const navigate = useNavigate(); // Utilise useNavigate
+    const navigate = useNavigate();
+    const { subject } = useParams(); // Récupère le sujet depuis l'URL, si présent
 
     useEffect(() => {
-        fetch("http://localhost:8000/lessons/api/lessonslist/") // Remplacez avec l'URL correcte
+        // Détermine l'URL de l'API en fonction de la présence du sujet
+        const url = subject 
+            ? `http://localhost:8000/lessons/api/lessonslist/subject/${subject}/`
+            : "http://localhost:8000/lessons/api/lessonslist/";
+
+        fetch(url)
             .then(response => response.json())
             .then(data => setLessons(data))
             .catch(error => console.error('Erreur:', error));
-    }, []);
+    }, [subject]); // Réexécute quand 'subject' change
 
     const handleLessonClick = (lessonId) => {
-        // Redirige vers la page de la leçon avec l'ID correspondant
-        navigate(`/lessons/${lessonId}`); // Utilise navigate à la place de history.push
+        navigate(`/lessons/detail/${lessonId}`);
     };
 
     return (
         <div>
-            <h2>Liste des Leçons</h2>
+            <h2>Liste des Leçons {subject && `- ${subject}`}</h2>
             <div>
                 {lessons.map(lesson => (
-                    <button key={lesson.id} onClick={() => handleLessonClick(lesson.id)} style={{ margin: '10px', padding: '10px' }}>
+                    <button 
+                        key={lesson.id} 
+                        onClick={() => handleLessonClick(lesson.id)} 
+                        style={{ margin: '10px', padding: '10px' }}
+                    >
                         {lesson.title} - {lesson.teacher_name}
                     </button>
                 ))}

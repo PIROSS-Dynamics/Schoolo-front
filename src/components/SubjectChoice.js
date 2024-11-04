@@ -9,30 +9,28 @@ const SubjectChoice = () => {
         
         <ul className= "subject-choice">
           <li>
-            <a href="/Mathematiques" class="mathematiques">
+            <a href="/lessons/subject/Maths" class="mathematiques">
               <img src="/images/perso maths.png" alt="Mathematiques" />
-            </a>
-            <a href="/Mathematiques" class="text-link">
               <p>Mathématiques</p>
             </a>
           </li>
 
           <li> 
-            <a href="/Francais" className='french'>
+            <a href="/lessons/subject/Français" className='french'>
               <img src="/images/frenchGirl.png" alt="French" />
               <p>Français</p>
             </a>  
           </li>
 
           <li> 
-            <a href="/HistoireGeo" className='history-geo'>
+            <a href="/lessons/subject/Histoire" className='history-geo'>
               <img src="/images/historyGuy.png" alt="History-geo" />
               <p>Histoire-Géographie</p>
             </a>  
           </li>
 
           <li> 
-            <a href="/Anglais" className='english'>
+            <a href="/lessons/subject/Anglais" className='english'>
               <img src="/images/englishGuy.png" alt="English" />
               <p>Anglais</p>
             </a>  
