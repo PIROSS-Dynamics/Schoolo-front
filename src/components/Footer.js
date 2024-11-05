@@ -9,7 +9,7 @@ const Footer = () => {
             <div className="footer-container">
                 {/* Copyright */}
                 <div className="footer-copyright">
-                    <p>&copy; 2024 BookMyEvent. Tous droits réservés.</p>
+                    <p>&copy; 2024 S'Cool. Tous droits réservés.</p>
                 </div>
                 
                 {/* Social Media */}

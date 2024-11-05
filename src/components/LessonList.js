@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import '../css/LessonList.css';
 
 function LessonList() {
     const [lessons, setLessons] = useState([]);
     const navigate = useNavigate();
-    const { subject } = useParams(); // Récupère le sujet depuis l'URL, si présent
+    const { subject } = useParams();
 
     useEffect(() => {
-        // Détermine l'URL de l'API en fonction de la présence du sujet
         const url = subject 
             ? `http://localhost:8000/lessons/api/lessonslist/subject/${subject}/`
             : "http://localhost:8000/lessons/api/lessonslist/";
@@ -16,7 +16,7 @@ function LessonList() {
             .then(response => response.json())
             .then(data => setLessons(data))
             .catch(error => console.error('Erreur:', error));
-    }, [subject]); // Réexécute quand 'subject' change
+    }, [subject]);
 
     const handleLessonClick = (lessonId) => {
         navigate(`/lessons/detail/${lessonId}`);
@@ -24,16 +24,22 @@ function LessonList() {
 
     return (
         <div>
-            <h2>Liste des Leçons {subject && `- ${subject}`}</h2>
-            <div>
+            <h2 className='list-title'>Liste des Leçons {subject && `- ${subject}`}</h2>
+
+            {/* Lesson List */}
+            <div className="lesson-list">
                 {lessons.map(lesson => (
-                    <button 
+                    <div 
                         key={lesson.id} 
-                        onClick={() => handleLessonClick(lesson.id)} 
-                        style={{ margin: '10px', padding: '10px' }}
+                        className="lesson-card" 
+                        onClick={() => handleLessonClick(lesson.id)}
                     >
-                        {lesson.title} - {lesson.teacher_name}
-                    </button>
+                        <h3 className="lesson-title">{lesson.title}</h3>
+                        <p className="teacher-name">Par : <strong>{lesson.teacher_name}</strong></p>
+                        <p className="lesson-description">Apprends les bases de l'addition pour renforcer ton calcul mental, une compétence essentielle en mathématiques et dans la vie quotidienne.</p>
+                    
+                        {/* <p className="lesson-description">lesson.description}</p> */}
+                    </div>
                 ))}
             </div>
         </div>
