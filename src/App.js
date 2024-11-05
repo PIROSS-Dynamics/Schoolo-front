@@ -22,6 +22,8 @@ function App() {
           
           <Route path="/" element={
             <div>
+              <li><a href="/lessons/add">Ajouts de leçons</a></li>
+              <li><a href="/quizz">Quizz</a></li>
               <SubjectChoice/>
               <UploadImage />
             </div>
