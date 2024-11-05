@@ -1,0 +1,91 @@
+.form-title{
+
+    font-size: 2rem; 
+    color: #00a5e7; 
+
+    padding-left: 20px;
+    margin-top: 20px;
+
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    /* ligne under the title */
+    padding-bottom: 8px;
+    border-bottom: 2px solid #87CEEB; 
+}
+
+.add-lesson-form {
+    background-color: #adffe4; 
+    padding: 20px;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    max-width: 500px; 
+    margin: 40px; 
+    border: 1px solid #ddd; 
+}
+
+.add-lesson-form div {
+    margin-bottom: 10px; /* ad space */
+}
+
+.add-lesson-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333; 
+}
+
+
+.title input[type="text"], .subject select, .content textarea, .description textarea {
+
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    box-sizing: border-box;
+    font-size: 16px;
+}
+.content textarea, .description textarea {
+    width: 100%; /* take all the space for text area */
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.subject select, .teacher select{
+    padding: 4px;
+}
+
+.title input{
+    padding: 4px;
+}
+
+.content textarea {
+    padding: 8px;
+}
+
+.description textarea {
+    padding: 14px;
+}
+
+.button-container {
+    text-align: right; 
+    padding-top: 10px;
+}
+
+.add-lesson-form button {
+    width: 40%;
+    padding: 10px;
+    background-color: #00a5e7; 
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-lesson-form button:hover {
+    background-color: #0084b9; 
+}

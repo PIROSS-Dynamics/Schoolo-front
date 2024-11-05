@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../css/AddLesson.css';
 
 function AddLesson() {
     const [title, setTitle] = useState('');
@@ -64,13 +65,15 @@ function AddLesson() {
 
     return (
         <div>
-            <h1>Ajouter une Leçon</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
+            <h1 className='form-title'>Ajouter une Leçon</h1>
+            <form className='add-lesson-form' onSubmit={handleSubmit}>
+
+                <div className='title'>
                     <label>Titre</label>
                     <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
-                <div>
+
+                <div className='subject'>
                     <label>Matière</label>
                     <select value={subject} onChange={(e) => setSubject(e.target.value)} required>
                         <option value="Maths">Maths</option>
@@ -79,19 +82,23 @@ function AddLesson() {
                         <option value="Histoire">Histoire</option>
                     </select>
                 </div>
-                <div>
+
+                <div className='content'>
                     <label>Contenu</label>
                     <textarea value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
                 </div>
-                <div>
+
+                <div className='description'>
                     <label>Description</label>
                     <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea> 
                 </div>
-                <div>
+
+                <div className='public-yesno'>
                     <label>Public</label>
                     <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />
                 </div>
-                <div>
+
+                <div className='teacher'>
                     <label>Enseignant</label>
                     <select value={teacherId} onChange={(e) => setTeacherId(e.target.value)} required>
                         <option value="">Sélectionnez un enseignant</option>
@@ -100,7 +107,10 @@ function AddLesson() {
                         ))}
                     </select>
                 </div>
-                <button type="submit">Ajouter la Leçon</button>
+
+                <div className="button-container">
+                    <button type="submit">Ajouter la Leçon</button>
+                </div>
             </form>
         </div>
     );
