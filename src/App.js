@@ -10,6 +10,7 @@ import LessonList from './components/Lessons/LessonList';
 import LessonDetail from './components/Lessons/LessonDetail'; 
 import AddLesson from './components/Lessons/AddLesson';
 import QuizzList from './components/Quizz/QuizzList';
+import QuizzGame from './components/Quizz/QuizzGame';
 
 function App() {
   return (
@@ -36,8 +37,7 @@ function App() {
           <Route path="/lessons/add" element={<AddLesson />} />
           
           <Route path="/quizz" element={<QuizzList />} /> 
-
-          <Route path="/lessons" element={<LessonList />} />
+          <Route path="/quizz/play/:quizzId" element={<QuizzGame />} /> 
 
         </Routes>
 
