@@ -6,9 +6,9 @@ import Header from './components/Header'; // Import Header
 import SubjectChoice from './components/SubjectChoice';
 import Footer from './components/Footer'; // Import Footer
 import UploadImage from './components/UploadImage'; 
-import LessonList from './components/LessonList'; 
-import LessonDetail from './components/LessonDetail'; 
-import AddLesson from './components/AddLesson';
+import LessonList from './components/Lessons/LessonList'; 
+import LessonDetail from './components/Lessons/LessonDetail'; 
+import AddLesson from './components/Lessons/AddLesson';
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../css/LessonList.css';
+import '../../css/LessonList.css';
 
 function LessonList() {
     const [lessons, setLessons] = useState([]);
