@@ -10,6 +10,8 @@
     overflow: hidden;
     margin: 20px auto;  
     padding-bottom: 2.5%;
+
+    
 }
 
 
@@ -32,7 +34,7 @@
 
 .carousel-text {
     position: absolute;
-    top: 50%;
+    top: 56%;
     left: 1.3%;
     background: rgba(0, 0, 0, 0.5);
     color: white;
@@ -41,6 +43,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.carousel-text:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: scale(1.01);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .carousel-text h2 {
@@ -78,3 +87,4 @@
 .carousel-btn:hover {
     background: rgba(0, 0, 0, 0.7);
 }
+

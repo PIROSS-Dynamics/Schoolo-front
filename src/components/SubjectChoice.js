@@ -4,9 +4,13 @@ import '../css/SubjectChoice.css';
 
 const SubjectChoice = () => {
     return (
+      
+
       // Every subjects
       <div className="subject-choice-container">
-        
+          
+        <h1> Choisis ta matière ! </h1>
+
         <ul className= "subject-choice">
           <li>
             <a href="/lessons/subject/Maths" class="mathematiques">

@@ -10,14 +10,16 @@ const Carousel = () => {
   // an array containing text+image
   const slides = [
     {
-      imgSrc: '/images/carousel inscription BDE.png',
-      title: 'Organiser vos événements',
-      description: 'Réservez des lieux fantastiques et organisez vos événements en toute simplicité grâce à BookMyEvent.',
+      imgSrc: '/images/imageHome.png',
+      title: 'Créer des leçons pour vos élèves',
+      description: 'Créez et organisez facilement des leçons adaptées pour accompagner vos élèves dans leur apprentissage.',
+      link : "/lessons/add",
     },
     {
-      imgSrc: '/images/carousel soirée peniche.png',
-      title: 'Héberger des événements',
-      description: 'Augmentez vos réservations et atteignez une nouvelle audience en devenant un de nos partenaires.',
+      imgSrc: '/images/imageQuiz.png',
+      title: 'Ajouter des quiz interactifs',
+      description: 'Évaluez les connaissances de vos élèves en créant des quiz interactifs et adaptés à leur niveau.',
+      link : "/quizz/add",
     },
   ];
 
@@ -31,7 +33,7 @@ const Carousel = () => {
         {slides.map((slide, index) => (
           <div key={index} className={`carousel-slide ${index === currentSlide ? 'active' : ''}`}>
             <img src={slide.imgSrc} alt={slide.title} />
-            <div className="carousel-text">
+            <div className="carousel-text" onClick={() => window.location.href = slide.link}>
               <h2>{slide.title}</h2>
               <p>{slide.description}</p>
             </div>
