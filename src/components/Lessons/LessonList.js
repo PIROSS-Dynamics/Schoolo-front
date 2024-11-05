@@ -36,9 +36,7 @@ function LessonList() {
                     >
                         <h3 className="lesson-title">{lesson.title}</h3>
                         <p className="teacher-name">Par : <strong>{lesson.teacher_name}</strong></p>
-                        <p className="lesson-description">Apprends les bases de l'addition pour renforcer ton calcul mental, une compétence essentielle en mathématiques et dans la vie quotidienne.</p>
-                    
-                        {/* <p className="lesson-description">lesson.description}</p> */}
+                        <p className="lesson-description">{lesson.description}</p>
                     </div>
                 ))}
             </div>

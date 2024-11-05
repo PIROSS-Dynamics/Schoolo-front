@@ -5,6 +5,7 @@ function AddLesson() {
     const [title, setTitle] = useState('');
     const [subject, setSubject] = useState('Maths'); // Valeur par défaut
     const [content, setContent] = useState('');
+    const [description, setDescription] = useState('');
     const [isPublic, setIsPublic] = useState(true);
     const [teacherId, setTeacherId] = useState('');
     const [teachers, setTeachers] = useState([]);
@@ -12,7 +13,7 @@ function AddLesson() {
 
     // Récupérer la liste des enseignants depuis le backend
     useEffect(() => {
-        fetch("http://localhost:8000/users/api/teachers/") // Remplacez par l'URL correcte de votre API
+        fetch("http://localhost:8000/users/api/teachers/") 
             .then(response => response.json())
             .then(data => setTeachers(data))
             .catch(error => console.error('Erreur:', error));
@@ -30,6 +31,7 @@ function AddLesson() {
             title,
             subject,
             content,
+            description,
             is_public: isPublic,
             teacher: teacherId // Id de l'enseignant sélectionné
         };
@@ -38,7 +40,7 @@ function AddLesson() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCsrfToken() // Assurez-vous d'envoyer le CSRF token si nécessaire
+                'X-CSRFToken': getCsrfToken() 
             },
             body: JSON.stringify(lessonData)
         })
@@ -80,6 +82,10 @@ function AddLesson() {
                 <div>
                     <label>Contenu</label>
                     <textarea value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea> 
                 </div>
                 <div>
                     <label>Public</label>
