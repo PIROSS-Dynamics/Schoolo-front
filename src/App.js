@@ -9,6 +9,7 @@ import UploadImage from './components/UploadImage';
 import LessonList from './components/Lessons/LessonList'; 
 import LessonDetail from './components/Lessons/LessonDetail'; 
 import AddLesson from './components/Lessons/AddLesson';
+import QuizzList from './components/Quizz/QuizzList';
 
 function App() {
   return (
@@ -29,12 +30,12 @@ function App() {
             </div>
           } />
 
-          <Route path="/lessons" element={<LessonList />} /> {/* Utilise element au lieu de component */}
-          <Route path="/lessons/subject/:subject" element={<LessonList />} /> {/* Utilise element au lieu de component */}
-          <Route path="/lessons/detail/:lessonId" element={<LessonDetail />} /> {/* Utilise element au lieu de component */}
+          <Route path="/lessons" element={<LessonList />} /> 
+          <Route path="/lessons/subject/:subject" element={<LessonList />} /> 
+          <Route path="/lessons/detail/:lessonId" element={<LessonDetail />} /> 
           <Route path="/lessons/add" element={<AddLesson />} />
           
-        
+          <Route path="/quizz" element={<QuizzList />} /> 
 
           <Route path="/lessons" element={<LessonList />} />
 

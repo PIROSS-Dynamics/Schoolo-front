@@ -1,5 +1,12 @@
 Lancer le projet :
 
+### Prérequis
+
+- **Python** : Assurez-vous d'avoir Python 3.8 ou une version ultérieure pour garantir la compatibilité avec les packages spécifiés dans `requirements.txt`. Vous pouvez vérifier votre version avec la commande `python --version`.
+- **npm** : Utilisez la version 10.7.0 pour garantir la compatibilité avec le projet frontend. Vous pouvez vérifier votre version avec la commande `npm -v`.
+
+Si vous devez mettre à jour Python, vous pouvez le télécharger depuis [python.org](https://www.python.org/downloads/).
+
 
 ### Cloner les projets dans un dossier commun :
 
