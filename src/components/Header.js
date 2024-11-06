@@ -45,7 +45,7 @@ const Header = () => {
         <nav>
           <ul className= "nav-links">
             <li><a href="/">Accueil</a></li>
-            <li><a href="/quizz">Quiz</a></li>
+            <li><a href="/quizz">Quizz</a></li>
             <li><a href="/calendar">Calendrier</a></li>
               <li><a href="/about">À Propos</a></li>
             <li><a href="/contact">Contact</a></li>
