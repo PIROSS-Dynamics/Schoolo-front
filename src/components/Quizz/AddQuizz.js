@@ -16,15 +16,28 @@ function AddQuizz() {
             .catch(error => console.error('Erreur:', error));
     }, []);
 
-    // Initialiser les questions avec un nombre spécifique de choix
-    const initializeQuestions = (numQuestions) => {
-        const initialQuestions = Array.from({ length: numQuestions }, () => ({
-            text: '',
-            question_type: 'text',
-            correct_answer: '',
-            choices: []
-        }));
-        setQuestions(initialQuestions);
+    // Mise à jour du nombre de questions sans réinitialiser les existantes
+    const updateQuestions = (numQuestions) => {
+        setQuestions(prevQuestions => {
+            const updatedQuestions = [...prevQuestions];
+
+            if (numQuestions > updatedQuestions.length) {
+                // Ajouter des questions si le nombre a augmenté
+                for (let i = updatedQuestions.length; i < numQuestions; i++) {
+                    updatedQuestions.push({
+                        text: '',
+                        question_type: 'text',
+                        correct_answer: '',
+                        choices: []
+                    });
+                }
+            } else {
+                // Supprimer les questions en excès
+                updatedQuestions.splice(numQuestions);
+            }
+
+            return updatedQuestions;
+        });
     };
 
     const handleQuestionChange = (index, field, value) => {
@@ -33,12 +46,25 @@ function AddQuizz() {
         setQuestions(updatedQuestions);
     };
 
-    // Initialiser les choix pour les questions de type "choice"
-    const initializeChoices = (index, numChoices) => {
-        const updatedQuestions = [...questions];
-        const initialChoices = Array.from({ length: numChoices }, () => ({ text: '' }));
-        updatedQuestions[index].choices = initialChoices;
-        setQuestions(updatedQuestions);
+    // Mise à jour du nombre de choix sans réinitialiser les existants
+    const updateChoices = (questionIndex, numChoices) => {
+        setQuestions(prevQuestions => {
+            const updatedQuestions = [...prevQuestions];
+            const choices = updatedQuestions[questionIndex].choices || [];
+
+            if (numChoices > choices.length) {
+                // Ajouter des choix si le nombre a augmenté
+                for (let i = choices.length; i < numChoices; i++) {
+                    choices.push({ text: '' });
+                }
+            } else {
+                // Supprimer les choix en excès
+                choices.splice(numChoices);
+            }
+
+            updatedQuestions[questionIndex].choices = choices;
+            return updatedQuestions;
+        });
     };
 
     const handleChoiceChange = (questionIndex, choiceIndex, value) => {
@@ -124,7 +150,11 @@ function AddQuizz() {
 
             <label>
                 Nombre de questions:
-                <input type="number" onChange={(e) => initializeQuestions(parseInt(e.target.value) || 0)} />
+                <input
+                    type="number"
+                    min="0"
+                    onChange={(e) => updateQuestions(parseInt(e.target.value) || 0)}
+                />
             </label>
 
             {questions.map((question, index) => (
@@ -160,7 +190,8 @@ function AddQuizz() {
                                 Nombre de choix:
                                 <input
                                     type="number"
-                                    onChange={(e) => initializeChoices(index, parseInt(e.target.value) || 0)}
+                                    min="0"
+                                    onChange={(e) => updateChoices(index, parseInt(e.target.value) || 0)}
                                 />
                             </label>
 
