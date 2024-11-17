@@ -11,6 +11,7 @@ import LessonDetail from './components/Lessons/LessonDetail';
 import AddLesson from './components/Lessons/AddLesson';
 import QuizzList from './components/Quizz/QuizzList';
 import QuizzGame from './components/Quizz/QuizzGame';
+import AddQuizz from './components/Quizz/AddQuizz';
 
 function AppContent() {
   const location = useLocation();
@@ -32,11 +33,9 @@ function AppContent() {
 
           
         <Route path="/" element={
-          <div>
-            <li><a href="/lessons/add">Ajouts de leçons</a></li>
-            <li><a href="/quizz">Quizz</a></li>
-            <SubjectChoice/>
-          </div>
+          
+          <SubjectChoice/>
+          
         } />
 
         <Route path="/lessons" element={<LessonList />} /> 
@@ -46,6 +45,7 @@ function AppContent() {
 
         <Route path="/quizz" element={<QuizzList />} /> 
         <Route path="/quizz/play/:quizzId" element={<QuizzGame />} /> 
+        <Route path="/quizz/add" element={<AddQuizz />} /> 
 
       </Routes>
 

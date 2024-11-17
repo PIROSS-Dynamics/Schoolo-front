@@ -2,7 +2,7 @@ Lancer le projet :
 
 ### Prérequis
 
-- **Python** : Assurez-vous d'avoir Python 3.8 ou une version ultérieure pour garantir la compatibilité avec les packages spécifiés dans `requirements.txt`. Vous pouvez vérifier votre version avec la commande `python --version`.
+- **Python** : Assurez-vous d'avoir Python 3.8 ou une version ultérieure pour garantir la compatibilité avec les packages spécifiés dans `requirements.txt` visible dans le repository Schoolo-back. Vous pouvez vérifier votre version avec la commande `python --version`.
 - **npm** : Utilisez la version 10.7.0 pour garantir la compatibilité avec le projet frontend. Vous pouvez vérifier votre version avec la commande `npm -v`.
 
 Si vous devez mettre à jour Python, vous pouvez le télécharger depuis [python.org](https://www.python.org/downloads/).
@@ -10,11 +10,12 @@ Si vous devez mettre à jour Python, vous pouvez le télécharger depuis [python
 
 ### Cloner les projets dans un dossier commun :
 
-Créer un dossier où cloner les deux repository : Schoolo-front et Schoolo-back
+Créer un dossier où cloner (git clone) les deux repository : Schoolo-front et Schoolo-back
 
-https://github.com/PIROSS-Dynamics/Schoolo-front.git
 
-https://github.com/PIROSS-Dynamics/Schoolo-back.git
+git clone https://github.com/PIROSS-Dynamics/Schoolo-front.git
+
+git clone https://github.com/PIROSS-Dynamics/Schoolo-back.git
 
 
 ### Dans Schoolo-front
