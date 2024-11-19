@@ -1,91 +1,89 @@
-.form-title{
-
-    font-size: 2rem; 
-    color: #00a5e7; 
-
+/* Titre principal de la page */
+.form-title {
+    font-size: 2.5rem;
+    color: #00b0ff;
     padding-left: 20px;
-    margin-top: 20px;
-
+    margin-top: 30px;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
-
-    /* ligne under the title */
-    padding-bottom: 8px;
-    border-bottom: 2px solid #87CEEB; 
+    letter-spacing: 1.5px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #5ec2ff;
 }
 
+/* Conteneur principal du formulaire */
 .add-lesson-form {
-    background-color: #adffe4; 
-    padding: 20px;
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    max-width: 500px; 
-    margin: 40px; 
-    border: 1px solid #ddd; 
+    background-color: #e8faff; 
+    padding: 25px;
+    border-radius: 15px; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+    max-width: 600px; 
+    margin: 40px auto; 
+    border: 1px solid #cce7f7;
 }
 
+/* Espacement entre les sections */
 .add-lesson-form div {
-    margin-bottom: 10px; /* ad space */
+    margin-bottom: 15px; 
 }
 
+/* Styles des labels */
 .add-lesson-form label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
-    color: #333; 
+    margin-bottom: 8px;
+    color: #2a2a2a; 
 }
 
-
-.title input[type="text"], .subject select, .content textarea, .description textarea {
-
-    border: 1px solid #ccc; 
-    border-radius: 5px; 
-    box-sizing: border-box;
-    font-size: 16px;
-}
-.content textarea, .description textarea {
-    width: 100%; /* take all the space for text area */
-    border: 1px solid #ccc; 
-    border-radius: 5px; 
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-.subject select, .teacher select{
-    padding: 4px;
-}
-
-.title input{
-    padding: 4px;
-}
-
-.content textarea {
-    padding: 8px;
-}
-
-.description textarea {
-    padding: 14px;
-}
-
-.button-container {
-    text-align: right; 
-    padding-top: 10px;
-}
-
-.add-lesson-form button {
-    width: 40%;
+/* Champs de saisie et sélecteurs */
+.add-lesson-form input[type="text"],
+.add-lesson-form select,
+.add-lesson-form textarea {
+    width: 100%; 
     padding: 10px;
-    background-color: #00a5e7; 
-    color: white;
+    border: 1px solid #bcdff5; 
+    border-radius: 8px; 
     font-size: 16px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.add-lesson-form input[type="text"]:focus,
+.add-lesson-form select:focus,
+.add-lesson-form textarea:focus {
+    border-color: #00b0ff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 176, 255, 0.6);
+}
+
+/* Styles spécifiques pour les zones de texte */
+.add-lesson-form textarea {
+    height: 100px;
+    resize: vertical;
+    padding: 12px;
+}
+
+/* Conteneur des boutons */
+.button-container {
+    text-align: center; 
+    margin-top: 20px;
+}
+
+/* Bouton principal */
+.add-lesson-form button {
+    width: 50%;
+    padding: 12px;
+    background-color: #00b0ff; 
+    color: white;
+    font-size: 18px;
     font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .add-lesson-form button:hover {
-    background-color: #0084b9; 
+    background-color: #008ac7; 
+    transform: scale(1.05);
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../../css/AddQuizz.css';
 
 function AddQuizz() {
     const [title, setTitle] = useState('');
@@ -120,105 +121,143 @@ function AddQuizz() {
 
     return (
         <div>
-            <h2>Ajouter un Quizz</h2>
-            <div>
-                <label>Titre du Quizz :</label>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-            </div>
-
-            <div>
-                <label>Matière :</label>
-                <select value={subject} onChange={(e) => setSubject(e.target.value)} required>
-                    <option value="Maths">Maths</option>
-                    <option value="Français">Français</option>
-                    <option value="Anglais">Anglais</option>
-                    <option value="Histoire">Histoire</option>
-                </select>
-            </div>
-
-            <div>
-                <label>Enseignant :</label>
-                <select value={teacherId} onChange={(e) => setTeacherId(e.target.value)} required>
-                    <option value="">Sélectionnez un enseignant</option>
-                    {teachers.map((teacher) => (
-                        <option key={teacher.id} value={teacher.id}>
-                            {teacher.first_name} {teacher.last_name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
-            <label>
-                Nombre de questions:
-                <input
-                    type="number"
-                    min="0"
-                    onChange={(e) => updateQuestions(parseInt(e.target.value) || 0)}
-                />
-            </label>
-
-            {questions.map((question, index) => (
-                <div key={index}>
-                    <h3>Question {index + 1}</h3>
+            <h1 className="page-title">Ajouter un Quizz</h1>
+            <div className="quizz-form-container">
+                <div className="title">
+                    <label>Titre du Quizz :</label>
                     <input
                         type="text"
-                        placeholder="Texte de la question"
-                        value={question.text}
-                        onChange={(e) => handleQuestionChange(index, 'text', e.target.value)}
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         required
                     />
-                    <label>Type de question:</label>
+                </div>
+    
+                <div className="subject">
+                    <label>Matière :</label>
                     <select
-                        value={question.question_type}
-                        onChange={(e) => handleQuestionChange(index, 'question_type', e.target.value)}
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
                         required
                     >
-                        <option value="text">Texte</option>
-                        <option value="choice">Choix</option>
+                        <option value="Maths">Maths</option>
+                        <option value="Français">Français</option>
+                        <option value="Anglais">Anglais</option>
+                        <option value="Histoire">Histoire</option>
                     </select>
-                    <input
-                        type="text"
-                        placeholder="Bonne réponse"
-                        value={question.correct_answer}
-                        onChange={(e) => handleQuestionChange(index, 'correct_answer', e.target.value)}
-                        required
-                    />
-
-                    {question.question_type === 'choice' && (
-                        <div>
-                            <label>
-                                Nombre de choix:
-                                <input
-                                    type="number"
-                                    min="0"
-                                    onChange={(e) => updateChoices(index, parseInt(e.target.value) || 0)}
-                                />
-                            </label>
-
-                            {question.choices.map((choice, choiceIndex) => (
-                                <div key={choiceIndex}>
-                                    <input
-                                        type="text"
-                                        placeholder={`Choix ${choiceIndex + 1}`}
-                                        value={choice.text}
-                                        onChange={(e) => handleChoiceChange(index, choiceIndex, e.target.value)}
-                                    />
-                                    <button onClick={() => removeChoice(index, choiceIndex)}>Supprimer le choix</button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
                 </div>
-            ))}
-
-            <label>
-                Quizz public:
-                <input type="checkbox" checked={isPublic} onChange={() => setIsPublic(!isPublic)} />
-            </label>
-
-            <button onClick={handleSubmit}>Soumettre le Quizz</button>
+    
+                <div className="teacher">
+                    <label>Enseignant :</label>
+                    <select
+                        value={teacherId}
+                        onChange={(e) => setTeacherId(e.target.value)}
+                        required
+                    >
+                        <option value="">Sélectionnez un enseignant</option>
+                        {teachers.map((teacher) => (
+                            <option key={teacher.id} value={teacher.id}>
+                                {teacher.first_name} {teacher.last_name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+    
+                <label>
+                    Nombre de questions :
+                    <input
+                        type="number"
+                        min="0"
+                        onChange={(e) =>
+                            updateQuestions(parseInt(e.target.value) || 0)
+                        }
+                    />
+                </label>
+    
+                {questions.map((question, index) => (
+                    <div key={index} className="question-container">
+                        <h3>Question {index + 1}</h3>
+                        <input
+                            type="text"
+                            placeholder="Texte de la question"
+                            value={question.text}
+                            onChange={(e) =>
+                                handleQuestionChange(index, 'text', e.target.value)
+                            }
+                            required
+                        />
+                        <label>Type de question :</label>
+                        <select
+                            value={question.question_type}
+                            onChange={(e) =>
+                                handleQuestionChange(index, 'question_type', e.target.value)
+                            }
+                            required
+                        >
+                            <option value="text">Texte</option>
+                            <option value="choice">Choix</option>
+                        </select>
+                        <input
+                            type="text"
+                            placeholder="Bonne réponse"
+                            value={question.correct_answer}
+                            onChange={(e) =>
+                                handleQuestionChange(index, 'correct_answer', e.target.value)
+                            }
+                            required
+                        />
+    
+                        {question.question_type === 'choice' && (
+                            <div>
+                                <label>
+                                    Nombre de choix :
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        onChange={(e) =>
+                                            updateChoices(index, parseInt(e.target.value) || 0)
+                                        }
+                                    />
+                                </label>
+    
+                                {question.choices.map((choice, choiceIndex) => (
+                                    <div key={choiceIndex} className="choice-container">
+                                        <input
+                                            type="text"
+                                            placeholder={`Choix ${choiceIndex + 1}`}
+                                            value={choice.text}
+                                            onChange={(e) =>
+                                                handleChoiceChange(index, choiceIndex, e.target.value)
+                                            }
+                                        />
+                                        <button
+                                            onClick={() => removeChoice(index, choiceIndex)}
+                                        >
+                                            Supprimer le choix
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ))}
+    
+                <label>
+                    Quizz public :
+                    <input
+                        type="checkbox"
+                        checked={isPublic}
+                        onChange={() => setIsPublic(!isPublic)}
+                    />
+                </label>
+    
+                <div className="button-container">
+                    <button onClick={handleSubmit}>Soumettre le Quizz</button>
+                </div>
+            </div>
         </div>
     );
+    
 }
 
 export default AddQuizz;
