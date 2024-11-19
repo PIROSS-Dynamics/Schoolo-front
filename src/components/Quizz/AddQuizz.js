@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../css/AddQuizz.css';
 
 function AddQuizz() {
     const [title, setTitle] = useState('');
-    const [subject, setSubject] = useState('Maths');
+    const [subject, setSubject] = useState([]);
     const [teacherId, setTeacherId] = useState('');
     const [teachers, setTeachers] = useState([]);
     const [questions, setQuestions] = useState([]);
-    const [isPublic, setIsPublic] = useState(false);
+    const [isPublic, setIsPublic] = useState(true);
+    const navigate = useNavigate();
 
     // Récupération des enseignants depuis le backend
     useEffect(() => {
@@ -96,9 +98,46 @@ function AddQuizz() {
             return;
         }
 
+
+        if (!title) {
+            alert("Veuillez renseigner un titre pour le quiz.");
+            return;
+        }
+
+        if (!subject || subject === "Sélectionnez une matière") {
+            alert("Veuillez sélectionner une matière.");
+            return;
+        }
+
         if (!teacherId) {
             alert("Veuillez sélectionner un enseignant");
             return;
+        }
+
+        if (questions.length === 0) {
+            alert("Veuillez ajouter au moins une question.");
+            return;
+        }
+
+        // Vérification des champs obligatoires pour chaque question
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i];
+
+            if (!question.text) {
+                alert(`Veuillez renseigner le texte de la question ${i + 1}.`);
+                return;
+            }
+
+            if (!question.correct_answer) {
+                alert(`Veuillez renseigner la bonne réponse pour la question ${i + 1}.`);
+                return;
+            }
+
+            // Vérification des choix pour les questions de type 'choice'
+            if (question.question_type === 'choice' && question.choices.length === 0) {
+                alert(`Veuillez ajouter des choix pour la question ${i + 1}.`);
+                return;
+            }
         }
 
         fetch('http://localhost:8000/quizz/api/quizzlist/add/', {
@@ -114,7 +153,7 @@ function AddQuizz() {
         })
         .then(response => response.json())
         .then(data => {
-            alert("Quiz ajouté avec succès !");
+            navigate('/quizz')
         })
         .catch(error => console.error('Erreur:', error));
     };
@@ -135,11 +174,8 @@ function AddQuizz() {
     
                 <div className="subject">
                     <label>Matière :</label>
-                    <select
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                        required
-                    >
+                    <select value={subject} onChange={(e) => setSubject(e.target.value)} required>   
+                        <option value="">Sélectionnez une matière</option>
                         <option value="Maths">Maths</option>
                         <option value="Français">Français</option>
                         <option value="Anglais">Anglais</option>

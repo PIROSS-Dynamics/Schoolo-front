@@ -6,7 +6,7 @@ import '../../css/AddLesson.css';
 
 function AddLesson() {
     const [title, setTitle] = useState('');
-    const [subject, setSubject] = useState('Maths');
+    const [subject, setSubject] = useState([]);
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
     const [isPublic, setIsPublic] = useState(true);
@@ -76,8 +76,9 @@ function AddLesson() {
                 </div>
 
                 <div className='subject'>
-                    <label>Matière</label>
+                    <label>Matière :</label>
                     <select value={subject} onChange={(e) => setSubject(e.target.value)} required>
+                        <option value="">Sélectionnez une matière</option>
                         <option value="Maths">Maths</option>
                         <option value="Français">Français</option>
                         <option value="Anglais">Anglais</option>
