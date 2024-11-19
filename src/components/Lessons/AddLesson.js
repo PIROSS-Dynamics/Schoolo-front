@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Importer les styles de base
 import '../../css/AddLesson.css';
 
 function AddLesson() {
     const [title, setTitle] = useState('');
-    const [subject, setSubject] = useState('Maths'); // Valeur par défaut
+    const [subject, setSubject] = useState('Maths');
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
     const [isPublic, setIsPublic] = useState(true);
@@ -14,7 +16,7 @@ function AddLesson() {
 
     // Récupérer la liste des enseignants depuis le backend
     useEffect(() => {
-        fetch("http://localhost:8000/users/api/teachers/") 
+        fetch("http://localhost:8000/users/api/teachers/")
             .then(response => response.json())
             .then(data => setTeachers(data))
             .catch(error => console.error('Erreur:', error));
@@ -25,34 +27,34 @@ function AddLesson() {
 
         if (!teacherId) {
             console.error('Veuillez sélectionner un enseignant');
-            return; // Empêche la soumission si aucun enseignant n'est sélectionné
+            return;
         }
 
         const lessonData = {
             title,
             subject,
-            content,
+            content, // React Quill gère automatiquement le HTML
             description,
             is_public: isPublic,
-            teacher: teacherId // Id de l'enseignant sélectionné
+            teacher: teacherId
         };
 
         fetch('http://localhost:8000/lessons/api/lessonslist/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCsrfToken() 
+                'X-CSRFToken': getCsrfToken()
             },
             body: JSON.stringify(lessonData)
         })
-        .then(response => {
-            if (response.ok) {
-                navigate('/lessons'); // Redirige vers la liste des leçons après l'ajout
-            } else {
-                console.error('Erreur lors de l\'ajout de la leçon');
-            }
-        })
-        .catch(error => console.error('Erreur:', error));
+            .then(response => {
+                if (response.ok) {
+                    navigate('/lessons');
+                } else {
+                    console.error('Erreur lors de l\'ajout de la leçon');
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
     };
 
     const getCsrfToken = () => {
@@ -69,7 +71,7 @@ function AddLesson() {
             <form className='add-lesson-form' onSubmit={handleSubmit}>
 
                 <div className='title'>
-                    <label>Titre</label>
+                    <label>Titre de la Leçon</label>
                     <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
 
@@ -85,12 +87,29 @@ function AddLesson() {
 
                 <div className='content'>
                     <label>Contenu</label>
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
+                    <ReactQuill
+                        value={content}
+                        onChange={setContent}
+                        modules={{
+                            toolbar: [
+                                ['bold', 'italic', 'underline'], // Gras, italique, souligné
+                                [{ 'header': [1, 2, 3, false] }], // Tailles des titres
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Listes
+                                [{ 'color': [] }, { 'background': [] }], // Couleurs
+                                ['clean'] // Nettoyer le formatage
+                            ]
+                        }}
+                        formats={[
+                            'bold', 'italic', 'underline',
+                            'header', 'list', 'bullet', 'color', 'background'
+                        ]}
+                        placeholder="Écrivez le contenu ici..."
+                    />
                 </div>
 
                 <div className='description'>
                     <label>Description</label>
-                    <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea> 
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 </div>
 
                 <div className='public-yesno'>

@@ -87,3 +87,34 @@
     background-color: #008ac7; 
     transform: scale(1.05);
 }
+
+.content .ql-toolbar {
+    background-color: white; /* Fond blanc pour la barre d'outils */
+    border: 2px solid black; /* Bordure noire autour de la barre */
+    border-radius: 5px 5px 0 0; /* Coins arrondis en haut */
+    padding: 5px; /* Espacement interne pour une meilleure apparence */
+}
+
+.content .ql-container {
+    background-color: white; /* Fond blanc pour la zone de contenu */
+    border: 2px solid black; /* Bordure noire autour de la zone de contenu */
+    border-top: 2px solid black; /* Ligne noire entre la barre et le contenu */
+    border-radius: 0 0 5px 5px; /* Coins arrondis en bas */
+    min-height: 200px; /* Hauteur minimale pour la zone de contenu */
+    box-sizing: border-box; /* Empêche les bordures d'affecter la taille */
+    padding: 10px; /* Ajoute un espacement interne pour le texte */
+    margin-top: -2px; /* Supprime l'espace entre la barre et la zone de contenu */
+}
+
+.content .ql-container.ql-snow {
+    border-radius: 0 0 5px 5px; /* Assure une cohérence des coins arrondis */
+}
+
+.content label {
+    font-weight: bold;
+    font-size: 1.2rem; /* Met en avant l'étiquette */
+    color: #333; /* Texte légèrement assombri pour contraste */
+    margin-bottom: 8px;
+    display: block;
+}
+
