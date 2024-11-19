@@ -22,7 +22,7 @@ function QuizzList() {
 
     return (
         <div>
-            <h2 className='list-title'>Liste des Quizz</h2>
+            <h2 className='list-title'>Liste des Quiz</h2>
 
             {/* Quizz List */}
             <div className="quizz-list">

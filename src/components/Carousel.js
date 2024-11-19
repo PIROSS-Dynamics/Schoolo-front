@@ -17,7 +17,7 @@ const Carousel = () => {
     },
     {
       imgSrc: '/images/imageQuiz.png',
-      title: 'Ajouter des quiz interactifs',
+      title: 'Ajouter des Quiz interactifs',
       description: 'Évaluez les connaissances de vos élèves en créant des quiz interactifs et adaptés à leur niveau.',
       link : "/quizz/add",
     },

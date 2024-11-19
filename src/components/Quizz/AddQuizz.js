@@ -114,17 +114,17 @@ function AddQuizz() {
         })
         .then(response => response.json())
         .then(data => {
-            alert("Quizz ajouté avec succès !");
+            alert("Quiz ajouté avec succès !");
         })
         .catch(error => console.error('Erreur:', error));
     };
 
     return (
         <div>
-            <h1 className="page-title">Ajouter un Quizz</h1>
+            <h1 className="page-title">Ajouter un Quiz</h1>
             <div className="quizz-form-container">
                 <div className="title">
-                    <label>Titre du Quizz :</label>
+                    <label>Titre du Quiz :</label>
                     <input
                         type="text"
                         value={title}
@@ -243,7 +243,7 @@ function AddQuizz() {
                 ))}
     
                 <label>
-                    Quizz public :
+                    Quiz public :
                     <input
                         type="checkbox"
                         checked={isPublic}
@@ -252,7 +252,7 @@ function AddQuizz() {
                 </label>
     
                 <div className="button-container">
-                    <button onClick={handleSubmit}>Soumettre le Quizz</button>
+                    <button onClick={handleSubmit}>Soumettre le Quiz</button>
                 </div>
             </div>
         </div>
