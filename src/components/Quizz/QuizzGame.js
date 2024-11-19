@@ -97,7 +97,7 @@ function QuizzGame() {
 
                         {/* Bouton "Question Suivante" uniquement si ce n'est pas la dernière question */}
                         {currentQuestionIndex < quizz.questions.length - 1 && (
-                            <button
+                            <button class="next-button"
                                 type="button"
                                 onClick={() => {
                                     if (responses[currentQuestion.id]) {

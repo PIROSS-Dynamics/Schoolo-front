@@ -93,7 +93,7 @@ input[type="text"] {
     background-color: #0056b3; 
 }
 
-button {
+.next-button {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 1.2em;
@@ -105,7 +105,7 @@ button {
     transition: all 0.3s ease-in-out;
 }
 
-button:hover {
+.next-button:hover {
     background-color: #0056b3; /* Bleu plus foncé au survol */
 }
 
@@ -137,6 +137,7 @@ button:hover {
     color: #fff; /* Texte blanc */
     border: none;
     border-radius: 8px;
+    margin-top: 20px;
     padding: 10px 20px;
     font-size: 1.2rem;
     cursor: pointer;
@@ -153,6 +154,7 @@ button:hover {
     border: none;
     border-radius: 8px;
     padding: 10px 20px;
+    margin-top: 20px;
     font-size: 1.2rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
