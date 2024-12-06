@@ -1,24 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import '../../css/LessonDetail.css'; // Importation des styles
 
 function LessonDetail() {
     const { lessonId } = useParams();
     const [lesson, setLesson] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`) // Assurez-vous d'avoir cette route dans votre backend
-            .then(response => response.json())
-            .then(data => setLesson(data))
-            .catch(error => console.error('Erreur:', error));
+        fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`)
+            .then((response) => response.json())
+            .then((data) => setLesson(data))
+            .catch((error) => console.error('Erreur:', error));
     }, [lessonId]);
 
-    if (!lesson) return <div>Loading...</div>;
+    if (!lesson) return <div>Chargement...</div>;
+
+    // Désinfection du contenu HTML
+    const sanitizedContent = DOMPurify.sanitize(lesson.content);
 
     return (
-        <div>
-            <h1>{lesson.title} - {lesson.subject}</h1>
-            <h2>Enseigné par : {lesson.teacher_name}</h2>
-            <p>{lesson.content}</p>
+        <div className="lesson-container">
+            <h1 className="lesson-detail-title">{lesson.title}</h1>
+            <div className="lesson-details">
+                <span>Matière : {lesson.subject}</span>
+                <span>Professeur : {lesson.teacher_name}</span>
+            </div>
+            <div
+                className="lesson-content"
+                dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+            />
+            <Link to="/lessons" className="back-link">
+                ← Retour à la liste des leçons
+            </Link>
         </div>
     );
 }

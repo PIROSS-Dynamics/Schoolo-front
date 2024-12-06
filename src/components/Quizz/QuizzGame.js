@@ -8,8 +8,8 @@ function QuizzGame() {
     const [quizz, setQuizz] = useState(null);
     const [responses, setResponses] = useState({});
     const [result, setResult] = useState(null);
-    const [showCorrection, setShowCorrection] = useState(false); // Nouvel état pour afficher la correction
-    const [corrections, setCorrections] = useState(null); // État pour stocker les corrections
+    const [showCorrection, setShowCorrection] = useState(false);
+    const [corrections, setCorrections] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
     useEffect(() => {
@@ -36,7 +36,7 @@ function QuizzGame() {
         .then(response => response.json())
         .then(data => {
             setResult(data.result);
-            setCorrections(data.corrections); // Stocke la correction renvoyée par le backend
+            setCorrections(data.corrections);
             setCurrentQuestionIndex(-1);
         })
         .catch(error => console.error('Erreur:', error));
@@ -61,13 +61,13 @@ function QuizzGame() {
 
     return (
         <div className="container">
-            <h2>{quizz.title}</h2>
-            <p><strong>Matière :</strong> {quizz.subject}</p>
+            <h2 class="quiz-title">{quizz.title}</h2>
+            <p class="quiz-subject"><strong>Matière :</strong> {quizz.subject}</p>
 
             <form onSubmit={handleSubmit}>
                 {currentQuestionIndex >= 0 ? (
                     <div className="question-box">
-                        <h2>{currentQuestion.text}</h2>
+                        <h2 class="question-title">{currentQuestion.text}</h2>
                         {currentQuestion.question_type === 'choice' ? (
                             currentQuestion.choices.map(choice => (
                                 <label key={choice.id}>
@@ -95,15 +95,21 @@ function QuizzGame() {
                             Question {currentQuestionIndex + 1} / {quizz.questions.length}
                         </div>
 
-                        <button type="button" onClick={() => {
-                            if (responses[currentQuestion.id]) {
-                                setCurrentQuestionIndex(currentQuestionIndex + 1);
-                            } else {
-                                alert("Veuillez répondre à la question avant de passer à la suivante.");
-                            }
-                        }} disabled={currentQuestionIndex === quizz.questions.length - 1}>
-                            Question Suivante
-                        </button>
+                        {/* Bouton "Question Suivante" uniquement si ce n'est pas la dernière question */}
+                        {currentQuestionIndex < quizz.questions.length - 1 && (
+                            <button class="next-button"
+                                type="button"
+                                onClick={() => {
+                                    if (responses[currentQuestion.id]) {
+                                        setCurrentQuestionIndex(currentQuestionIndex + 1);
+                                    } else {
+                                        alert("Veuillez répondre à la question avant de passer à la suivante.");
+                                    }
+                                }}
+                            >
+                                Question Suivante
+                            </button>
+                        )}
                     </div>
                 ) : (
                     <div className="question-box">
@@ -111,11 +117,9 @@ function QuizzGame() {
                         <p>{result}</p>
 
                         {/* Bouton pour afficher la correction */}
-                        <button type="button" onClick={() => setShowCorrection(!showCorrection)}>
+                        <button class="show-correction" type="button" onClick={() => setShowCorrection(!showCorrection)}>
                             {showCorrection ? "Masquer la correction" : "Afficher la correction"}
                         </button>
-
-                        <button type="button" onClick={() => navigate('/quizz')}>Retourner à la liste des quizz</button>
 
                         {/* Affichage de la correction */}
                         {showCorrection && corrections && (
@@ -137,9 +141,11 @@ function QuizzGame() {
                                 ))}
                             </div>
                         )}
+                        <button class="back-to-quiz-list" type="button" onClick={() => navigate('/quizz')}>Retourner à la Liste des Quiz</button>
                     </div>
                 )}
                 
+                {/* Bouton "Soumettre" uniquement à la dernière question */}
                 {currentQuestionIndex === quizz.questions.length - 1 && (
                     <button type="submit" className="submit-button">Soumettre</button>
                 )}
