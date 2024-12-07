@@ -1,0 +1,64 @@
+.HomePopup-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .HomePopup {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .HomePopup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .HomePopup-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .HomePopup-content {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .HomePopup-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .nav-btn {
+    background-color: #98e6cc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-btn:hover {
+    background-color: #60e2b7;
+  }
+  

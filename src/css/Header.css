@@ -1,9 +1,11 @@
 header {
+    position: sticky;
+    top: 0;
     background-color: #ffffff;
     padding: 0 20px; 
     box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
-    height: 70px;
-    margin-top: 5px;
+    height: 75px;
+    z-index: 1000;
 }
 
 .header-container {

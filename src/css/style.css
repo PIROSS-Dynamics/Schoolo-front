@@ -10,7 +10,35 @@
 }
 
 
-
+/* Global styles for the whole page */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Main app container */
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure it takes at least full viewport height */
+  }
+  
+  /* Content area that will expand to fill space */
+  .App > .App-content {
+    flex: 1;
+  }
+  
+  /* Footer styles */
+  footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto; /* Push footer to the bottom */
+  }
+  
 
 
 /* -----------------------------------------------UploadImage-------------------------------------------------------- */
