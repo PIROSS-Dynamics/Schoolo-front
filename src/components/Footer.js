@@ -28,12 +28,8 @@ const Footer = () => {
                 </div>
 
                 {/* Newsletter Signup */}
-                <div className="footer-newsletter">
-                    <p>Inscrivez-vous à notre newsletter :</p>
-                    <form action="/subscribe" method="post">
-                        <input type="email" placeholder="Votre adresse email" required />
-                        <button type="submit">S'inscrire</button>
-                    </form>
+                <div className="footer-copyright">
+                    <p>Développé par PIROSS-Dynamics</p>
                 </div>
             </div>
         </footer>
