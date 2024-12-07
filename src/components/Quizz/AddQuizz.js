@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../css/AddQuizz.css';
+import '../../css/Quizz/AddQuizz.css';
 
 function AddQuizz() {
     const [title, setTitle] = useState('');

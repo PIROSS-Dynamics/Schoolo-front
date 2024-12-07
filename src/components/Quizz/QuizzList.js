@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../css/QuizzList.css';
+import '../../css/Quizz/QuizzList.css';
 import '../../css/Loading.css';
 
 function QuizzList() {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../../css/LessonList.css';
+import '../../css/Lessons/LessonList.css';
 import '../../css/Loading.css'; 
 
 function LessonList() {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
-import '../../css/LessonDetail.css'; // Importation des styles pour LessonDetail
+import '../../css/Lessons/LessonDetail.css'; // Importation des styles pour LessonDetail
 import '../../css/Loading.css'; // Importation des styles pour le chargement
 
 function LessonDetail() {

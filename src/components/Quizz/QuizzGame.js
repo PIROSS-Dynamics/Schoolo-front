@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../../css/QuizzGame.css';
+import '../../css/Quizz/QuizzGame.css';
 import '../../css/Loading.css';
 
 function QuizzGame() {

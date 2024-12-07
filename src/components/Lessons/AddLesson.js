@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Importer les styles de base
-import '../../css/AddLesson.css';
+import '../../css/Lessons/AddLesson.css';
 
 function AddLesson() {
     const [title, setTitle] = useState('');
