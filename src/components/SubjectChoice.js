@@ -7,9 +7,9 @@ const SubjectChoice = () => {
       
 
       // Every subjects
-      <div className="subject-choice-container">
+      <div id="subject-choice-container">
           
-        <h1> Choisis ta matière ! </h1>
+        <h1 className='title'> Choisis ta matière ! </h1>
 
         <ul className= "subject-choice">
           <li>

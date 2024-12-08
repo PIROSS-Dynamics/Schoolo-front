@@ -18,7 +18,7 @@ import About from './components/About';
 
 function AppContent() {
   const location = useLocation();
-
+  
   return (
     <div className="App">
       {/* Affiche le Header différemment sur la page d'accueil */}

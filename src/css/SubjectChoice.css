@@ -1,3 +1,21 @@
+.title{
+
+    font-size: 2rem; 
+    color: #00a5e7; 
+
+    padding-left: 20px;
+    margin-top: 20px;
+
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    /* ligne under the title */
+    padding-bottom: 8px;
+    border-bottom: 2px solid #87CEEB; 
+}
+
+
 .subject-choice {
     list-style-type: none; /* Remove default list bullets */
     padding: 0;

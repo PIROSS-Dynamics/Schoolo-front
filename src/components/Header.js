@@ -35,7 +35,7 @@ const Header = () => {
         {isMenuOpen && (
           <ul className="phone-menu">
             <li><a href="/">Accueil</a></li>
-            <li><a href="/subject">Matières</a></li>
+            <li><a href="/#subject-choice-container">Matières</a></li>
             <li><a href="/challenge">Défis</a></li>
             <li><a href="/about">À Propos</a></li>
           </ul>
@@ -45,10 +45,10 @@ const Header = () => {
         <nav>
           <ul className= "nav-links">
             <li><a href="/">Accueil</a></li>
-            <li><a href="/subject">Matières</a></li>
+            <li><a href="/#subject-choice-container">Matières</a></li>
             <li><a href="/quizz">Quiz</a></li>
             <li><a href="/challenge">Défis</a></li>
-              <li><a href="/about">À Propos</a></li>
+            <li><a href="/about">À Propos</a></li>
           </ul>
         </nav>
 
