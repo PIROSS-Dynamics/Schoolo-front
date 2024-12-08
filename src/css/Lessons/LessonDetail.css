@@ -11,8 +11,7 @@
 .lesson-detail-title {
     font-size: 2.5rem;
     text-align: center;
-    color: #000000; /* Orange vif */
-    font-family: 'Comic Sans MS', cursive, sans-serif; /* Police enfantine */
+    color: #000000; 
     margin-bottom: 20px;
 }
 
@@ -21,8 +20,7 @@
     justify-content: center;
     gap: 40px;
     font-size: 1.2rem;
-    font-family: 'Arial', sans-serif;
-    color: #000000; /* Vert agréable */
+    color: #000000; 
     margin-bottom: 20px;
 }
 
@@ -33,7 +31,7 @@
     background-color: #FFFFFF; /* Fond blanc */
     padding: 15px;
     border-radius: 10px;
-    border: 2px solid #000000; /* Bordure rose claire */
+    border: 2px solid #000000; 
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
