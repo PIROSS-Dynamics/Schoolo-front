@@ -23,11 +23,6 @@ const ChallengeList = () => {
         Nous croyons que l'éducation doit être accessible, engageante et amusante. S'cool est là pour accompagner 
         les apprenants dans leur parcours, tout en favorisant la collaboration entre étudiants et enseignants.
       </p>
-
-      <h2>Contactez-nous</h2>
-      <p>
-        Vous avez des questions ou souhaitez en savoir plus ? Contactez notre équipe de PIROSS-Dynamics via [insérer un formulaire de contact ou email].
-      </p>
     </div>
   );
 };
