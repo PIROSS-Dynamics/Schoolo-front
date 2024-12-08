@@ -30,5 +30,10 @@ Pour éviter des soucis de versions, vous pouvez faire venv\Scripts\activate (Wi
 
 Faire pip install -r requirements.txt 
 
+Puis faire :
+python manage.py makemigrations
+python manage.py migrate
+
+
 ### Lancement
 Lancer le front avec npm start et lancer le back avec python manage.py runserver
