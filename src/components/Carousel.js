@@ -33,7 +33,7 @@ const Carousel = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       changeSlide(1); 
-    }, 10000); // 10000ms = 10 secondes
+    }, 7900); // 10000ms = 10 secondes
 
     // Cleanup de l'intervalle lors du démontage du composant
     return () => clearInterval(intervalId);
