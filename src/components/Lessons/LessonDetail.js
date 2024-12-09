@@ -58,8 +58,8 @@ function LessonDetail() {
                 className="lesson-content"
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
             />
-            <Link to="/lessons" className="back-link">
-                ← Retour à la liste des leçons
+            <Link to={`/lessons/subject/${lesson.subject}`}  className="back-link">
+                ← Retour à la liste des leçons de {lesson.subject}
             </Link>
         </div>
     );
