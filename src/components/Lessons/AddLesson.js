@@ -95,12 +95,13 @@ function AddLesson() {
                     console.error("Erreur lors de l'extraction du texte depuis le PDF");
                 }
             })
-            .then((data) => {
+            .then((data ) => {
                 
-                if (data) {
-                    // Mettre à jour la zone de texte avec le contenu extrait
-                    setContent(data.content);
-
+                if (data && data.content) {
+                    // Update content
+                    const formattedContent = data.content.replace(/\n/g, "<br>");
+                    setContent(formattedContent);
+                    
                 }
             })
             .catch((error) => console.error("Erreur réseau :", error));
@@ -129,12 +130,6 @@ function AddLesson() {
                     </select>
                 </div>
 
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handlePdfUpload}
-                />
-
                 <div className='content'>
                     <label>Contenu</label>
                     <ReactQuill
@@ -156,7 +151,13 @@ function AddLesson() {
                         placeholder="Écrivez le contenu ici..."
                     />
                 </div>
-
+                
+                <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handlePdfUpload}
+                />
+                
                 <div className='description'>
                     <label>Description</label>
                     <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
