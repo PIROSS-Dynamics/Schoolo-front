@@ -49,7 +49,7 @@ function AddLesson() {
         })
             .then(response => {
                 if (response.ok) {
-                    navigate('/lessons');
+                    navigate('/');
                 } else {
                     console.error('Erreur lors de l\'ajout de la leçon');
                 }

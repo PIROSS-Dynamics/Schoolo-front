@@ -14,17 +14,11 @@
     border-bottom: 2px solid #87CEEB; 
 }
 
-.quizz-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: center;
-    margin-top: 20px;
-}
 
 .quizz-card {
     max-width: 300px;
     padding: 20px;
+    margin-left: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -32,6 +26,8 @@
     cursor: pointer;
     background-color: #cbffee;
     text-align: center;
+    opacity: 0; /* Invisible au départ */
+    animation: cardFadeIn 1s ease-out forwards; /* Animation des cartes */
 }
 
 .quizz-card:hover {
@@ -53,7 +49,83 @@
     margin-bottom: 12px;
 }
 
-.lesson-description {
+.quizz-description {
     font-size: 0.9rem;
     color: #555;
+}
+
+.subject-section {
+    margin-bottom: 2rem;
+}
+
+.subject-title {
+    color: #00a5e7; 
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.quizz-list-row {
+    display: flex;
+    flex-wrap: wrap; /* Permet d'aller à la ligne si trop d'éléments */
+    gap: 1rem;
+}
+
+
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #87CEEB;
+}
+
+.sticky-nav button {
+    background-color: #00a5e7;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sticky-nav button:hover {
+    background-color: #007ab8;
+}
+
+/* Animation d'apparition du titre */
+@keyframes titleFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Délai pour l'animation des titres */
+.subject-title:nth-child(odd) {
+    animation-delay: 0.6s; /* Les titres apparaissent après les sections */
+}
+.subject-title:nth-child(even) {
+    animation-delay: 0.8s; /* Les titres apparaissent après les sections */
+}
+
+/* Animation des cartes */
+@keyframes cardFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Délai pour les cartes */
+.quizz-card:nth-child(odd) {
+    animation-delay: 1s; /* Les cartes apparaissent après les titres */
+}
+.quizz-card:nth-child(even) {
+    animation-delay: 1.2s; /* Les cartes apparaissent après les titres */
 }
