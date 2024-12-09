@@ -2,16 +2,16 @@
     max-width: 90%;
     margin: 20px auto; /* Réduit l'espace latéral */
     padding: 20px;
-    border: 4px solid #000000; /* Bordure dorée */
+    
     border-radius: 15px;
     background-color: #cbffee; /* Couleur jaune pâle pour un style enfantin */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
 }
 
 .lesson-detail-title {
     font-size: 2.5rem;
     text-align: center;
-    color: #000000; 
+    color: #007bff; 
     margin-bottom: 20px;
 }
 
@@ -31,7 +31,7 @@
     background-color: #FFFFFF; /* Fond blanc */
     padding: 15px;
     border-radius: 10px;
-    border: 2px solid #000000; 
+    border: 1px solid #000000; 
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
