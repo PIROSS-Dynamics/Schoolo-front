@@ -9,6 +9,8 @@ function LessonList() {
     const navigate = useNavigate();
     const { subject } = useParams();
 
+    const [clickedCardId, setClickedCardId] = useState(null);
+
     useEffect(() => {
         const url = subject 
             ? `http://localhost:8000/lessons/api/lessonslist/subject/${subject}/`
@@ -27,7 +29,10 @@ function LessonList() {
     }, [subject]);
 
     const handleLessonClick = (lessonId) => {
-        navigate(`/lessons/detail/${lessonId}`);
+        setClickedCardId(lessonId); // Set the clicked card
+        setTimeout(() => {
+            navigate(`/lessons/detail/${lessonId}`); // Navigate after animation
+        }, 1200); // Adjust delay to match animation duration
     };
 
     if (loading) {
@@ -53,7 +58,7 @@ function LessonList() {
                     lessons.map((lesson) => (
                         <div
                             key={lesson.id}
-                            className="lesson-card"
+                            className={`lesson-card ${clickedCardId === lesson.id ? "clicked" : ""}`}
                             onClick={() => handleLessonClick(lesson.id)}
                         >
                             <h3 className="lesson-title">{lesson.title}</h3>
