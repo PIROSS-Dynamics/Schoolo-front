@@ -9,6 +9,8 @@ function LessonList() {
     const navigate = useNavigate();
     const { subject } = useParams();
 
+    const [clickedCardId, setClickedCardId] = useState(null);
+
     useEffect(() => {
         const url = subject 
             ? `http://localhost:8000/lessons/api/lessonslist/subject/${subject}/`
@@ -18,20 +20,23 @@ function LessonList() {
             .then((response) => response.json())
             .then((data) => {
                 setLessons(data);
-                setLoading(false); // Chargement terminé
+                setLoading(false); // Loading done
             })
             .catch((error) => {
                 console.error('Erreur:', error);
-                setLoading(false); // En cas d'erreur, désactiver le chargement
+                setLoading(false); // disable the loading if we've got an error
             });
     }, [subject]);
 
     const handleLessonClick = (lessonId) => {
-        navigate(`/lessons/detail/${lessonId}`);
+        setClickedCardId(lessonId); // Set the clicked card
+        setTimeout(() => {
+            navigate(`/lessons/detail/${lessonId}`); // Navigate after animation
+        }, 1200); // Adjust delay to match animation duration
     };
 
     if (loading) {
-        // Animation de chargement
+        // Load animation
         return (
             <div>
                 <h2 className='list-title'>Liste des Leçons {subject && `- ${subject}`}</h2>
@@ -53,7 +58,7 @@ function LessonList() {
                     lessons.map((lesson) => (
                         <div
                             key={lesson.id}
-                            className="lesson-card"
+                            className={`lesson-card ${clickedCardId === lesson.id ? "clicked" : ""}`}
                             onClick={() => handleLessonClick(lesson.id)}
                         >
                             <h3 className="lesson-title">{lesson.title}</h3>
