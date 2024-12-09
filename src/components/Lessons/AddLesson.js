@@ -65,6 +65,49 @@ function AddLesson() {
         return cookieValue || '';
     };
 
+
+    const handlePdfUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            uploadAndExtractPdf(file); // send the pdf for extraction
+        }
+    };
+
+    const uploadAndExtractPdf = (pdfFile) => {
+        
+        // Create an object FormData to send the file
+        const formData = new FormData();
+        formData.append('pdf', pdfFile);
+        
+        fetch('http://localhost:8000/lessons/api/lessonslist/extract-pdf', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCsrfToken(), // Add CSRF token if needed
+            },
+            body: formData, // The PDF is end is the body
+
+        })
+            .then((response) => {
+                
+                if (response.ok) {
+                    return response.json(); // Get the JSON response
+                } else {
+                    console.error("Erreur lors de l'extraction du texte depuis le PDF");
+                }
+            })
+            .then((data) => {
+                
+                if (data) {
+                    // Mettre à jour la zone de texte avec le contenu extrait
+                    setContent(data.content);
+
+                }
+            })
+            .catch((error) => console.error("Erreur réseau :", error));
+    };
+    
+    
+
     return (
         <div>
             <h1 className='form-title'>Ajouter une Leçon</h1>
@@ -86,6 +129,12 @@ function AddLesson() {
                     </select>
                 </div>
 
+                <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handlePdfUpload}
+                />
+
                 <div className='content'>
                     <label>Contenu</label>
                     <ReactQuill
@@ -93,11 +142,11 @@ function AddLesson() {
                         onChange={setContent}
                         modules={{
                             toolbar: [
-                                ['bold', 'italic', 'underline'], // Gras, italique, souligné
-                                [{ 'header': [1, 2, 3, false] }], // Tailles des titres
-                                [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Listes
-                                [{ 'color': [] }, { 'background': [] }], // Couleurs
-                                ['clean'] // Nettoyer le formatage
+                                ['bold', 'italic', 'underline'], // Bold, italics, underline
+                                [{ 'header': [1, 2, 3, false] }], // title size
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }], // List
+                                [{ 'color': [] }, { 'background': [] }], // Color
+                                ['clean'] // Clean Format
                             ]
                         }}
                         formats={[
