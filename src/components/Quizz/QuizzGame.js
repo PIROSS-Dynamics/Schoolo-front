@@ -12,7 +12,7 @@ function QuizzGame() {
     const [showCorrection, setShowCorrection] = useState(false);
     const [corrections, setCorrections] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [loading, setLoading] = useState(true); // Indicateur de chargement
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
         fetch(`http://localhost:8000/quizz/api/quizzlist/${quizzId}/`)
@@ -20,11 +20,11 @@ function QuizzGame() {
             .then(data => {
                 const shuffledQuestions = data.questions.sort(() => Math.random() - 0.5);
                 setQuizz({ ...data, questions: shuffledQuestions });
-                setLoading(false); // Désactiver le chargement
+                setLoading(false); // End loading
             })
             .catch(error => {
                 console.error('Erreur:', error);
-                setLoading(false); // Désactiver même en cas d'erreur
+                setLoading(false); 
             });
     }, [quizzId]);
 
@@ -62,7 +62,7 @@ function QuizzGame() {
     };
 
     if (loading) {
-        // Animation de chargement
+        // loading animation
         return (
             <div className="loading-container">
                 <div className="spinner"></div>

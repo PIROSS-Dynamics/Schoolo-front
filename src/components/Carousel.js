@@ -25,7 +25,7 @@ const Carousel = () => {
     },
   ];
 
-  // Changer de diapositive
+  // Change slide
   function changeSlide(direction) {
     setCurrentSlide((currentSlide + direction + slides.length) % slides.length);
   }
@@ -33,9 +33,8 @@ const Carousel = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       changeSlide(1); 
-    }, 7900); // 10000ms = 10 secondes
+    }, 7900); // 10000ms = 10 seconds
 
-    // Cleanup de l'intervalle lors du démontage du composant
     return () => clearInterval(intervalId);
     // eslint-disable-next-line 
   }, [currentSlide]);
@@ -45,8 +44,8 @@ const Carousel = () => {
       <div
         className="carousel-track"
         style={{
-          transform: `translateX(-${currentSlide * 100}%)`, // Décalage basé sur la diapositive active
-          transition: 'transform 0.5s ease-in-out', // Transition fluide
+          transform: `translateX(-${currentSlide * 100}%)`, // Slide shifting
+          transition: 'transform 0.5s ease-in-out', // smooth transition
         }}
       >
         {slides.map((slide, index) => (

@@ -1,6 +1,6 @@
 // src/components/About.js
 import React from 'react';
-import '../css/About.css'; // Fichier CSS pour styliser cette page
+import '../css/About.css'; 
 
 const About = () => {
   return (

@@ -15,11 +15,11 @@ function QuizzList() {
             .then(response => response.json())
             .then(data => {
                 setQuizz(data);
-                setLoading(false); // Désactiver le chargement après récupération des données
+                setLoading(false); // Desactivate the loading after recuperation of the datas
             })
             .catch(error => {
                 console.error('Erreur:', error);
-                setLoading(false); // En cas d'erreur, désactiver le chargement
+                setLoading(false); 
             });
     }, []);
 
@@ -28,7 +28,7 @@ function QuizzList() {
     };
 
     if (loading) {
-        // Animation de chargement
+        // loading animation
         return (
             <div>
                 <h2 className='list-title'>Liste des Quiz</h2>

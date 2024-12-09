@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
-import '../../css/Lessons/LessonDetail.css'; // Importation des styles pour LessonDetail
-import '../../css/Loading.css'; // Importation des styles pour le chargement
+import '../../css/Lessons/LessonDetail.css'; 
+import '../../css/Loading.css'; 
 
 function LessonDetail() {
     const { lessonId } = useParams();
     const [lesson, setLesson] = useState(null);
-    const [loading, setLoading] = useState(true); // Gestion de l'état de chargement
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
         fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`)
             .then((response) => response.json())
             .then((data) => {
                 setLesson(data);
-                setLoading(false); // Chargement terminé
+                setLoading(false); // End loading
             })
             .catch((error) => {
                 console.error('Erreur:', error);
-                setLoading(false); // En cas d'erreur, désactiver le chargement
+                setLoading(false); // If error, desactivate the loading
             });
     }, [lessonId]);
 
     if (loading) {
-        // Animation de chargement
+        // Loading animation
         return (
             <div className="loading-container">
                 <div className="spinner"></div>
@@ -33,7 +33,7 @@ function LessonDetail() {
     }
 
     if (!lesson) {
-        // Gestion des cas où aucune leçon n'est trouvée
+        // if no lesson is found
         return (
             <div className="lesson-container">
                 <p>La leçon demandée n'existe pas ou une erreur est survenue.</p>
@@ -44,7 +44,7 @@ function LessonDetail() {
         );
     }
 
-    // Désinfection du contenu HTML
+    // purifing html of lesson's content
     const sanitizedContent = DOMPurify.sanitize(lesson.content);
 
     return (

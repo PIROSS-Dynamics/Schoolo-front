@@ -18,11 +18,11 @@ function LessonList() {
             .then((response) => response.json())
             .then((data) => {
                 setLessons(data);
-                setLoading(false); // Chargement terminé
+                setLoading(false); // End loading
             })
             .catch((error) => {
                 console.error('Erreur:', error);
-                setLoading(false); // En cas d'erreur, désactiver le chargement
+                setLoading(false); // If error, desactivate the loading
             });
     }, [subject]);
 
@@ -31,7 +31,7 @@ function LessonList() {
     };
 
     if (loading) {
-        // Animation de chargement
+        // loading animation
         return (
             <div>
                 <h2 className='list-title'>Liste des Leçons {subject && `- ${subject}`}</h2>
