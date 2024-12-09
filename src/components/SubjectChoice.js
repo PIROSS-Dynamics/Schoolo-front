@@ -14,7 +14,7 @@ const SubjectChoice = () => {
         <ul className= "subject-choice">
           <li>
             <a href="/lessons/subject/Maths" class="mathematiques">
-              <img src="/images/mathsGuy.png" alt="Mathematiques" />
+              <img src="/images/mathsGirl.png" alt="Mathematiques" />
             </a>
           </li>
 
