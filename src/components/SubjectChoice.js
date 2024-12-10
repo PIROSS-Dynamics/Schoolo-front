@@ -25,8 +25,8 @@ const SubjectChoice = () => {
           </li>
 
           <li> 
-            <a href="/lessons/subject/Histoire" className='history-geo'>
-              <img src="/images/historyGuy.png" alt="History-geo" />
+            <a href="/lessons/subject/Histoire" className='history'>
+              <img src="/images/historyGuy.png" alt="History" />
             </a>  
           </li>
 

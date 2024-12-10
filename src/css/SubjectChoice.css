@@ -44,8 +44,8 @@
 
 .subject-choice img {
     display: block; /* Display the image as a block element */
-    margin: 0 auto; /* Center the image horizontally */
     width: 330px;
+    margin: 20px;
 }
 
 .subject-choice p {
@@ -60,7 +60,7 @@
     content: url(/images/mathsGirlChosen.png);
 }
 
-.history-geo:hover img{
+.history:hover img{
     content: url(/images/historyGuyChosen.png);
 }
 
