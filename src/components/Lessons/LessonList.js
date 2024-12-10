@@ -32,7 +32,7 @@ function LessonList() {
         setClickedCardId(lessonId); // Set the clicked card
         setTimeout(() => {
             navigate(`/lessons/detail/${lessonId}`); // Navigate after animation
-        }, 1200); // Adjust delay to match animation duration
+        }, 1100); // Adjust delay to match animation duration
     };
 
     if (loading) {
