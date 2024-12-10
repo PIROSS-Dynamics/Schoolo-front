@@ -10,6 +10,18 @@ const SubjectPopup = ({ subjects, onSelectSubject, onClose }) => {
     if (onClose) onClose(); // Executes onClose action if provided
   };
 
+  // Define the custom order for subjects
+  const subjectOrder = ['Maths', 'Français', 'Histoire', 'Anglais'];
+
+  // Sort subjects based on the custom order
+  const sortedSubjects = subjectOrder.filter((subject) => subjects.includes(subject));
+
+  // Add any remaining subjects (those not in the custom order)
+  const remainingSubjects = subjects.filter((subject) => !subjectOrder.includes(subject));
+
+  // Combine the ordered subjects with the remaining ones
+  const allSubjectsInOrder = [...sortedSubjects, ...remainingSubjects];
+
   // If the popup is not open, return null to not display it
   if (!isOpen) return null;
 
@@ -25,10 +37,10 @@ const SubjectPopup = ({ subjects, onSelectSubject, onClose }) => {
         {/* Line separator */}
         <hr className="popup-divider" />
         <div className="HomePopup-content">
-          {subjects.length > 0 ? (
+          {allSubjectsInOrder.length > 0 ? (
             <ul className="subjects-list">
-              {/* Loop through the subjects and display them as list items */}
-              {subjects.map((subject) => (
+              {/* Loop through the sorted subjects and display them as list items */}
+              {allSubjectsInOrder.map((subject) => (
                 <li
                   key={subject}
                   className="subject-item"
