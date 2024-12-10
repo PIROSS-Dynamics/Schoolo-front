@@ -32,6 +32,8 @@
     cursor: pointer;
     background-color: #cbffee;
     text-align: center;
+
+    animation: fadeIn 1s ease-out forwards;
 }
 
 .lesson-card:hover {
@@ -59,7 +61,7 @@
 
 
     100% {
-        transform: translate(-50%, -50%) scale(2.4) rotate(720deg); 
+        transform: translate(-50%, -50%) scale(2.1) rotate(360deg); 
     }
 
 }

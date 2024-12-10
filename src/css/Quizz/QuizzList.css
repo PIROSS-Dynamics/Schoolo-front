@@ -35,6 +35,33 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
+
+/* animation of the click */
+.quizz-card.clicked {
+
+    transform-style: preserve-3d;   
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
+    z-index: 999; /* Ensure it appears above all other elements */
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    opacity: 1;
+    
+    animation: spin-and-grow 1.1s;
+}
+
+@keyframes spin-and-grow {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.1) rotate(360deg); 
+    }
+
+}
+
 .quizz-title {
     font-size: 1.5rem;
     color: #00a5e7; 
@@ -100,12 +127,6 @@
     background-color: #007ab8;
 }
 
-/* Animation d'apparition du titre */
-@keyframes titleFadeIn {
-    to {
-        opacity: 1;
-    }
-}
 
 /* Délai pour l'animation des titres */
 .subject-title:nth-child(odd) {
@@ -122,10 +143,3 @@
     }
 }
 
-/* Délai pour les cartes */
-.quizz-card:nth-child(odd) {
-    animation-delay: 1s; /* Les cartes apparaissent après les titres */
-}
-.quizz-card:nth-child(even) {
-    animation-delay: 1.2s; /* Les cartes apparaissent après les titres */
-}

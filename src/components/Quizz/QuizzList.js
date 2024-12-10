@@ -11,6 +11,7 @@ function QuizzList() {
     const [popupOpen, setPopupOpen] = useState(true);
     const navigate = useNavigate();
 
+    const [clickedQuizzId, setClickedCardId] = useState(null);
     // References for each subject title
     const subjectRefs = useRef({});
 
@@ -32,7 +33,10 @@ function QuizzList() {
     }, []);
 
     const handleQuizzClick = (quizzId) => {
-        navigate(`/quizz/play/${quizzId}`);
+        setClickedCardId(quizzId); // Set the clicked card
+        setTimeout(() => {
+            navigate(`/quizz/play/${quizzId}`);
+        }, 1200); // Adjust delay to match animation duration
     };
 
     // Grouping quizzes by subject
@@ -113,7 +117,8 @@ function QuizzList() {
                             {quizzBySubject[subject]?.map((quizzItem) => (
                                 <div
                                     key={quizzItem.id}
-                                    className="quizz-card"
+                                    className={`quizz-card ${clickedQuizzId === quizzItem.id ? "clicked" : ""}`}
+
                                     onClick={() => handleQuizzClick(quizzItem.id)}
                                 >
                                     <h3 className="quizz-title">{quizzItem.title}</h3>
