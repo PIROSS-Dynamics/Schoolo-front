@@ -45,7 +45,7 @@
 .subject-choice img {
     display: block; /* Display the image as a block element */
     width: 330px;
-    margin: 20px;
+    margin: 40px;
 }
 
 .subject-choice p {
@@ -70,4 +70,8 @@
 
 .english:hover img{
     content: url(/images/englishGuyChosen.png);
+}
+
+.art:hover img{
+    content: url(/images/artGirlChosen.png);
 }

@@ -35,6 +35,12 @@ const SubjectChoice = () => {
               <img src="/images/englishGuy.png" alt="English" />
             </a>  
           </li>
+
+          <li> 
+            <a href="/lessons/subject/Art" className='art'>
+              <img src="/images/artGirl.png" alt="art" />
+            </a>  
+          </li>
         </ul>
 
       </div>
