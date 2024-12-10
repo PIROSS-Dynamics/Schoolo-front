@@ -128,14 +128,6 @@
 }
 
 
-/* Délai pour l'animation des titres */
-.subject-title:nth-child(odd) {
-    animation-delay: 0.6s; /* Les titres apparaissent après les sections */
-}
-.subject-title:nth-child(even) {
-    animation-delay: 0.8s; /* Les titres apparaissent après les sections */
-}
-
 /* Animation des cartes */
 @keyframes cardFadeIn {
     to {
