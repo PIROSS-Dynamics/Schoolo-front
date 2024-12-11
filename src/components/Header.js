@@ -33,9 +33,31 @@ const Header = () => {
 
     // Reset user state and redirect
     setUser(null);
-    window.location.href = '/'; // Redirect to homepage
+    window.location.href = '/login'; // Redirect to login
   };
 
+  useEffect(() => {
+    const firstName = localStorage.getItem('first_name');
+    const role = localStorage.getItem('role');
+    if (firstName && role) {
+        setUser({ firstName, role });  // Mise à jour avec le rôle correct
+    }
+}, []);
+
+
+  const getRoleLabel = (role) => {
+    switch (role) {
+      case 'student':
+        return 'Étudiant';
+      case 'teacher':
+        return 'Professeur';
+      case 'parent':
+        return 'Parent';
+      default:
+        return 'Utilisateur';
+    }
+  };
+  
   return (
     <header>
       <div className="header-container">
@@ -45,17 +67,13 @@ const Header = () => {
             <img src="/images/logo scool.png" alt="S'cool Logo" />
           </a>
         </div>
-
-        {/* Menu toggle for small screens (hamburger icon) */}
+  
+        {/* Menu toggle for small screens */}
         <div className="menu-toggle" onClick={toggleMenu}>
-          <img
-            src="/images/menu icon.png"
-            alt="Menu"
-            className="menu-icon"
-          />
+          <img src="/images/menu icon.png" alt="Menu" className="menu-icon" />
         </div>
-
-        {/* Phone menu only visible when isMenuOpen is true */}
+  
+        {/* Phone menu */}
         {isMenuOpen && (
           <ul className="phone-menu">
             <li><a href="/">Accueil</a></li>
@@ -65,8 +83,8 @@ const Header = () => {
             <li><a href="/about">À Propos</a></li>
           </ul>
         )}
-
-        {/* Navigation Menu for desktop */}
+  
+        {/* Desktop navigation */}
         <nav>
           <ul className="nav-links">
             <li><a href="/">Accueil</a></li>
@@ -76,13 +94,13 @@ const Header = () => {
             <li><a href="/about">À Propos</a></li>
           </ul>
         </nav>
-
+  
         {/* User Section */}
         <div className="header-actions">
           {user ? (
             <div className="user-menu">
               <button className="btn">
-                {user.firstName} ({user.role})
+                {user.firstName} ({getRoleLabel(user.role)})
               </button>
               <div className="user-dropdown">
                 <ul>
@@ -98,6 +116,7 @@ const Header = () => {
       </div>
     </header>
   );
+  
 };
 
 export default Header;

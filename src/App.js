@@ -4,7 +4,6 @@ import './css/style.css';
 import Header from './components/Header'; 
 import SubjectChoice from './components/SubjectChoice';
 import Carousel from './components/Carousel';
-import SearchSection from './components/SearchSection';
 import Footer from './components/Footer'; 
 import LessonList from './components/Lessons/LessonList'; 
 import LessonDetail from './components/Lessons/LessonDetail'; 
@@ -15,7 +14,7 @@ import AddQuizz from './components/Quizz/AddQuizz';
 import HomePopup from './components/HomePopup'; 
 import ChallengeList from './components/Challenges/ChallengeList';
 import About from './components/About';
-import Auth from './components/Auth'; // Adjust the path if necessary
+import Auth from './components/Auth'; 
 
 
 function AppContent() {
