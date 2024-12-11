@@ -1,91 +1,134 @@
 import React, { useState } from 'react';
-import api from '../api';
+import '../css/Auth.css'; // Import du fichier CSS pour le style
 
-const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+const Auth = () => {
+  const [isLogin, setIsLogin] = useState(true); // Mode par défaut sur la connexion
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     first_name: '',
     last_name: '',
-    role: 'student', // Default role
+    role: 'student', // Rôle par défaut
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // Gérer les changements dans les champs du formulaire
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Gérer la soumission du formulaire
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const url = isLogin
+      ? 'http://localhost:8000/users/api/login/' // URL pour la connexion
+      : 'http://localhost:8000/users/api/register/'; // URL pour l'inscription
+
     try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Une erreur est survenue. Vérifiez vos informations.');
+      }
+
+      const data = await response.json();
+
       if (isLogin) {
-        const response = await api.post('/login/', {
-          email: formData.email,
-          password: formData.password,
-        });
-        localStorage.setItem('access', response.data.access);
-        localStorage.setItem('first_name', response.data.first_name);
-        localStorage.setItem('role', response.data.role);
-        alert(`Welcome, ${response.data.first_name}!`);
-        window.location.href = '/';
+        // Stocker les données utilisateur après connexion
+        localStorage.setItem('access', data.access);
+        localStorage.setItem('first_name', data.first_name);
+        localStorage.setItem('role', data.role);
+        window.location.href = '/'; // Redirection après connexion
       } else {
-        await api.post('/register/', formData);
-        alert('Account created successfully! You can now log in.');
-        setIsLogin(true);
+        alert('Inscription réussie. Vous pouvez maintenant vous connecter.');
+        setIsLogin(true); // Basculer vers la page de connexion
       }
     } catch (error) {
-      alert('An error occurred. Please try again.');
+      console.error('Erreur :', error);
+      alert(error.message); // Afficher un message d'erreur
     }
   };
 
   return (
     <div className="auth-container">
-      <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
-      <form onSubmit={handleSubmit}>
-        {!isLogin && (
+      <div className="auth-column">
+        {isLogin ? (
           <>
-            <input
-              type="text"
-              name="first_name"
-              placeholder="First Name"
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="last_name"
-              placeholder="Last Name"
-              onChange={handleChange}
-              required
-            />
-            <select name="role" onChange={handleChange} required>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-              <option value="parent">Parent</option>
-            </select>
+            <h2>Connexion</h2>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Mot de passe"
+                onChange={handleChange}
+                required
+              />
+              <button type="submit">Se connecter</button>
+            </form>
+            <p>Pas encore inscrit ? <button onClick={() => setIsLogin(false)}>S'inscrire</button></p>
+          </>
+        ) : (
+          <>
+            <h2>Inscription</h2>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="first_name"
+                placeholder="Prénom"
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="last_name"
+                placeholder="Nom"
+                onChange={handleChange}
+                required
+              />
+              <select name="role" onChange={handleChange} required>
+                <option value="student">Élève</option>
+                <option value="teacher">Professeur</option>
+                <option value="parent">Parent</option>
+              </select>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Mot de passe"
+                onChange={handleChange}
+                required
+              />
+              <button type="submit">S'inscrire</button>
+            </form>
+            <p>Déjà inscrit ? <button onClick={() => setIsLogin(true)}>Se connecter</button></p>
           </>
         )}
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
-      </form>
-      <button onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? 'Create an account' : 'Already have an account? Log in'}
-      </button>
+      </div>
     </div>
   );
 };
 
-export default AuthPage;
+export default Auth;

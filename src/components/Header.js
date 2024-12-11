@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/style.css'; // Import CSS
 import '../css/Header.css';
-import api from '../api'; // Axios instance
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -27,10 +26,13 @@ const Header = () => {
 
   // Handle logout
   const handleLogout = () => {
+    // Remove user info from localStorage
     localStorage.removeItem('access');
     localStorage.removeItem('first_name');
     localStorage.removeItem('role');
-    setUser(null); // Reset user state
+
+    // Reset user state and redirect
+    setUser(null);
     window.location.href = '/'; // Redirect to homepage
   };
 
@@ -46,9 +48,9 @@ const Header = () => {
 
         {/* Menu toggle for small screens (hamburger icon) */}
         <div className="menu-toggle" onClick={toggleMenu}>
-          <img 
-            src="/images/menu icon.png" 
-            alt="Menu" 
+          <img
+            src="/images/menu icon.png"
+            alt="Menu"
             className="menu-icon"
           />
         </div>
