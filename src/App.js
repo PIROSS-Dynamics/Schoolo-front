@@ -14,6 +14,7 @@ import AddQuizz from './components/Quizz/AddQuizz';
 import HomePopup from './components/HomePopup'; 
 import ChallengeList from './components/Challenges/ChallengeList';
 import About from './components/About';
+import Auth from './components/Auth'; // Adjust the path if necessary
 
 
 function AppContent() {
@@ -56,12 +57,16 @@ function AppContent() {
           <Route path="/quizz/add" element={<AddQuizz />} />
 
           {/* Défis */}
-          <Route path="/challenge" element={<ChallengeList/>} />
+          <Route path="/challenge" element={<ChallengeList />} />
 
           {/* A propos */}
           <Route path="/about" element={<About />} />
 
+          {/* Connexion / Inscription */}
+          <Route path="/login" element={<Auth />} />
         </Routes>
+
+
       </div>
 
       <Footer />
