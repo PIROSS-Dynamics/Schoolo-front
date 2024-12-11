@@ -36,7 +36,7 @@ function QuizzList() {
         setClickedCardId(quizzId); // Set the clicked card
         setTimeout(() => {
             navigate(`/quizz/play/${quizzId}`);
-        }, 1200); // Adjust delay to match animation duration
+        }, 1100); // Adjust delay to match animation duration
     };
 
     // Grouping quizzes by subject

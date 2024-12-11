@@ -4,6 +4,7 @@ import './css/style.css';
 import Header from './components/Header'; 
 import SubjectChoice from './components/SubjectChoice';
 import Carousel from './components/Carousel';
+import SearchSection from './components/SearchSection';
 import Footer from './components/Footer'; 
 import LessonList from './components/Lessons/LessonList'; 
 import LessonDetail from './components/Lessons/LessonDetail'; 
@@ -32,18 +33,19 @@ function AppContent() {
         <Header />
       )}
 
-      {/* Affiche la pop-up uniquement sur la page d'accueil */}
-      {location.pathname === '/' && <HomePopup />}
-
       {/* Conteneur pour tout le contenu de la page */}
       <div className="App-content">
         {/* Définition des routes */}
         <Routes>
           {/* Home */}
-          <Route path="/" element={<SubjectChoice />} />
+          <Route path="/" element={ 
+            <div> 
 
-          {/* Matières */}
-          <Route path="/subject" element={<SubjectChoice />} />
+              <SubjectChoice />  
+              <HomePopup /> 
+            </div>} 
+          />
+
 
           {/* Leçons */}
           <Route path="/lessons" element={<LessonList />} />

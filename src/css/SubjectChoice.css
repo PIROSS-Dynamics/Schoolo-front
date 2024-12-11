@@ -1,6 +1,7 @@
 .title{
 
-    font-size: 2rem; 
+    font-size: clamp(1.8rem, 1vw, 2rem);
+    
     color: #00a5e7; 
 
     padding-left: 20px;
@@ -33,19 +34,29 @@
 }
 
 .subject-choice li {
-    margin: 0px; /* Add spacing between the list items */
+    margin-left: 20px; /* Add spacing between the list items */
+    margin-right: 20px;
+    margin-bottom: 30px;
+    margin-top: 5px;
+
+    width: 28%;
+    max-width: 250px;
 }
 
 
 .subject-choice a {
     text-decoration: none; /* Remove underline from links */
     color: black; /* Set text color */
+    width: 100%;
+}
+
+.subject-choice li:first-child {
+    margin-left: 0; /* no margin left for history guy */
 }
 
 .subject-choice img {
     display: block; /* Display the image as a block element */
-    width: 330px;
-    margin: 20px;
+    width: 100%;
 }
 
 .subject-choice p {
@@ -70,4 +81,8 @@
 
 .english:hover img{
     content: url(/images/englishGuyChosen.png);
+}
+
+.art:hover img{
+    content: url(/images/artGirlChosen.png);
 }
