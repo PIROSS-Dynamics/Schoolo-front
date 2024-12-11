@@ -1,5 +1,5 @@
 .list-title{
-    font-size: 2rem; 
+    font-size: clamp(1.8rem, 1vw, 2rem);
     color: #00a5e7; 
 
     padding-left: 20px;

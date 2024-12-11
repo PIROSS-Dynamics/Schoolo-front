@@ -13,6 +13,7 @@ header {
     justify-content: space-between;
     align-items: center;
     position: relative; /* Important for positioning the phone menu */
+    
 }
 
 /* Logo */
@@ -94,7 +95,13 @@ header {
 }
 
 /* Responsive styles for small screens */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
+
+    .header-container {
+        height: 87px; /* Assurez-vous que la hauteur reste la même */
+        align-items: center; /* Maintient le centrage vertical */
+    }
+
     .nav-links {
       display: none;
     }
@@ -103,14 +110,12 @@ header {
         position: relative;
         z-index: 10; /* Ensure the toggle icon is in front */
         width: 40px;
-        height: 40px;
         cursor: pointer;
         display: block;
     }
     
     .menu-icon {
         width: 40px;
-        height: 40px;
         cursor: pointer;
         display: block;
     }
@@ -121,8 +126,57 @@ header {
 
     .header-actions .btn {
 
-
-        font-size: 16px;
+        padding-left: 3px;
+        padding-right: 3px;
+        font-size: 120%;
     }
 
+    .logo img {
+        height: 70px;
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative; /* Important for positioning the phone menu */
+        
+    }
+
+    .nav-links {
+      display: none;
+    }
+  
+    .menu-toggle {
+        position: relative;
+        z-index: 10; /* Ensure the toggle icon is in front */
+        width: 40px;
+        cursor: pointer;
+        display: block;
+    }
+    
+    .menu-icon {
+        width: 40px;
+        cursor: pointer;
+        display: block;
+    }
+
+    .phone-menu.active {
+        display: flex;
+    }
+
+    .header-actions .btn {
+
+        padding-left: 3px;
+        padding-right: 3px;
+        font-size:65%;
+    }
+
+    .logo img {
+        height: 40px;
+    }
 }
