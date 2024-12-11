@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import '../css/Auth.css'; // Import du fichier CSS pour le style
+import '../css/Auth.css'; 
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true); // Mode par défaut sur la connexion
+  const [isLogin, setIsLogin] = useState(true); // Auth mode (register or login)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     first_name: '',
     last_name: '',
-    role: 'student', // Rôle par défaut
+    role: 'student', // default role
   });
 
-  // Gérer les changements dans les champs du formulaire
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -20,13 +20,13 @@ const Auth = () => {
     });
   };
 
-  // Gérer la soumission du formulaire
+  // Sending to back-end
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const url = isLogin
-      ? 'http://localhost:8000/users/api/login/' // URL pour la connexion
-      : 'http://localhost:8000/users/api/register/'; // URL pour l'inscription
+      ? 'http://localhost:8000/users/api/login/' // back URL for login
+      : 'http://localhost:8000/users/api/register/'; // back URL for register
 
     try {
       const response = await fetch(url, {
@@ -44,18 +44,18 @@ const Auth = () => {
       const data = await response.json();
 
       if (isLogin) {
-        // Stocker les données utilisateur après connexion
+        // stocking users data after login
         localStorage.setItem('access', data.access);
         localStorage.setItem('first_name', data.first_name);
         localStorage.setItem('role', data.role);
-        window.location.href = '/'; // Redirection après connexion
+        window.location.href = '/'; // redirection after login
       } else {
         alert('Inscription réussie. Vous pouvez maintenant vous connecter.');
-        setIsLogin(true); // Basculer vers la page de connexion
+        setIsLogin(true); // go to login
       }
     } catch (error) {
       console.error('Erreur :', error);
-      alert(error.message); // Afficher un message d'erreur
+      alert(error.message); // error
     }
   };
 
@@ -94,6 +94,7 @@ const Auth = () => {
                 placeholder="Prénom"
                 onChange={handleChange}
                 required
+                autoComplete="off"
               />
               <input
                 type="text"
@@ -101,6 +102,7 @@ const Auth = () => {
                 placeholder="Nom"
                 onChange={handleChange}
                 required
+                autoComplete="off"
               />
               <select name="role" onChange={handleChange} required>
                 <option value="student">Élève</option>
@@ -113,6 +115,7 @@ const Auth = () => {
                 placeholder="Email"
                 onChange={handleChange}
                 required
+                autoComplete="off"
               />
               <input
                 type="password"
@@ -120,6 +123,7 @@ const Auth = () => {
                 placeholder="Mot de passe"
                 onChange={handleChange}
                 required
+                autoComplete="new-password"
               />
               <button type="submit">S'inscrire</button>
             </form>
