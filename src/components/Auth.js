@@ -11,7 +11,6 @@ const Auth = () => {
     role: 'student', // default role
   });
 
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -62,11 +61,15 @@ const Auth = () => {
   return (
     <div className="auth-container">
       <div className="auth-column">
+        <div className="auth-logo">
+          <img src="/images/logo scool.png" alt="S'cool Logo" />
+        </div>
         {isLogin ? (
           <>
             <h2>Connexion</h2>
             <form onSubmit={handleSubmit}>
               <input
+                className="auth-input"
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -74,13 +77,14 @@ const Auth = () => {
                 required
               />
               <input
+                className="auth-input"
                 type="password"
                 name="password"
                 placeholder="Mot de passe"
                 onChange={handleChange}
                 required
               />
-              <button type="submit">Se connecter</button>
+              <button className="auth-button" type="submit">Se connecter</button>
             </form>
             <p>Pas encore inscrit ? <button onClick={() => setIsLogin(false)}>S'inscrire</button></p>
           </>
@@ -89,6 +93,7 @@ const Auth = () => {
             <h2>Inscription</h2>
             <form onSubmit={handleSubmit}>
               <input
+                className="auth-input"
                 type="text"
                 name="first_name"
                 placeholder="Prénom"
@@ -97,6 +102,7 @@ const Auth = () => {
                 autoComplete="off"
               />
               <input
+                className="auth-input"
                 type="text"
                 name="last_name"
                 placeholder="Nom"
@@ -104,12 +110,13 @@ const Auth = () => {
                 required
                 autoComplete="off"
               />
-              <select name="role" onChange={handleChange} required>
+              <select className="auth-select" name="role" onChange={handleChange} required>
                 <option value="student">Élève</option>
                 <option value="teacher">Professeur</option>
                 <option value="parent">Parent</option>
               </select>
               <input
+                className="auth-input"
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -118,6 +125,7 @@ const Auth = () => {
                 autoComplete="off"
               />
               <input
+                className="auth-input"
                 type="password"
                 name="password"
                 placeholder="Mot de passe"
@@ -125,7 +133,7 @@ const Auth = () => {
                 required
                 autoComplete="new-password"
               />
-              <button type="submit">S'inscrire</button>
+              <button className="auth-button" type="submit">S'inscrire</button>
             </form>
             <p>Déjà inscrit ? <button onClick={() => setIsLogin(true)}>Se connecter</button></p>
           </>
