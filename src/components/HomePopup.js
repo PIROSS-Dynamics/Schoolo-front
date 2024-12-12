@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/HomePopup.css';
 
 const HomePopup = () => {
@@ -21,6 +21,23 @@ const HomePopup = () => {
     "À venir sur S'cool"
   ];
 
+  useEffect(() => {
+    
+    // get today date
+    const today = new Date().toISOString().split('T')[0];
+
+    // get last day the user has seen this pop up
+    const lastShownDate = localStorage.getItem('popupLastShownDate');
+
+    // show the pop up if this was'nt showed to the user on the date
+    if (lastShownDate === today) {
+      setIsOpen(false);
+
+      // update the local storage 
+      localStorage.setItem('popupLastShownDate', today);
+    }
+  }, []);
+
   const handleClose = () => setIsOpen(false);
   const handleNextPage = () => setPage((prevPage) => (prevPage < 4 ? prevPage + 1 : 1));
   const handlePrevPage = () => setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 4));
@@ -34,7 +51,7 @@ const HomePopup = () => {
           <span className="HomePopup-title">{pageTitles[page - 1]}</span>
           <button className="close-btn" onClick={handleClose}>×</button>
         </div>
-        {/* Seperation lign */}
+        {/* Séparation ligne */}
         <hr className="popup-divider" />
         <div className="HomePopup-content">
           <p>{pagesContent[page - 1]}</p>
@@ -45,7 +62,7 @@ const HomePopup = () => {
             &#8592; {/* Left arrow */}
           </button>
 
-          {/* pages indicators */}
+          {/* Pages indicators */}
           <div className="page-indicators">
             {pagesContent.map((_, index) => (
               <div
@@ -57,7 +74,7 @@ const HomePopup = () => {
 
           {/* Go next button */}
           <button className="nav-btn circle-btn" onClick={handleNextPage}>
-            &#8594; {/* Right arrows */}
+            &#8594; {/* Right arrow */}
           </button>
         </div>
       </div>
