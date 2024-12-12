@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Auth.css'; 
 
 const Auth = () => {
@@ -19,14 +19,33 @@ const Auth = () => {
     });
   };
 
+  // Effect to reset form data when switching between login and register
+  useEffect(() => {
+    if (isLogin) {
+      setFormData({
+        email: '',
+        password: '',
+        first_name: '',
+        last_name: '',
+        role: 'student',
+      });
+    } else {
+      // If switching to register, retain email value
+      setFormData((prevData) => ({
+        ...prevData,
+        email: prevData.email, // Ensure email stays the same during the switch
+      }));
+    }
+  }, [isLogin]);
+
   // Sending to back-end
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const url = isLogin
       ? 'http://localhost:8000/users/api/login/' // back URL for login
       : 'http://localhost:8000/users/api/register/'; // back URL for register
-
+  
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -35,29 +54,32 @@ const Auth = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Une erreur est survenue. Vérifiez vos informations.');
+        // get the error from the back
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Une erreur est survenue.');
       }
-
+  
       const data = await response.json();
-
+  
       if (isLogin) {
-        // stocking users data after login
+        // stock the users data on local storage after login
         localStorage.setItem('access', data.access);
         localStorage.setItem('first_name', data.first_name);
         localStorage.setItem('role', data.role);
         localStorage.setItem('id', data.id);
-        window.location.href = '/'; // redirection after login
+        window.location.href = '/'; // redirect to home
       } else {
         alert('Inscription réussie. Vous pouvez maintenant vous connecter.');
-        setIsLogin(true); // go to login
+        setIsLogin(true); // go to login view
       }
     } catch (error) {
       console.error('Erreur :', error);
-      alert(error.message); // error
+      alert(error.message); // show the specific error
     }
   };
+  
 
   return (
     <div className="auth-container">
@@ -74,6 +96,7 @@ const Auth = () => {
                 type="email"
                 name="email"
                 placeholder="Email"
+                value={formData.email} // Bind value to state
                 onChange={handleChange}
                 required
               />
@@ -82,6 +105,7 @@ const Auth = () => {
                 type="password"
                 name="password"
                 placeholder="Mot de passe"
+                value={formData.password} // Bind value to state
                 onChange={handleChange}
                 required
               />
@@ -98,6 +122,7 @@ const Auth = () => {
                 type="text"
                 name="first_name"
                 placeholder="Prénom"
+                value={formData.first_name} // Bind value to state
                 onChange={handleChange}
                 required
                 autoComplete="off"
@@ -107,11 +132,12 @@ const Auth = () => {
                 type="text"
                 name="last_name"
                 placeholder="Nom"
+                value={formData.last_name} // Bind value to state
                 onChange={handleChange}
                 required
                 autoComplete="off"
               />
-              <select className="auth-select" name="role" onChange={handleChange} required>
+              <select className="auth-select" name="role" value={formData.role} onChange={handleChange} required>
                 <option value="student">Élève</option>
                 <option value="teacher">Professeur</option>
                 <option value="parent">Parent</option>
@@ -121,6 +147,7 @@ const Auth = () => {
                 type="email"
                 name="email"
                 placeholder="Email"
+                value={formData.email} // Bind value to state
                 onChange={handleChange}
                 required
                 autoComplete="off"
@@ -130,6 +157,7 @@ const Auth = () => {
                 type="password"
                 name="password"
                 placeholder="Mot de passe"
+                value={formData.password} // Bind value to state
                 onChange={handleChange}
                 required
                 autoComplete="new-password"
