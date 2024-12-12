@@ -15,6 +15,7 @@ import HomePopup from './components/HomePopup';
 import ChallengeList from './components/Challenges/ChallengeList';
 import About from './components/About';
 import Auth from './components/Auth'; 
+import Profile from './components/User/Profile';
 
 
 function AppContent() {
@@ -65,6 +66,10 @@ function AppContent() {
 
           {/* Connexion / Inscription */}
           <Route path="/login" element={<Auth />} />
+
+          {/* User routes */}
+          <Route path="/profile" element={<Profile />} />
+
         </Routes>
 
 
