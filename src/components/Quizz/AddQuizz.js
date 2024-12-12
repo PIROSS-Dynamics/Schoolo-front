@@ -5,19 +5,50 @@ import '../../css/Quizz/AddQuizz.css';
 function AddQuizz() {
     const [title, setTitle] = useState('');
     const [subject, setSubject] = useState([]);
-    const [teacherId, setTeacherId] = useState('');
-    const [teachers, setTeachers] = useState([]);
+    const [teacher, setTeacher] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     // getting teachers from the back
     useEffect(() => {
-        fetch("http://localhost:8000/users/api/teachers/")
-            .then(response => response.json())
-            .then(data => setTeachers(data))
-            .catch(error => console.error('Erreur:', error));
+        const userId = localStorage.getItem('id');
+        const userRole = localStorage.getItem('role');
+
+        // Vérify user is teacher
+        if (userRole!== 'teacher') {
+            setErrorMessage("Vous n'avez pas accès à cette fonctionnalité, il vous faut un compte Professeur.");
+            return;
+        }
+        // if he is a teacher we recup his data
+        fetch(`http://localhost:8000/users/api/teacher/${userId}/`)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Erreur lors de la récupération des informations du professeur.');
+                }
+            })
+            .then((data) => {
+                setTeacher(data); // Stocker les infos du professeur 
+            })
+            .catch((error) => console.error(error));
+            
     }, []);
+
+    if (errorMessage) {
+        return (
+            <div>
+                <p>{errorMessage}</p>
+                <button onClick={() => navigate('/')}>Retourner à l'accueil</button>
+            </div>
+        );
+    }
+    
+    if (!teacher) {
+        return <p>Chargement des informations du professeur...</p>;
+    }
 
     // Update the number of questions without removing content of the the ones that are still counted
     const updateQuestions = (numQuestions) => {
@@ -109,11 +140,6 @@ function AddQuizz() {
             return;
         }
 
-        if (!teacherId) {
-            alert("Veuillez sélectionner un enseignant");
-            return;
-        }
-
         if (questions.length === 0) {
             alert("Veuillez ajouter au moins une question.");
             return;
@@ -146,7 +172,7 @@ function AddQuizz() {
             body: JSON.stringify({
                 title,
                 subject,
-                teacher: teacherId,
+                teacher: teacher?.id,
                 questions,
                 is_public: isPublic
             })
@@ -185,21 +211,14 @@ function AddQuizz() {
                 </div>
     
                 <div className="teacher">
-                    <label>Enseignant :</label>
-                    <select
-                        value={teacherId}
-                        onChange={(e) => setTeacherId(e.target.value)}
-                        required
-                    >
-                        <option value="">Sélectionnez un enseignant</option>
-                        {teachers.map((teacher) => (
-                            <option key={teacher.id} value={teacher.id}>
-                                {teacher.first_name} {teacher.last_name}
-                            </option>
-                        ))}
-                    </select>
+                    <label>Enseignant</label>
+                    <input
+                        type="text"
+                        value={`${teacher.first_name} ${teacher.last_name}`}
+                        disabled
+                    />
                 </div>
-    
+
                 <label>
                     Nombre de questions :
                     <input
