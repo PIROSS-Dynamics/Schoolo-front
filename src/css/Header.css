@@ -1,9 +1,11 @@
 header {
+    position: sticky;
+    top: 0;
     background-color: #ffffff;
     padding: 0 20px; 
     box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
-    height: 70px;
-    margin-top: 5px;
+    height: 75px;
+    z-index: 1000;
 }
 
 .header-container {
@@ -11,6 +13,7 @@ header {
     justify-content: space-between;
     align-items: center;
     position: relative; /* Important for positioning the phone menu */
+    
 }
 
 /* Logo */
@@ -92,7 +95,13 @@ header {
 }
 
 /* Responsive styles for small screens */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
+
+    .header-container {
+        height: 87px; /* Assurez-vous que la hauteur reste la même */
+        align-items: center; /* Maintient le centrage vertical */
+    }
+
     .nav-links {
       display: none;
     }
@@ -101,14 +110,12 @@ header {
         position: relative;
         z-index: 10; /* Ensure the toggle icon is in front */
         width: 40px;
-        height: 40px;
         cursor: pointer;
         display: block;
     }
     
     .menu-icon {
         width: 40px;
-        height: 40px;
         cursor: pointer;
         display: block;
     }
@@ -119,8 +126,140 @@ header {
 
     .header-actions .btn {
 
-
-        font-size: 16px;
+        padding-left: 3px;
+        padding-right: 3px;
+        font-size: 120%;
     }
 
+    .logo img {
+        height: 70px;
+    }
+}
+
+
+.user-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.user-menu .btn {
+  background-color: #4CAF50; 
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 25px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease; /* smooth animation */
+}
+
+.user-menu .btn:hover {
+  background-color: #45a049; 
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
+}
+
+.user-menu .user-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%; 
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 180px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transition: opacity 0.3s ease, transform 0.3s ease; /* smooth animation*/
+  opacity: 0;
+  transform: translateY(10px); /* Décalage initial pour l'animation */
+  z-index: 1000;
+}
+
+.user-menu.open .user-dropdown {
+  display: block;
+  opacity: 1;
+  transform: translateY(0); /* smooth animation */
+}
+
+.user-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-dropdown ul li {
+  padding: 12px 16px; /* Espacement généreux */
+  transition: background-color 0.2s ease;
+}
+
+.user-dropdown ul li:not(:last-child) {
+  border-bottom: 1px solid #eee; /* Séparation visuelle entre les éléments */
+}
+
+.user-dropdown ul li a,
+.user-dropdown ul li button {
+  text-decoration: none;
+  color: black;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: 15px;
+}
+
+.user-dropdown ul li a:hover,
+.user-dropdown ul li button:hover {
+  background-color: #efececda; 
+}
+
+
+  
+
+@media (max-width: 560px) {
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative; /* Important for positioning the phone menu */
+        
+    }
+
+    .nav-links {
+      display: none;
+    }
+  
+    .menu-toggle {
+        position: relative;
+        z-index: 10; /* Ensure the toggle icon is in front */
+        width: 40px;
+        cursor: pointer;
+        display: block;
+    }
+    
+    .menu-icon {
+        width: 40px;
+        cursor: pointer;
+        display: block;
+    }
+
+    .phone-menu.active {
+        display: flex;
+    }
+
+    .header-actions .btn {
+
+        padding-left: 3px;
+        padding-right: 3px;
+        font-size:65%;
+    }
+
+    .logo img {
+        height: 40px;
+    }
 }

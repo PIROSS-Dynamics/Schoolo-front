@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../css/AddQuizz.css';
+import '../../css/Quizz/AddQuizz.css';
 
 function AddQuizz() {
     const [title, setTitle] = useState('');
@@ -11,7 +11,7 @@ function AddQuizz() {
     const [isPublic, setIsPublic] = useState(true);
     const navigate = useNavigate();
 
-    // Récupération des enseignants depuis le backend
+    // getting teachers from the back
     useEffect(() => {
         fetch("http://localhost:8000/users/api/teachers/")
             .then(response => response.json())
@@ -19,13 +19,13 @@ function AddQuizz() {
             .catch(error => console.error('Erreur:', error));
     }, []);
 
-    // Mise à jour du nombre de questions sans réinitialiser les existantes
+    // Update the number of questions without removing content of the the ones that are still counted
     const updateQuestions = (numQuestions) => {
         setQuestions(prevQuestions => {
             const updatedQuestions = [...prevQuestions];
 
             if (numQuestions > updatedQuestions.length) {
-                // Ajouter des questions si le nombre a augmenté
+                // add questions input if the number of questions is increased 
                 for (let i = updatedQuestions.length; i < numQuestions; i++) {
                     updatedQuestions.push({
                         text: '',
@@ -35,7 +35,7 @@ function AddQuizz() {
                     });
                 }
             } else {
-                // Supprimer les questions en excès
+                // deletes questions that are out of the number of questions we need
                 updatedQuestions.splice(numQuestions);
             }
 
@@ -49,19 +49,19 @@ function AddQuizz() {
         setQuestions(updatedQuestions);
     };
 
-    // Mise à jour du nombre de choix sans réinitialiser les existants
+    
     const updateChoices = (questionIndex, numChoices) => {
         setQuestions(prevQuestions => {
             const updatedQuestions = [...prevQuestions];
             const choices = updatedQuestions[questionIndex].choices || [];
 
             if (numChoices > choices.length) {
-                // Ajouter des choix si le nombre a augmenté
+                // add choices 
                 for (let i = choices.length; i < numChoices; i++) {
                     choices.push({ text: '' });
                 }
             } else {
-                // Supprimer les choix en excès
+                // delete choices
                 choices.splice(numChoices);
             }
 
@@ -119,7 +119,7 @@ function AddQuizz() {
             return;
         }
 
-        // Vérification des champs obligatoires pour chaque question
+        // VVerification of mandatory fields for each questions
         for (let i = 0; i < questions.length; i++) {
             const question = questions[i];
 
@@ -133,7 +133,7 @@ function AddQuizz() {
                 return;
             }
 
-            // Vérification des choix pour les questions de type 'choice'
+            // Verification of choice for the question of type 'choice'
             if (question.question_type === 'choice' && question.choices.length === 0) {
                 alert(`Veuillez ajouter des choix pour la question ${i + 1}.`);
                 return;
@@ -178,8 +178,9 @@ function AddQuizz() {
                         <option value="">Sélectionnez une matière</option>
                         <option value="Maths">Maths</option>
                         <option value="Français">Français</option>
-                        <option value="Anglais">Anglais</option>
                         <option value="Histoire">Histoire</option>
+                        <option value="Anglais">Anglais</option>
+                        <option value="Art">Art</option>
                     </select>
                 </div>
     

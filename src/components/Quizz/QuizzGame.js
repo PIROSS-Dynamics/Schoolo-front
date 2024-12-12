@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../../css/QuizzGame.css';
+import '../../css/Quizz/QuizzGame.css';
+import '../../css/Loading.css';
 
 function QuizzGame() {
     const { quizzId } = useParams();
@@ -11,6 +12,7 @@ function QuizzGame() {
     const [showCorrection, setShowCorrection] = useState(false);
     const [corrections, setCorrections] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
         fetch(`http://localhost:8000/quizz/api/quizzlist/${quizzId}/`)
@@ -18,8 +20,12 @@ function QuizzGame() {
             .then(data => {
                 const shuffledQuestions = data.questions.sort(() => Math.random() - 0.5);
                 setQuizz({ ...data, questions: shuffledQuestions });
+                setLoading(false); // End loading
             })
-            .catch(error => console.error('Erreur:', error));
+            .catch(error => {
+                console.error('Erreur:', error);
+                setLoading(false); 
+            });
     }, [quizzId]);
 
     const handleChange = (questionId, value) => {
@@ -55,19 +61,29 @@ function QuizzGame() {
         }
     };
 
-    if (!quizz) return <p>Chargement...</p>;
+    if (loading) {
+        // loading animation
+        return (
+            <div className="loading-container">
+                <div className="spinner"></div>
+                <p>Chargement du quiz...</p>
+            </div>
+        );
+    }
+
+    if (!quizz) return <p>Erreur lors du chargement du quiz.</p>;
 
     const currentQuestion = quizz.questions[currentQuestionIndex];
 
     return (
-        <div className="container">
-            <h2 class="quiz-title">{quizz.title}</h2>
-            <p class="quiz-subject"><strong>Matière :</strong> {quizz.subject}</p>
+        <div className="container fade-in">
+            <h2 className="quiz-title">{quizz.title}</h2>
+            <p className="quiz-subject"><strong>Matière :</strong> {quizz.subject}</p>
 
             <form onSubmit={handleSubmit}>
                 {currentQuestionIndex >= 0 ? (
                     <div className="question-box">
-                        <h2 class="question-title">{currentQuestion.text}</h2>
+                        <h2 className="question-title">{currentQuestion.text}</h2>
                         {currentQuestion.question_type === 'choice' ? (
                             currentQuestion.choices.map(choice => (
                                 <label key={choice.id}>
@@ -95,9 +111,8 @@ function QuizzGame() {
                             Question {currentQuestionIndex + 1} / {quizz.questions.length}
                         </div>
 
-                        {/* Bouton "Question Suivante" uniquement si ce n'est pas la dernière question */}
                         {currentQuestionIndex < quizz.questions.length - 1 && (
-                            <button class="next-button"
+                            <button className="next-button"
                                 type="button"
                                 onClick={() => {
                                     if (responses[currentQuestion.id]) {
@@ -115,13 +130,9 @@ function QuizzGame() {
                     <div className="question-box">
                         <h2>Résultat</h2>
                         <p>{result}</p>
-
-                        {/* Bouton pour afficher la correction */}
-                        <button class="show-correction" type="button" onClick={() => setShowCorrection(!showCorrection)}>
+                        <button className="show-correction" type="button" onClick={() => setShowCorrection(!showCorrection)}>
                             {showCorrection ? "Masquer la correction" : "Afficher la correction"}
                         </button>
-
-                        {/* Affichage de la correction */}
                         {showCorrection && corrections && (
                             <div className="correction">
                                 {corrections.map((correction, index) => (
@@ -141,11 +152,10 @@ function QuizzGame() {
                                 ))}
                             </div>
                         )}
-                        <button class="back-to-quiz-list" type="button" onClick={() => navigate('/quizz')}>Retourner à la Liste des Quiz</button>
+                        <button className="back-to-quiz-list" type="button" onClick={() => navigate('/quizz')}>Retourner à la Liste des Quiz</button>
                     </div>
                 )}
                 
-                {/* Bouton "Soumettre" uniquement à la dernière question */}
                 {currentQuestionIndex === quizz.questions.length - 1 && (
                     <button type="submit" className="submit-button">Soumettre</button>
                 )}

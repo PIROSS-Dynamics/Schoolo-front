@@ -1,0 +1,104 @@
+.HomePopup-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .HomePopup {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .HomePopup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .HomePopup-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .HomePopup-content {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .HomePopup-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+ 
+
+  .popup-divider {
+    border: none;
+    border-top: 2px solid #87CEEB; /* Ligne de séparation */
+    margin: 10px 0; /* Espace autour de la ligne */
+  }
+  
+
+
+/* Boutons de navigation en forme de cercles */
+.circle-btn {
+  background-color: #98e6cc; /* Couleur de fond normale */
+  border: none;
+  width: 40px; /* Taille du cercle */
+  height: 40px;
+  border-radius: 50%; /* Pour rendre le bouton circulaire */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px; /* Taille de la flèche */
+  font-weight: bold; /* Flèche plus épaisse */
+  color: white; /* Couleur de la flèche */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0 10px; /* Espacement entre les boutons et les indicateurs */
+}
+
+.circle-btn:hover {
+  background-color: #60e2b7; /* Couleur au survol */
+}
+
+/* Conteneur pour les indicateurs */
+.page-indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espacement entre les ronds */
+}
+
+/* Rond représentant une page */
+.page-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #dcdcdc;
+  transition: background-color 0.3s ease;
+}
+
+/* Rond actif (page en cours) */
+.page-indicator.active {
+  background-color: #87CEEB; /* Rond actif */
+}
+
