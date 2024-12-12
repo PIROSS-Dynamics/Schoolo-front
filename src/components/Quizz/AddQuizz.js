@@ -178,8 +178,9 @@ function AddQuizz() {
                         <option value="">Sélectionnez une matière</option>
                         <option value="Maths">Maths</option>
                         <option value="Français">Français</option>
-                        <option value="Anglais">Anglais</option>
                         <option value="Histoire">Histoire</option>
+                        <option value="Anglais">Anglais</option>
+                        <option value="Art">Art</option>
                     </select>
                 </div>
     

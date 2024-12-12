@@ -11,7 +11,7 @@ const SubjectPopup = ({ subjects, onSelectSubject, onClose }) => {
   };
 
   // Define the custom order for subjects
-  const subjectOrder = ['Maths', 'Français', 'Histoire', 'Anglais'];
+  const subjectOrder = ['Maths', 'Français', 'Histoire', 'Anglais', 'Art'];
 
   // Sort subjects based on the custom order
   const sortedSubjects = subjectOrder.filter((subject) => subjects.includes(subject));
