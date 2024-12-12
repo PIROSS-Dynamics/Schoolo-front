@@ -30,6 +30,7 @@ const Header = () => {
     localStorage.removeItem('access');
     localStorage.removeItem('first_name');
     localStorage.removeItem('role');
+    localStorage.removeItem('id');
   
     // Reset user state and redirect
     setUser(null);
