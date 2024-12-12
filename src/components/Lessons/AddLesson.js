@@ -10,25 +10,38 @@ function AddLesson() {
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
     const [isPublic, setIsPublic] = useState(true);
-    const [teacherId, setTeacherId] = useState('');
-    const [teachers, setTeachers] = useState([]);
+    const [teacher, setTeacher] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    // Récupérer la liste des enseignants depuis le backend
     useEffect(() => {
-        fetch("http://localhost:8000/users/api/teachers/")
-            .then(response => response.json())
-            .then(data => setTeachers(data))
-            .catch(error => console.error('Erreur:', error));
+        const userId = localStorage.getItem('id');
+        const userRole = localStorage.getItem('role');
+
+        // Vérify user is teacher
+        if (userRole !== 'teacher') {
+            setErrorMessage("Vous n'avez pas accès à cette fonctionnalité, il vous faut un compte Professeur.");
+            return;
+        }
+        // if he is a teacher we recup his data
+        fetch(`http://localhost:8000/users/api/teacher/${userId}/`)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Erreur lors de la récupération des informations du professeur.');
+                }
+            })
+            .then((data) => {
+                setTeacher(data); // Stocker les infos du professeur 
+            })
+            .catch((error) => console.error(error));
     }, []);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!teacherId) {
-            console.error('Veuillez sélectionner un enseignant');
-            return;
-        }
 
         const lessonData = {
             title,
@@ -36,7 +49,7 @@ function AddLesson() {
             content, // React Quill gère automatiquement le HTML
             description,
             is_public: isPublic,
-            teacher: teacherId
+            teacher: teacher?.id,
         };
 
         fetch('http://localhost:8000/lessons/api/lessonslist/add', {
@@ -107,7 +120,18 @@ function AddLesson() {
             .catch((error) => console.error("Erreur réseau :", error));
     };
     
-    
+    if (errorMessage) {
+        return (
+            <div>
+                <p>{errorMessage}</p>
+                <button onClick={() => navigate('/')}>Retourner à l'accueil</button>
+            </div>
+        );
+    }
+
+    if (!teacher) {
+        return <p>Chargement des informations du professeur...</p>;
+    }
 
     return (
         <div>
@@ -169,14 +193,13 @@ function AddLesson() {
                     <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />
                 </div>
 
-                <div className='teacher'>
+                <div className="teacher">
                     <label>Enseignant</label>
-                    <select value={teacherId} onChange={(e) => setTeacherId(e.target.value)} required>
-                        <option value="">Sélectionnez un enseignant</option>
-                        {teachers.map(teacher => (
-                            <option key={teacher.id} value={teacher.id}>{teacher.first_name} {teacher.last_name}</option>
-                        ))}
-                    </select>
+                    <input
+                        type="text"
+                        value={`${teacher.first_name} ${teacher.last_name}`}
+                        disabled
+                    />
                 </div>
 
                 <div className="button-container">

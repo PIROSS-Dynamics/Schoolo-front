@@ -47,6 +47,7 @@ const Auth = () => {
         localStorage.setItem('access', data.access);
         localStorage.setItem('first_name', data.first_name);
         localStorage.setItem('role', data.role);
+        localStorage.setItem('id', data.id);
         window.location.href = '/'; // redirection after login
       } else {
         alert('Inscription réussie. Vous pouvez maintenant vous connecter.');
