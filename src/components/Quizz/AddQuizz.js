@@ -11,17 +11,15 @@ function AddQuizz() {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    // getting teachers from the back
     useEffect(() => {
         const userId = localStorage.getItem('id');
         const userRole = localStorage.getItem('role');
 
-        // Vérify user is teacher
-        if (userRole!== 'teacher') {
+        if (userRole !== 'teacher') {
             setErrorMessage("Vous n'avez pas accès à cette fonctionnalité, il vous faut un compte Professeur.");
             return;
         }
-        // if he is a teacher we recup his data
+
         fetch(`http://localhost:8000/users/api/teacher/${userId}/`)
             .then((response) => {
                 if (response.ok) {
@@ -31,7 +29,7 @@ function AddQuizz() {
                 }
             })
             .then((data) => {
-                setTeacher(data); // Stocker les infos du professeur 
+                setTeacher(data);
             })
             .catch((error) => console.error(error));
             
@@ -50,28 +48,17 @@ function AddQuizz() {
         return <p>Chargement des informations du professeur...</p>;
     }
 
-    // Update the number of questions without removing content of the the ones that are still counted
-    const updateQuestions = (numQuestions) => {
-        setQuestions(prevQuestions => {
-            const updatedQuestions = [...prevQuestions];
+    const addQuestion = () => {
+        setQuestions(prevQuestions => [
+            ...prevQuestions,
+            { text: '', question_type: 'text', correct_answer: '', choices: [] }
+        ]);
+    };
 
-            if (numQuestions > updatedQuestions.length) {
-                // add questions input if the number of questions is increased 
-                for (let i = updatedQuestions.length; i < numQuestions; i++) {
-                    updatedQuestions.push({
-                        text: '',
-                        question_type: 'text',
-                        correct_answer: '',
-                        choices: []
-                    });
-                }
-            } else {
-                // deletes questions that are out of the number of questions we need
-                updatedQuestions.splice(numQuestions);
-            }
-
-            return updatedQuestions;
-        });
+    const removeQuestion = (index) => {
+        const updatedQuestions = [...questions];
+        updatedQuestions.splice(index, 1);
+        setQuestions(updatedQuestions);
     };
 
     const handleQuestionChange = (index, field, value) => {
@@ -80,19 +67,16 @@ function AddQuizz() {
         setQuestions(updatedQuestions);
     };
 
-    
     const updateChoices = (questionIndex, numChoices) => {
         setQuestions(prevQuestions => {
             const updatedQuestions = [...prevQuestions];
             const choices = updatedQuestions[questionIndex].choices || [];
 
             if (numChoices > choices.length) {
-                // add choices 
                 for (let i = choices.length; i < numChoices; i++) {
                     choices.push({ text: '' });
                 }
             } else {
-                // delete choices
                 choices.splice(numChoices);
             }
 
@@ -129,7 +113,6 @@ function AddQuizz() {
             return;
         }
 
-
         if (!title) {
             alert("Veuillez renseigner un titre pour le quiz.");
             return;
@@ -145,7 +128,6 @@ function AddQuizz() {
             return;
         }
 
-        // VVerification of mandatory fields for each questions
         for (let i = 0; i < questions.length; i++) {
             const question = questions[i];
 
@@ -159,7 +141,6 @@ function AddQuizz() {
                 return;
             }
 
-            // Verification of choice for the question of type 'choice'
             if (question.question_type === 'choice' && question.choices.length === 0) {
                 alert(`Veuillez ajouter des choix pour la question ${i + 1}.`);
                 return;
@@ -179,7 +160,7 @@ function AddQuizz() {
         })
         .then(response => response.json())
         .then(data => {
-            navigate('/quizz')
+            navigate('/quizz');
         })
         .catch(error => console.error('Erreur:', error));
     };
@@ -197,7 +178,7 @@ function AddQuizz() {
                         required
                     />
                 </div>
-    
+
                 <div className="subject">
                     <label>Matière :</label>
                     <select value={subject} onChange={(e) => setSubject(e.target.value)} required>   
@@ -209,7 +190,7 @@ function AddQuizz() {
                         <option value="Art">Art</option>
                     </select>
                 </div>
-    
+
                 <div className="teacher">
                     <label>Enseignant</label>
                     <input
@@ -220,16 +201,10 @@ function AddQuizz() {
                 </div>
 
                 <label>
-                    Nombre de questions :
-                    <input
-                        type="number"
-                        min="0"
-                        onChange={(e) =>
-                            updateQuestions(parseInt(e.target.value) || 0)
-                        }
-                    />
+                    Nombre de questions : {questions.length}
                 </label>
-    
+                <button type="button" onClick={addQuestion}>Ajouter une question</button>
+
                 {questions.map((question, index) => (
                     <div key={index} className="question-container">
                         <h3>Question {index + 1}</h3>
@@ -237,17 +212,13 @@ function AddQuizz() {
                             type="text"
                             placeholder="Texte de la question"
                             value={question.text}
-                            onChange={(e) =>
-                                handleQuestionChange(index, 'text', e.target.value)
-                            }
+                            onChange={(e) => handleQuestionChange(index, 'text', e.target.value)}
                             required
                         />
                         <label>Type de question :</label>
                         <select
                             value={question.question_type}
-                            onChange={(e) =>
-                                handleQuestionChange(index, 'question_type', e.target.value)
-                            }
+                            onChange={(e) => handleQuestionChange(index, 'question_type', e.target.value)}
                             required
                         >
                             <option value="text">Texte</option>
@@ -257,9 +228,7 @@ function AddQuizz() {
                             type="text"
                             placeholder="Bonne réponse"
                             value={question.correct_answer}
-                            onChange={(e) =>
-                                handleQuestionChange(index, 'correct_answer', e.target.value)
-                            }
+                            onChange={(e) => handleQuestionChange(index, 'correct_answer', e.target.value)}
                             required
                         />
     
@@ -295,9 +264,16 @@ function AddQuizz() {
                                 ))}
                             </div>
                         )}
+
+                        <button
+                            type="button"
+                            onClick={() => removeQuestion(index)}
+                        >
+                            Supprimer la question
+                        </button>
                     </div>
                 ))}
-    
+
                 <label>
                     Quiz public :
                     <input
@@ -306,14 +282,13 @@ function AddQuizz() {
                         onChange={() => setIsPublic(!isPublic)}
                     />
                 </label>
-    
+
                 <div className="button-container">
                     <button onClick={handleSubmit}>Soumettre le Quiz</button>
                 </div>
             </div>
         </div>
     );
-    
 }
 
 export default AddQuizz;
