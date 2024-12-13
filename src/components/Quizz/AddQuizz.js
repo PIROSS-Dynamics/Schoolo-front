@@ -4,7 +4,7 @@ import '../../css/Quizz/AddQuizz.css';
 
 function AddQuizz() {
     const [title, setTitle] = useState('');
-    const [subject, setSubject] = useState([]);
+    const [subject, setSubject] = useState('');
     const [teacher, setTeacher] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
@@ -135,7 +135,7 @@ function AddQuizz() {
             return;
         }
 
-        if (!subject || subject === "Sélectionnez une matière") {
+        if (!subject || subject === "") {
             alert("Veuillez sélectionner une matière.");
             return;
         }
