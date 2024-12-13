@@ -32,7 +32,12 @@ function EditQuizz() {
         fetch(`http://localhost:8000/quizz/api/quizzlist/${quizId}/`)
             .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération du quiz.'))
             .then((data) => {
-                console.log(data);
+                
+                if (String(userId) !== String(data.teacher_id)) {  
+                    setErrorMessage("Vous n'avez pas le droit de modifier ce quiz.");
+                    return;
+                }
+
                 setTitle(data.title);
                 setSubject(data.subject);
                 setIsPublic(data.is_public);
