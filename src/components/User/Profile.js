@@ -76,8 +76,10 @@ const Profile = () => {
     };
 
     const handleEditLesson = (lessonId) => {
+        console.log("Lesson ID:", lessonId); // Debug
         navigate(`/edit-lesson/${lessonId}`);
-      };
+    };
+    
     
       const handleEditQuiz = (quizId) => {
         navigate(`/edit-quiz/${quizId}`);

@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import LessonList from './components/Lessons/LessonList'; 
 import LessonDetail from './components/Lessons/LessonDetail'; 
 import AddLesson from './components/Lessons/AddLesson';
+import EditLesson from './components/Lessons/EditLesson';
 import QuizzList from './components/Quizz/QuizzList';
 import QuizzGame from './components/Quizz/QuizzGame';
 import AddQuizz from './components/Quizz/AddQuizz';
@@ -52,6 +53,7 @@ function AppContent() {
           <Route path="/lessons/subject/:subject" element={<LessonList />} />
           <Route path="/lessons/detail/:lessonId" element={<LessonDetail />} />
           <Route path="/lessons/add" element={<AddLesson />} />
+          <Route path="/edit-lesson/:lessonId" element={<EditLesson />} />
           
           {/* Quizs */}
           <Route path="/quizz" element={<QuizzList />} />
