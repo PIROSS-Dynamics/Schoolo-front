@@ -133,3 +133,11 @@
     background-color: #d44a4a;
     transform: scale(1.05);
 }
+
+.warning-container {
+    background-color: #ffe6e6; /* Fond rouge clair pour l'avertissement */
+    padding: 10px;
+    border: 1px solid red;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}

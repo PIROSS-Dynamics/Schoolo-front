@@ -17,6 +17,7 @@ import ChallengeList from './components/Challenges/ChallengeList';
 import About from './components/About';
 import Auth from './components/Auth'; 
 import Profile from './components/User/Profile';
+import EditQuizz from './components/Quizz/EditQuizz';
 
 
 function AppContent() {
@@ -59,6 +60,7 @@ function AppContent() {
           <Route path="/quizz" element={<QuizzList />} />
           <Route path="/quizz/play/:quizzId" element={<QuizzGame />} />
           <Route path="/quizz/add" element={<AddQuizz />} />
+          <Route path="/edit-quiz/:quizId" element={<EditQuizz />} />
 
           {/* Défis */}
           <Route path="/challenge" element={<ChallengeList />} />
