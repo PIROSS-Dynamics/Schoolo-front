@@ -1,0 +1,120 @@
+/* Titre principal de la page */
+.form-title {
+    font-size: 2.5rem;
+    color: #00b0ff;
+    padding-left: 20px;
+    margin-top: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #5ec2ff;
+}
+
+/* Conteneur principal du formulaire */
+.add-lesson-form {
+    background-color: #e8faff; 
+    padding: 25px;
+    border-radius: 15px; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+    max-width: 600px; 
+    margin: 40px auto; 
+    border: 1px solid #cce7f7;
+}
+
+/* Espacement entre les sections */
+.add-lesson-form div {
+    margin-bottom: 15px; 
+}
+
+/* Styles des labels */
+.add-lesson-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #2a2a2a; 
+}
+
+/* Champs de saisie et sélecteurs */
+.add-lesson-form input[type="text"],
+.add-lesson-form select,
+.add-lesson-form textarea {
+    width: 100%; 
+    padding: 10px;
+    border: 1px solid #bcdff5; 
+    border-radius: 8px; 
+    font-size: 16px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.add-lesson-form input[type="text"]:focus,
+.add-lesson-form select:focus,
+.add-lesson-form textarea:focus {
+    border-color: #00b0ff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 176, 255, 0.6);
+}
+
+/* Styles spécifiques pour les zones de texte */
+.add-lesson-form textarea {
+    height: 100px;
+    resize: vertical;
+    padding: 12px;
+}
+
+/* Conteneur des boutons */
+.button-container {
+    text-align: center; 
+    margin-top: 20px;
+}
+
+/* Bouton principal */
+.add-lesson-form button {
+    width: 50%;
+    padding: 12px;
+    background-color: #00b0ff; 
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-lesson-form button:hover {
+    background-color: #008ac7; 
+    transform: scale(1.05);
+}
+
+.content .ql-toolbar {
+    background-color: white; /* Fond blanc pour la barre d'outils */
+    border: 2px solid black; /* Bordure noire autour de la barre */
+    border-radius: 5px 5px 0 0; /* Coins arrondis en haut */
+    padding: 5px; /* Espacement interne pour une meilleure apparence */
+}
+
+.content .ql-container {
+    background-color: white; /* Fond blanc pour la zone de contenu */
+    border: 2px solid black; /* Bordure noire autour de la zone de contenu */
+    border-top: 2px solid black; /* Ligne noire entre la barre et le contenu */
+    border-radius: 0 0 5px 5px; /* Coins arrondis en bas */
+    min-height: 200px; /* Hauteur minimale pour la zone de contenu */
+    box-sizing: border-box; /* Empêche les bordures d'affecter la taille */
+    padding: 10px; /* Ajoute un espacement interne pour le texte */
+    margin-top: -2px; /* Supprime l'espace entre la barre et la zone de contenu */
+}
+
+.content .ql-container.ql-snow {
+    border-radius: 0 0 5px 5px; /* Assure une cohérence des coins arrondis */
+}
+
+.content label {
+    font-weight: bold;
+    font-size: 1.2rem; /* Met en avant l'étiquette */
+    color: #333; /* Texte légèrement assombri pour contraste */
+    margin-bottom: 8px;
+    display: block;
+}
+

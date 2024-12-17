@@ -1,0 +1,58 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+  
+  .auth-column {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px; /* Limite la largeur de la colonne */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement les éléments */
+    text-align: center;
+  }
+  
+  .auth-logo img {
+    max-width: 150px;
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%; /* S'assure que le formulaire occupe toute la largeur disponible */
+    max-width: 300px; /* Limite la largeur du formulaire */
+    margin: 0 auto; /* Centre le formulaire */
+  }
+  
+  /* Uniformisation des champs */
+  .auth-input, .auth-select, .auth-button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin: 5px 0;
+  }
+  
+  .auth-input:focus, .auth-select:focus, .auth-button:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .auth-button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .auth-button:hover {
+    background-color: #0056b3;
+  }

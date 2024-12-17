@@ -1,0 +1,159 @@
+.list-title{
+    font-size: clamp(1.8rem, 1vw, 2rem);
+    color: #00a5e7; 
+
+    padding-left: 20px;
+    margin-top: 20px;
+
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    /* ligne under the title */
+    padding-bottom: 8px;
+    border-bottom: 2px solid #87CEEB; 
+}
+
+
+.quizz-card {
+    max-width: 300px;
+    padding: 20px;
+    margin-left: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    background-color: #cbffee;
+    text-align: center;
+    opacity: 0; /* Invisible au départ */
+    animation: cardFadeIn 1s ease-out forwards; /* Animation des cartes */
+}
+
+.quizz-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* animation of the click */
+.quizz-card.clicked {
+
+    transform-style: preserve-3d;   
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
+    z-index: 999; /* Ensure it appears above all other elements */
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    opacity: 1;
+    
+    animation: spin-and-grow 1.1s;
+}
+
+@keyframes spin-and-grow {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.1) rotate(360deg); 
+    }
+
+}
+
+.quizz-title {
+    font-size: 1.5rem;
+    color: #00a5e7; 
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.teacher-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.quizz-description {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.subject-section {
+    margin-bottom: 2rem;
+}
+
+.subject-title {
+    color: #00a5e7; 
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.quizz-list-row {
+    display: flex;
+    flex-wrap: wrap; /* Permet d'aller à la ligne si trop d'éléments */
+    gap: 1rem;
+}
+
+
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #87CEEB;
+}
+
+.sticky-nav button {
+    background-color: #00a5e7;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sticky-nav button:hover {
+    background-color: #007ab8;
+}
+
+
+/* Animation des cartes */
+@keyframes cardFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.search-input {
+    width: 60%;
+    max-width: 500px;
+    padding: 10px;
+    border: 1px solid #87CEEB;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-input:focus {
+    border-color: #00a5e7;
+    box-shadow: 0 0 10px rgba(0, 165, 231, 0.5);
+    transform: scale(1.02);
+}

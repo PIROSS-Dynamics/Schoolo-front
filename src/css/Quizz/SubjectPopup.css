@@ -1,0 +1,32 @@
+.subjects-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .subject-item {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #98e6cc; /* Couleur de fond */
+    color: #333;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .subject-item:hover {
+    background-color: #60e2b7; /* Couleur au survol */
+  }
+  
+  .no-subjects {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+    margin-top: 10px;
+  }
+  

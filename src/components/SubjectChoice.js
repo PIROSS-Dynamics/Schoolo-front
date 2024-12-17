@@ -7,36 +7,41 @@ const SubjectChoice = () => {
       
 
       // Every subjects
-      <div className="subject-choice-container">
+      <div id="subject-choice-container">
           
-        <h1> Choisis ta matière ! </h1>
+        <h1 className='title'> Choisis ta matière ! </h1>
 
         <ul className= "subject-choice">
+
+          <li> 
+            <a href="/lessons/subject/Histoire" className='history'>
+              <img src="/images/historyGuy.png" alt="History" />
+            </a>  
+          </li>
+
           <li>
             <a href="/lessons/subject/Maths" class="mathematiques">
-              <img src="/images/perso maths.png" alt="Mathematiques" />
-              <p>Mathématiques</p>
+              <img src="/images/mathsGirl.png" alt="Mathematiques" />
             </a>
           </li>
 
           <li> 
             <a href="/lessons/subject/Français" className='french'>
               <img src="/images/frenchGirl.png" alt="French" />
-              <p>Français</p>
             </a>  
           </li>
 
-          <li> 
-            <a href="/lessons/subject/Histoire" className='history-geo'>
-              <img src="/images/historyGuy.png" alt="History-geo" />
-              <p>Histoire-Géographie</p>
-            </a>  
-          </li>
+          
 
           <li> 
             <a href="/lessons/subject/Anglais" className='english'>
               <img src="/images/englishGuy.png" alt="English" />
-              <p>Anglais</p>
+            </a>  
+          </li>
+
+          <li> 
+            <a href="/lessons/subject/Art" className='art'>
+              <img src="/images/artGirl.png" alt="art" />
             </a>  
           </li>
         </ul>
