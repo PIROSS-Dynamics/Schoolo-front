@@ -29,16 +29,29 @@ const HomePopup = () => {
     // get last day the user has seen this pop up
     const lastShownDate = localStorage.getItem('popupLastShownDate');
 
-    // show the pop up if this was'nt showed to the user on the date
-    if (lastShownDate === today) {
-      setIsOpen(false);
+    // get if the user has closed the pop today 
+    const popupWasClosed = localStorage.getItem('HomePopupWasClosed') === 'true' ? true : false;
 
-      // update the local storage 
+
+    // show the pop up if this was'nt showed to the user on the date and he did'nt close it on the day
+    if(popupWasClosed === false) {
+      setIsOpen(true);
       localStorage.setItem('popupLastShownDate', today);
+    }
+    if (lastShownDate === today ) {
+      if(popupWasClosed === true)
+      {
+        setIsOpen(false);
+      }
+    } else {
+      localStorage.setItem('HomePopupWasClosed', false);
     }
   }, []);
 
-  const handleClose = () => setIsOpen(false);
+  const handleClose = () => {
+    localStorage.setItem('HomePopupWasClosed', true);
+    setIsOpen(false);
+  };
   const handleNextPage = () => setPage((prevPage) => (prevPage < 4 ? prevPage + 1 : 1));
   const handlePrevPage = () => setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 4));
 
