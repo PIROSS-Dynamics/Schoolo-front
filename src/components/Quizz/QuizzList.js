@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../css/Quizz/QuizzList.css';
 import '../../css/Loading.css';
+import '../../css/Quizz/QuizzList.css';
 import SubjectPopup from './SubjectPopup';
 
 function QuizzList() {
@@ -9,10 +9,10 @@ function QuizzList() {
     const [loading, setLoading] = useState(true);
     const [subjects, setSubjects] = useState([]);
     const [popupOpen, setPopupOpen] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
 
     const [clickedQuizzId, setClickedCardId] = useState(null);
-    // References for each subject title
     const subjectRefs = useRef({});
 
     useEffect(() => {
@@ -32,16 +32,14 @@ function QuizzList() {
             });
     }, []);
 
-    const handleQuizzClick = (quizzId) => {
-        setClickedCardId(quizzId); // Set the clicked card
-        setTimeout(() => {
-            navigate(`/quizz/play/${quizzId}`);
-        }, 1100); // Adjust delay to match animation duration
-    };
+    // Filtrer les quiz par titre
+    const filteredQuizz = quizz.filter((q) =>
+        q.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-    // Grouping quizzes by subject
-    const quizzBySubject = quizz.reduce((groups, quizzItem) => {
-        const subject = quizzItem.subject || "Autre"; // Default to "Other" if no subject
+    // Grouper les quiz par matière
+    const quizzBySubject = filteredQuizz.reduce((groups, quizzItem) => {
+        const subject = quizzItem.subject || "Autre";
         if (!groups[subject]) {
             groups[subject] = [];
         }
@@ -49,15 +47,24 @@ function QuizzList() {
         return groups;
     }, {});
 
-   // Handling the subject selection and scrolling to the section
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value); // Mettre à jour le terme de recherche
+    };
+
+    const handleQuizzClick = (quizzId) => {
+        setClickedCardId(quizzId);
+        setTimeout(() => {
+            navigate(`/quizz/play/${quizzId}`);
+        }, 1100);
+    };
+
     const handleSelectSubject = (subject) => {
-        // Targeting the reference for the subject title
         const section = subjectRefs.current[subject];
         if (section) {
-            const navbarHeight = document.querySelector('nav')?.offsetHeight || 0; 
-            const additionalOffset = 40; // Additional offset to create more space from the navbar
+            const navbarHeight = document.querySelector('nav')?.offsetHeight || 0;
+            const additionalOffset = 40;
             window.scrollTo({
-                top: section.offsetTop - navbarHeight - additionalOffset, 
+                top: section.offsetTop - navbarHeight - additionalOffset,
                 behavior: 'smooth',
             });
         }
@@ -67,15 +74,9 @@ function QuizzList() {
         setPopupOpen(false);
     };
 
-    // Define the custom order of subjects
     const subjectOrder = ['Maths', 'Français', 'Histoire', 'Anglais'];
-
-    // Sort subjects to display them in the desired order
     const sortedSubjects = subjectOrder.filter(subject => subjects.includes(subject));
-
-    // Add any remaining subjects (other than Maths, Français, Histoire, Anglais)
     const remainingSubjects = subjects.filter(subject => !subjectOrder.includes(subject));
-
     const allSubjectsInOrder = [...sortedSubjects, ...remainingSubjects];
 
     if (loading) {
@@ -94,6 +95,17 @@ function QuizzList() {
         <div>
             <h2 className='list-title'>Liste des Quiz</h2>
 
+            {/* Barre de recherche */}
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Rechercher un quiz par titre..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="search-input"
+                />
+            </div>
+
             {/* Afficher la pop-up si elle est ouverte */}
             {popupOpen && (
                 <SubjectPopup
@@ -103,12 +115,12 @@ function QuizzList() {
                 />
             )}
 
-            {/* Quiz groupés par sujet */}
+            {/* Quiz groupés par matière */}
             {allSubjectsInOrder.length > 0 ? (
                 allSubjectsInOrder.map((subject) => (
                     <div key={subject} className="subject-section">
                         <h3
-                            ref={(el) => (subjectRefs.current[subject] = el)} // Lier chaque titre de section à une référence
+                            ref={(el) => (subjectRefs.current[subject] = el)}
                             className="subject-title"
                         >
                             {subject}
@@ -118,7 +130,6 @@ function QuizzList() {
                                 <div
                                     key={quizzItem.id}
                                     className={`quizz-card ${clickedQuizzId === quizzItem.id ? "clicked" : ""}`}
-
                                     onClick={() => handleQuizzClick(quizzItem.id)}
                                 >
                                     <h3 className="quizz-title">{quizzItem.title}</h3>
@@ -131,7 +142,7 @@ function QuizzList() {
                     </div>
                 ))
             ) : (
-                <p>Aucun quiz disponible pour le moment.</p>
+                <p>Aucun quiz trouvé.</p>
             )}
         </div>
     );
