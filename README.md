@@ -37,3 +37,9 @@ python manage.py migrate
 
 ### Lancement
 Lancer le front avec npm start et lancer le back avec python manage.py runserver
+
+
+### Tests 
+
+Des commandes de tests sont disponibles dans le fichier "commandes utiles pour les devs.txt", fichier disponible à la racine de Schoolo-back
+
