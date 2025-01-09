@@ -18,6 +18,7 @@ import About from './components/About';
 import Auth from './components/Auth'; 
 import Profile from './components/User/Profile';
 import EditQuizz from './components/Quizz/EditQuizz';
+import Calendar from './components/Calendrier/Calendrier';
 
 
 function AppContent() {
@@ -74,6 +75,9 @@ function AppContent() {
           {/* User routes */}
           <Route path="/profile" element={<Profile />} />
 
+          {/* Calendar routes */}
+          <Route path="/Calendar" element={<Calendar />} />
+          
         </Routes>
 
 

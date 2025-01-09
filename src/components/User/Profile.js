@@ -96,11 +96,13 @@ const Profile = () => {
         <p>Nom: {user?.last_name}</p>
         <p>Prénom: {user?.first_name}</p>
 
-        <h2 className='relations'>Relations:</h2>
+        <h2 className='relations'>Relations: (Fonctionnalité à développer)</h2>
 
       </div>
 
       {/* Bottom Section: Lessons and Quizzes */}
+
+      {role === 'teacher' && (
       <div className="profile-bottom">
         {/* Left Column: Lessons */}
         <div className="profile-column">
@@ -141,6 +143,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };
