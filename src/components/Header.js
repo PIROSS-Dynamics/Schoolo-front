@@ -102,7 +102,9 @@ const Header = () => {
           <ul className="phone-menu">
             <li><a href="/">Accueil</a></li>
             <li><a href="/#subject-choice-container">Matières</a></li>
+            {user ? (
             <li><a href="/Calendar">Calendrier</a></li>
+            ):null}
             <li><a href="/quizz">Quiz</a></li>
             <li><a href="/challenge">Défis</a></li>
             <li><a href="/about">À Propos</a></li>
