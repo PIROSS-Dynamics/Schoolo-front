@@ -1,45 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../css/Lessons/LessonList.css';
-import '../../css/Loading.css'; 
+import '../../css/Loading.css';
 
 function LessonList() {
     const [lessons, setLessons] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
-    const { subject } = useParams();
+    const { subject } = useParams(); // Extract the subject from the route params
 
     const [clickedCardId, setClickedCardId] = useState(null);
 
     useEffect(() => {
-        const url = subject 
-            ? `http://localhost:8000/lessons/api/lessonslist/subject/${subject}/`
-            : "http://localhost:8000/lessons/api/lessonslist/";
+        // API endpoint dynamically based on the subject
+        const url = `http://localhost:8000/lessons/api/lessonslist/subject/${subject}/`;
 
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                setLessons(data);
-                setLoading(false); // End loading
+                setLessons(data); // Set the lessons based on the subject
+                setLoading(false);
             })
             .catch((error) => {
-                console.error('Erreur:', error);
-                setLoading(false); // If error, desactivate the loading
+                console.error("Erreur:", error);
+                setLoading(false);
             });
     }, [subject]);
 
     const handleLessonClick = (lessonId) => {
-        setClickedCardId(lessonId); // Set the clicked card
+        setClickedCardId(lessonId); // Set the clicked card's ID for animation
         setTimeout(() => {
-            navigate(`/lessons/detail/${lessonId}`); // Navigate after animation
-        }, 1100); // Adjust delay to match animation duration
+            navigate(`/lessons/detail/${lessonId}`); // Navigate to the lesson details page
+        }, 1100); // Match the animation duration
+    };
+
+    const filteredLessons = lessons.filter((lesson) =>
+        lesson.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value); // Update the search term
     };
 
     if (loading) {
-        // loading animation
+        // Show a loading animation while fetching the lessons
         return (
             <div>
-                <h2 className='list-title'>Liste des Leçons {subject && `- ${subject}`}</h2>
+                <h2 className="list-title">Liste des Leçons {subject && `- ${subject}`}</h2>
                 <div className="loading-container">
                     <div className="spinner"></div>
                     <p>Chargement des leçons...</p>
@@ -50,12 +58,23 @@ function LessonList() {
 
     return (
         <div>
-            <h2 className='list-title'>Liste des Leçons {subject && `- ${subject}`}</h2>
+            <h2 className="list-title">Liste des Leçons {subject && `- ${subject}`}</h2>
 
-            {/* Lesson List */}
+            {/* Search bar */}
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Rechercher une leçon par titre..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="search-input"
+                />
+            </div>
+
+            {/* Lesson list */}
             <div className="lesson-list">
-            {lessons.length > 0 ? (
-                    lessons.map((lesson) => (
+                {filteredLessons.length > 0 ? (
+                    filteredLessons.map((lesson) => (
                         <div
                             key={lesson.id}
                             className={`lesson-card ${clickedCardId === lesson.id ? "clicked" : ""}`}
@@ -67,7 +86,7 @@ function LessonList() {
                         </div>
                     ))
                 ) : (
-                    <p>Aucune leçon disponible pour le moment.</p>
+                    <p>Aucune leçon disponible pour cette matière.</p>
                 )}
             </div>
         </div>
