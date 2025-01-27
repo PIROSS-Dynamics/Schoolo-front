@@ -7,13 +7,13 @@ const Profile = () => {
   const [role, setRole] = useState(null);
   const [lessons, setLessons] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
+  const [quizResults, setQuizResults] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem('id');
     const userRole = localStorage.getItem('role');
 
-    // Verify user is teacher
     if (userRole === localStorage.getItem('role')) {
       fetch(`http://localhost:8000/users/api/${userRole}/${userId}/`)
         .then((response) => {
@@ -30,6 +30,7 @@ const Profile = () => {
         .catch((error) => console.error(error));
     }
 
+    // verify if it's a teacher to take the lessons and quizzes that he did
     if (userRole === 'teacher') {
       fetch(`http://localhost:8000/lessons/api/teacher/${userId}/lessons/`)
         .then((response) => {
@@ -51,6 +52,20 @@ const Profile = () => {
           }
         })
         .then((quizzesData) => setQuizzes(quizzesData))
+        .catch((error) => console.error(error));
+    }
+
+    // verify if it's a student to recup his results of quizzes
+    if (userRole === 'student') {
+      fetch(`http://localhost:8000/stats/api/userQuizResults/${userId}/`)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Erreur lors de la récupération des résultats des quiz.');
+          }
+        })
+        .then((resultsData) => setQuizResults(resultsData))
         .catch((error) => console.error(error));
     }
   }, []);
@@ -139,45 +154,68 @@ const Profile = () => {
 
       {/* Bottom Section: Lessons and Quizzes */}
       <div className="profile-bottom">
-        {/* Left Column: Lessons */}
-        <div className="profile-column">
-          <h2>Leçons créées :</h2>
-          <div className="profile-cards-container">
-            {lessons.length > 0 ? (
-              lessons.map((lesson) => (
-                <div  className="profile-card profile-lesson-card">
-                  <div key={lesson.id} onClick={() => handleViewLesson(lesson.id)}>
-                    <h3>{lesson.title}</h3>
-                    <p>{lesson.subject}</p>
+        {/* Left Column: Lessons (only for teachers) */}
+        {role === 'teacher' && (
+          <div className="profile-column">
+            <h2>Leçons créées :</h2>
+            <div className="profile-cards-container">
+              {lessons.length > 0 ? (
+                lessons.map((lesson) => (
+                  <div  className="profile-card profile-lesson-card" key={lesson.id}>
+                    <div onClick={() => handleViewLesson(lesson.id)}>
+                      <h3>{lesson.title}</h3>
+                      <p>{lesson.subject}</p>
+                    </div>
+                    <button onClick={() => handleEditLesson(lesson.id)}>Modifier</button>
                   </div>
-                  <button onClick={() => handleEditLesson(lesson.id)}>Modifier</button>
-                </div>
-              ))
-            ) : (
-              <p>Aucune leçon créée.</p>
-            )}
+                ))
+              ) : (
+                <p>Aucune leçon créée.</p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Right Column: Quizzes */}
-        <div className="profile-column">
-          <h2>Quiz créés :</h2>
-          <div className="profile-cards-container">
-            {quizzes.length > 0 ? (
-              quizzes.map((quiz) => (
-                <div key={quiz.id} className="profile-card profile-quiz-card">
-                  <div onClick={() => handleViewQuiz(quiz.id)}>
-                    <h3>{quiz.title}</h3>
+        {/* Right Column: Quizzes (only for teachers) */}
+        {role === 'teacher' && (
+          <div className="profile-column">
+            <h2>Quiz créés :</h2>
+            <div className="profile-cards-container">
+              {quizzes.length > 0 ? (
+                quizzes.map((quiz) => (
+                  <div key={quiz.id} className="profile-card profile-quiz-card">
+                    <div onClick={() => handleViewQuiz(quiz.id)}>
+                      <h3>{quiz.title}</h3>
+                    </div>
+                    <button onClick={() => handleEditQuiz(quiz.id)}>Modifier</button>
+                    <button onClick={() => handleDeleteQuiz(quiz.id)}>Supprimer</button>
                   </div>
-                  <button onClick={() => handleEditQuiz(quiz.id)}>Modifier</button>
-                  <button onClick={() => handleDeleteQuiz(quiz.id)}>Supprimer</button>
-                </div>
-              ))
-            ) : (
-              <p>Aucun quiz créé.</p>
-            )}
+                ))
+              ) : (
+                <p>Aucun quiz créé.</p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+        {/* For students: Display quiz results */}
+        {role === 'student' && (
+          <div className="profile-column">
+            <h2>Résultats des quiz :</h2>
+            <div className="profile-cards-container">
+              {quizResults.length > 0 ? (
+                quizResults.map((result) => (
+                  <div key={result.quizz_title} className="profile-card profile-quiz-result-card">
+                    <h3>{result.quizz_title}</h3>
+                    <p>Score: {result.score} / {result.total}</p>
+                    <p>Date: {new Date(result.date).toLocaleString()}</p>
+                  </div>
+                ))
+              ) : (
+                <p>Aucun résultat pour ce quiz.</p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

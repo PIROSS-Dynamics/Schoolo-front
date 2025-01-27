@@ -72,6 +72,7 @@ function QuizzGame() {
                 body: JSON.stringify({
                     user_id: userId, 
                     score: data.score,
+                    total : data.total
                 }),
             });
             
