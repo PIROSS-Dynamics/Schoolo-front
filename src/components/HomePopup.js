@@ -7,17 +7,17 @@ const HomePopup = () => {
 
   // Home pop up pages content
   const pagesContent = [
-    "Vous êtes sur la version 0.3.0 de S'cool",
-    "Nouvelles grandes features : Possibilité d'ajouter un quizz depuis un compte professeur. Possibilité de retrouver toutes les leçons et quizz crées dans la page profil d'un Professeur, avec la fonctionnalité de pouvoir modifier celle-ci",
-    "Nouvelles petites features : Accès à un éditeur de texte sur le champ contenu lors de la création des leçons (gras, italique etc). Possibilité de charger un fichier pdf pour le contenu de la leçon",
+    "Vous êtes sur S'cool",
+    "Récentes grandes features : Possibilité d'ajouter un quizz depuis un compte professeur. Possibilité de retrouver toutes les leçons et quizz crées dans la page profil d'un Professeur, avec la fonctionnalité de pouvoir modifier celle-ci",
+    "Récentes petites features : Accès à un éditeur de texte sur le champ contenu lors de la création des leçons (gras, italique etc). Possibilité de charger un fichier pdf pour le contenu de la leçon",
     "La gestion de votre planning ainsi que d'autres features à déterminer seront bientôt disponible"
   ];
 
   // Home pop up pages titles
   const pageTitles = [
     "Bienvenue sur S'cool !",
-    "Ajouts de la 0.3.0 - Grande Features",
-    "Ajouts de la 0.3.0 - Petites Features",
+    "De grandes nouveautés",
+    "Des ajouts pratiques",
     "À venir sur S'cool"
   ];
 

@@ -17,6 +17,7 @@ git clone https://github.com/PIROSS-Dynamics/Schoolo-front.git
 
 git clone https://github.com/PIROSS-Dynamics/Schoolo-back.git
 
+### INSTALLATION A LA MAIN COMPLET 
 
 ### Dans Schoolo-front
 
@@ -37,6 +38,65 @@ python manage.py migrate
 
 ### Lancement
 Lancer le front avec npm start et lancer le back avec python manage.py runserver
+
+### INSTALLATION SIMPLIFIÉ (fichier de build)
+
+Après avoir cloné le front et le back dans un dossier, créer encore sur ce dossier un fichier de build du projet python avec le code suivant :
+
+```python
+
+import subprocess
+import os
+import platform
+
+def install_react_dependencies():
+    print("Installing React dependencies...")
+    react_path = os.path.join(os.getcwd(), "Schoolo-front")
+    subprocess.run(["npm", "install"], cwd=react_path, shell=(platform.system() == "Windows"))
+
+def start_react():
+    print("Starting React frontend...")
+    react_path = os.path.join(os.getcwd(), "Schoolo-front")
+    subprocess.Popen(["npm", "start"], cwd=react_path, shell=(platform.system() == "Windows"))
+
+def install_django_dependencies():
+    print("Installing Django dependencies...")
+    django_path = os.path.join(os.getcwd(), "Schoolo-back")
+    venv_path = os.path.join(django_path, "venv/bin/activate") if platform.system() != "Windows" else os.path.join(django_path, "venv\\Scripts\\activate")
+
+    if os.path.exists(os.path.join(django_path, "venv")):
+        command = f". {venv_path} && pip install -r requirements.txt" if platform.system() != "Windows" else f"{venv_path} && pip install -r requirements.txt"
+    else:
+        command = f"pip install -r requirements.txt"
+
+    subprocess.run(command, cwd=django_path, shell=True, executable="/bin/bash" if platform.system() != "Windows" else None)
+
+def start_django():
+    print("Starting Django backend...")
+    django_path = os.path.join(os.getcwd(), "Schoolo-back")
+    venv_path = os.path.join(django_path, "venv/bin/activate") if platform.system() != "Windows" else os.path.join(django_path, "venv\\Scripts\\activate")
+
+    if os.path.exists(os.path.join(django_path, "venv")):
+        command = f". {venv_path} && python manage.py runserver" if platform.system() != "Windows" else f"{venv_path} && python manage.py runserver"
+    else:
+        command = "python manage.py runserver"
+
+    subprocess.Popen(command, cwd=django_path, shell=True, executable="/bin/bash" if platform.system() != "Windows" else None)
+
+if __name__ == "__main__":
+    # Installer les dépendances
+    install_react_dependencies()
+    install_django_dependencies()
+
+    # Lancer le projet
+    start_react()
+    start_django()
+
+    print("Both projects are starting. React and Django logs will appear in their respective terminals.")
+
+
+```
+Lancer ce fichier de build python pour à la fois installer les dépendances et lancer le front et le back.
 
 
 ### Tests 
