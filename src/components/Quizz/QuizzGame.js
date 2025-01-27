@@ -32,21 +32,62 @@ function QuizzGame() {
         setResponses({ ...responses, [questionId]: value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        fetch(`http://localhost:8000/quizz/api/quizzlist/${quizzId}/`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(responses)
-        })
-        .then(response => response.json())
-        .then(data => {
+    
+        // Vérifier si toutes les réponses sont fournies
+        if (Object.keys(responses).length < quizz.questions.length) {
+            alert("Veuillez répondre à toutes les questions avant de soumettre.");
+            return;
+        }
+    
+        try {
+            // Envoi des réponses au backend
+            const response = await fetch(`http://localhost:8000/quizz/api/quizzlist/${quizzId}/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(responses),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Erreur lors de la soumission : ${response.statusText}`);
+            }
+    
+            const data = await response.json();
+    
             setResult(data.result);
             setCorrections(data.corrections);
             setCurrentQuestionIndex(-1);
-        })
-        .catch(error => console.error('Erreur:', error));
+    
+            // Récupération de l'ID utilisateur
+            const userId = localStorage.getItem('id');
+            if (!userId) {
+                alert("Veuillez vous connecter pour enregistrer vos résultats.");
+                return;
+            }
+
+            const statsResponse = await fetch(`http://localhost:8000/stats/api/quizzresults/${quizzId}/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId, 
+                    score: data.score,
+                }),
+            });
+            
+            
+    
+            if (!statsResponse.ok) {
+                throw new Error(`Erreur lors de l'enregistrement du score : ${statsResponse.statusText}`);
+            }
+    
+            console.log("Résultat enregistré avec succès.");
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert(`Une erreur est survenue : ${error.message}`);
+        }
     };
+    
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
