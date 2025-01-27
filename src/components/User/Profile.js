@@ -80,6 +80,43 @@ const Profile = () => {
     navigate(`/edit-quiz/${quizId}`);
   };
 
+  const handleDeleteQuiz = (quizId) => {
+    const userId = localStorage.getItem('id'); // ID de l'utilisateur connecté
+  
+    // Récupérer les informations du quiz pour vérifier l'ID du professeur
+    fetch(`http://localhost:8000/quizz/api/quizzlist/${quizId}/`)
+      .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération du quiz.'))
+      .then((quizData) => {
+        if (String(quizData.teacher_id) !== String(userId)) {
+          // Si l'utilisateur connecté n'est pas le créateur du quiz
+          alert('Vous n\'êtes pas autorisé à supprimer ce quiz.');
+        } else {
+          // Si l'utilisateur connecté est le créateur du quiz
+          const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer ce quiz ?');
+          if (confirmDelete) {
+            fetch(`http://localhost:8000/quizz/api/quizzlist/${quizId}/`, {
+              method: 'DELETE',
+            })
+              .then((response) => {
+                if (response.ok) {
+                  setQuizzes(quizzes.filter((quiz) => quiz.id !== quizId));
+                  alert('Quiz supprimé avec succès.');
+                } else {
+                  throw new Error('Erreur lors de la suppression du quiz.');
+                }
+              })
+              .catch((error) => console.error(error));
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('Impossible de récupérer les informations du quiz.');
+      });
+  };
+  
+  
+
   const handleViewQuiz = (quizId) => {
     navigate(`/quizz/play/${quizId}`);
   };
@@ -133,6 +170,7 @@ const Profile = () => {
                     <h3>{quiz.title}</h3>
                   </div>
                   <button onClick={() => handleEditQuiz(quiz.id)}>Modifier</button>
+                  <button onClick={() => handleDeleteQuiz(quiz.id)}>Supprimer</button>
                 </div>
               ))
             ) : (
