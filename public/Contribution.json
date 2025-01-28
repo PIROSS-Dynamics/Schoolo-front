@@ -1,0 +1,64 @@
+{
+    "name": "Root",
+    "children": [
+      {
+        "name": "Frontend",
+        "children": [
+            { 
+                "name": "Home",
+                
+                "children" : [
+                    {
+                        "name": "Carousel"
+                        
+                    },
+                    {
+                        "name": "Carousel"
+                        
+                    }
+                    
+                ]
+            },
+            { 
+                "name": "Quiz"
+                
+            },
+            { 
+                "name": "Challenges"
+               
+            },
+            { 
+                "name": "About"
+              
+            }
+        ]
+      },
+      {
+        "name": "Backend",
+        "children": [
+            { 
+                "name": "Child B1"
+           
+            },
+            { 
+                "name": "Child B2"
+             
+            }
+        ]
+      },
+      {
+        "name": "Test",
+        "children": [
+            { 
+                "name": "Child B1"
+           
+            },
+            { 
+                "name": "Child B2"
+             
+            }
+        ]
+      }
+    ]
+  }
+  
