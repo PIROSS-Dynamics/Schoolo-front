@@ -103,6 +103,7 @@ const Profile = () => {
       .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération du quiz.'))
       .then((quizData) => {
         if (String(quizData.teacher_id) !== String(userId)) {
+          
           // Si l'utilisateur connecté n'est pas le créateur du quiz
           alert('Vous n\'êtes pas autorisé à supprimer ce quiz.');
         } else {
@@ -130,7 +131,44 @@ const Profile = () => {
       });
   };
   
-  
+  const handleDeleteLesson = (lessonId) => {
+
+    const userId = localStorage.getItem('id'); // ID of the connected user
+    // get informations about the lesson to verify the professor ID
+    
+    fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`)
+      .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération de la leçon.'))
+      
+      .then((lessonData) => {
+        if (String(lessonData.teacher) !== String(userId)) {
+
+          // If the connected user isn't the lesson creator
+          alert('Vous n\'êtes pas autorisé à supprimer cette leçon.');
+        } else {
+          
+          // If he is the lesson creator
+          const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette leçon ?');
+          if (confirmDelete) {
+            fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`, {
+              method: 'DELETE',
+            })
+              .then((response) => {
+                if (response.ok) {
+                  setQuizzes(lessons.filter((lesson) => lesson.id !== lessonId));
+                  alert('Leçon supprimé avec succès.');
+                } else {
+                  throw new Error('Erreur lors de la suppression de la leçon.');
+                }
+              })
+              .catch((error) => console.error(error));
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('Impossible de récupérer les informations de la leçon.');
+      });
+  };
 
   const handleViewQuiz = (quizId) => {
     navigate(`/quizz/play/${quizId}`);
@@ -167,6 +205,7 @@ const Profile = () => {
                       <p>{lesson.subject}</p>
                     </div>
                     <button onClick={() => handleEditLesson(lesson.id)}>Modifier</button>
+                    <button onClick={() => handleDeleteLesson(lesson.id)}>Supprimer</button>
                   </div>
                 ))
               ) : (
