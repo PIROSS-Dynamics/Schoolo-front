@@ -154,7 +154,7 @@ const Profile = () => {
             })
               .then((response) => {
                 if (response.ok) {
-                  setQuizzes(lessons.filter((lesson) => lesson.id !== lessonId));
+                  setLessons(lessons.filter((lesson) => lesson.id !== lessonId));
                   alert('Leçon supprimé avec succès.');
                 } else {
                   throw new Error('Erreur lors de la suppression de la leçon.');
