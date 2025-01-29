@@ -1,5 +1,5 @@
 {
-    "name": "Root",
+    "name": "",
     "level": 0,
     "children": [
       {
@@ -13,12 +13,12 @@
                     {
                         "name": "Carousel",
                         "level": 3,
-                        "worker": ["Ronan", "Piravine"]
+                        "worker": ["Ronan BESNARD", "Piravine JEYAMOHAN"]
                     },
                     {
                         "name": "Subject Choice",
                         "level": 3,
-                        "worker": ["Ronan", "Piravine"]
+                        "worker": ["Ronan BESNARD", "Piravine JEYAMOHAN"]
                         
                     }
                     
@@ -29,21 +29,27 @@
                 "level": 2,
                 "children": [
                     {
-                        "name": "Recherche Quiz",
+                        "name": "Barre recherche Quiz",
                         "level": 3,
-                        "worker": ["Romain"]
+                        "worker": ["Romain CERNON"]
                         
                     },
                     {
                         "name": "Liste Quiz",
                         "level": 3,
-                        "worker": ["Piravine", "Ronan"]
+                        "worker": ["Piravine JEYAMOHAN", "Ronan BESNARD"]
                         
                     },
                     {
-                        "name": "Quiz",
+                        "name": "Jouer Quiz",
                         "level": 3,
-                        "worker": ["Piravine","Ronan"]
+                        "worker": ["Piravine JEYAMOHAN","Ronan BESNARD"]
+                        
+                    },
+                    {
+                        "name": "Ajouter un Quiz",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN"]
                         
                     }
                 ]
@@ -59,21 +65,21 @@
                 "level": 2,
                 "children": [
                     {
-                        "name": "Recherche Matière",
+                        "name": "Barre recherche ",
                         "level": 3,
-                        "worker": ["Hossein"]
+                        "worker": ["Hossein ZAER"]
                         
                     },
                     {
-                        "name": "Liste Matière",
+                        "name": "Liste par matières",
                         "level": 3,
-                        "worker": ["Piravine", "Ronan"]
+                        "worker": ["Piravine JEYAMOHAN", "Ronan BESNARD"]
                         
                     },
                     {
-                        "name": "Information Cours",
+                        "name": "Contenu Cours",
                         "level": 3,
-                        "worker": ["Ronan","Piravine"]
+                        "worker": ["Ronan BESNARD","Piravine JEYAMOHAN"]
                         
                     }
                 ]
@@ -81,33 +87,28 @@
             { 
                 "name": "Header",
                 "level": 2,
-                "worker": ["Ronan"]
+                "worker": ["Ronan BESNARD"]
             },
             { 
                 "name": "Footer",
                 "level": 2,
-                "worker": ["Ronan"]
+                "worker": ["Ronan BESNARD"]
             },
             { 
                 "name": "About",
                 "level": 2,
-                "worker": ["Ronan","Piravine"]
+                "worker": ["Ronan BESNARD","Piravine JEYAMOHAN"]
               
             },
             { 
                 "name": "Profil",
                 "level": 2,
-                "worker": ["Hossein","Piravine","Ronan"]
+                "worker": ["Hossein ZAER","Piravine JEYAMOHAN","Ronan BESNARD"]
             },
             { 
-                "name": "Connection",
+                "name": "Connexion / Inscription",
                 "level": 2,
-                "worker": ["Hossein","Piravine"]
-            },
-            { 
-                "name": "Inscription",
-                "level": 2,
-                "worker": ["Hossein","Piravine"]
+                "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
             }
         ]
       },
@@ -116,30 +117,101 @@
         "level": 1,
         "children": [
             { 
-                "name": "Child B1",
-                "level": 2
-           
+                "name": "Leçons",
+                "level": 2,
+                "children": [
+                    { 
+                        "name": "Création et consultation",
+                        "level": 3,
+                        
+                        "worker": ["Piravine JEYAMOHAN", "Ronan BESNARD"]
+                    },
+                    { 
+                        "name": "Suppression le créateur",
+                        "level": 3,
+                        "worker": ["Ronan BESNARD"]
+                    },
+                    { 
+                        "name": "Modification le créateur",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+                    }
+                ]
             },
             { 
-                "name": "Child B2",
-                "level": 2
-             
+                "name": "Quizz",
+                "level": 2,
+                "children": [
+                    { 
+                        "name": "Création et jouabilité",
+                        "level": 3,
+                        
+                        "worker": ["Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Suppression par créateur",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Modification par créateur",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+                    }
+                ]
+            },
+            { 
+                "name": "Interface utilisateur",
+                "level": 2,
+                "children": [
+                    { 
+                        "name": "Connexion / Inscription",
+                        "level": 3,
+                        
+                        "worker": ["Hossein Zaer", "Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Profil",
+                        "level": 3,
+                        "worker": ["Hossein ZAER", "Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Liste objets crées",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+                    },
+                    { 
+                        "name": "Résultats quizz",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN"]
+                    }
+                ]
             }
         ]
       },
       {
-        "name": "Test",
+        "name": "Tests et Github",
         "level": 1,
         "children": [
             { 
-                "name": "Child B1",
-                "level": 2
-           
+                "name": "Tests unitaires",
+                "level": 2,
+                "worker": ["Romain CERNON"]
             },
             { 
-                "name": "Child B2",
-                "level": 2
-             
+                "name": "Tests d'intégrations",
+                "level": 2,
+                "worker": ["Romain CERNON"]
+            },
+            { 
+                "name": "Intégration continue",
+                "level": 2,
+                "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+            },
+            { 
+                "name": "Tests fonctionnels",
+                "level": 2,
+                "worker": ["Ronan BESNARD","Piravine JEYAMOHAN","Hossein ZAER","Romain CERNON"]
             }
         ]
       }
