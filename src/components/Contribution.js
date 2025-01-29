@@ -6,8 +6,6 @@ const Contribution = () => {
   const [data, setData] = useState(null);
   const ref = useRef();
 
-  const [focus, setFocus] = useState(null);
-
   let zoomedNode = null;
   let actualLevel = 0;
 
@@ -36,7 +34,7 @@ const Contribution = () => {
       .padding(5);
 
     
-    setFocus(root);
+
     pack(root);
     
      // color of the graphic
@@ -90,9 +88,9 @@ const Contribution = () => {
       .attr("font-size", d => (d.children ? 20 : 14))
       .attr("fill", "black")
       
-      .style("display", d => (d.data.level == actualLevel + 1 ? "block" : "none")) 
+      .style("display", d => (d.data.level === actualLevel + 1 ? "block" : "none")) 
       .text(d => d.data.name);
-
+      // eslint-disable-next-line
   }, [data]); // Re-exécuter lorsqu'on a les données
 
   
@@ -106,7 +104,6 @@ const Contribution = () => {
     zoomedNode = d.data.name;
     actualLevel = d.data.level;
 
-    setFocus(d); 
 
     //smooth animation
     const transition = d3.select(ref.current)
@@ -123,7 +120,7 @@ const Contribution = () => {
     if (d.data.name === "Root"){
       k = 1;
     } else {
-      var k = (800 / (d.r * 2)) * zoomFactor; 
+      k = (800 / (d.r * 2)) * zoomFactor; 
     }
 
 
