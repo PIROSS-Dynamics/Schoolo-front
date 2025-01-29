@@ -1,0 +1,148 @@
+{
+    "name": "Root",
+    "level": 0,
+    "children": [
+      {
+        "name": "Frontend",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Home",
+                "level": 2,
+                "children" : [
+                    {
+                        "name": "Carousel",
+                        "level": 3,
+                        "worker": ["Ronan", "Piravine"]
+                    },
+                    {
+                        "name": "Subject Choice",
+                        "level": 3,
+                        "worker": ["Ronan", "Piravine"]
+                        
+                    }
+                    
+                ]
+            },
+            { 
+                "name": "Quiz",
+                "level": 2,
+                "children": [
+                    {
+                        "name": "Recherche Quiz",
+                        "level": 3,
+                        "worker": ["Romain"]
+                        
+                    },
+                    {
+                        "name": "Liste Quiz",
+                        "level": 3,
+                        "worker": ["Piravine", "Ronan"]
+                        
+                    },
+                    {
+                        "name": "Quiz",
+                        "level": 3,
+                        "worker": ["Piravine","Ronan"]
+                        
+                    }
+                ]
+            },
+            { 
+                "name": "Challenges",
+                "level": 2,
+                "worker": ["Piravine"]
+               
+            },
+            { 
+                "name": "Cours",
+                "level": 2,
+                "children": [
+                    {
+                        "name": "Recherche Matière",
+                        "level": 3,
+                        "worker": ["Hossein"]
+                        
+                    },
+                    {
+                        "name": "Liste Matière",
+                        "level": 3,
+                        "worker": ["Piravine", "Ronan"]
+                        
+                    },
+                    {
+                        "name": "Information Cours",
+                        "level": 3,
+                        "worker": ["Ronan","Piravine"]
+                        
+                    }
+                ]
+            },
+            { 
+                "name": "Header",
+                "level": 2,
+                "worker": ["Ronan"]
+            },
+            { 
+                "name": "Footer",
+                "level": 2,
+                "worker": ["Ronan"]
+            },
+            { 
+                "name": "About",
+                "level": 2,
+                "worker": ["Ronan","Piravine"]
+              
+            },
+            { 
+                "name": "Profil",
+                "level": 2,
+                "worker": ["Hossein","Piravine","Ronan"]
+            },
+            { 
+                "name": "Connection",
+                "level": 2,
+                "worker": ["Hossein","Piravine"]
+            },
+            { 
+                "name": "Inscription",
+                "level": 2,
+                "worker": ["Hossein","Piravine"]
+            }
+        ]
+      },
+      {
+        "name": "Backend",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Child B1",
+                "level": 2
+           
+            },
+            { 
+                "name": "Child B2",
+                "level": 2
+             
+            }
+        ]
+      },
+      {
+        "name": "Test",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Child B1",
+                "level": 2
+           
+            },
+            { 
+                "name": "Child B2",
+                "level": 2
+             
+            }
+        ]
+      }
+    ]
+  }
+  
