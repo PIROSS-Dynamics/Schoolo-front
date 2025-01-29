@@ -1,3 +1,7 @@
+
+
+[![Build Status](https://github.com/PIROSS-Dynamics/Schoolo-front/actions/workflows/frontend_build.yml/badge.svg)](https://github.com/PIROSS-Dynamics/Schoolo-front/actions)
+
 Lancer le projet :
 
 ### Prérequis
