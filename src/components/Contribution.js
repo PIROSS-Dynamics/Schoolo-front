@@ -9,6 +9,7 @@ const Contribution = () => {
   const [focus, setFocus] = useState(null);
 
   let zoomedNode = null;
+  let actualLevel = 0;
 
   // laod the JSON
   useEffect(() => {
@@ -63,11 +64,20 @@ const Contribution = () => {
       .data(root.descendants())
       .join("circle")
       .attr("fill", d => d.children ? color(d.depth) : "white")
-      .attr("stroke", "#000")
-      .attr("stroke-width", 2)
+      .attr("stroke", "none") 
+      .attr("stroke-width", 2) 
       .attr("transform", d => `translate(${d.x},${d.y})`)
       .attr("r", d => d.r)
+      .on("mouseover", function(event, d) {
+        d3.select(this)
+          .attr("stroke", "#000"); 
+      })
+      .on("mouseout", function(event, d) {
+        d3.select(this)
+          .attr("stroke", "none"); 
+      })
       .on("click", (event, d) => zoom(event, d));
+      
       
       
 
@@ -77,9 +87,10 @@ const Contribution = () => {
       .join("text")
       .attr("transform", d => `translate(${d.x},${d.y})`)
       .attr("text-anchor", "middle")
-      .attr("font-size", d => (d.children ? 14 : 10))
+      .attr("font-size", d => (d.children ? 20 : 14))
       .attr("fill", "black")
       
+      .style("display", d => (d.data.level == actualLevel + 1 ? "block" : "none")) 
       .text(d => d.data.name);
 
   }, [data]); // Re-exécuter lorsqu'on a les données
@@ -87,12 +98,13 @@ const Contribution = () => {
   
   const zoom = (event, d) => {
     
+
     if (!d.children && (d.data.name === zoomedNode)) {
       alert(d.data.worker);
     }
 
     zoomedNode = d.data.name;
-
+    actualLevel = d.data.level;
 
     setFocus(d); 
 
@@ -101,6 +113,8 @@ const Contribution = () => {
     .transition()
     .duration(750);
 
+
+    
     const zoomFactor = 0.8;
 
     
@@ -121,13 +135,22 @@ const Contribution = () => {
 
     g.transition(transition)
       .attr("transform", `translate(${x},${y}) scale(${k})`);
+
+
+      setTimeout(() => {
+        g.selectAll("text")
+          .style("display", d => (d.data.level === actualLevel + 1 || d.data.level === actualLevel ? "block" : "none"));
+
+        
+      }, 750); // Attendre la fin de l'animation pour mettre à jour
+
     };
 
   
   return (
     
     <div>
-      <h1> Contribution in the team </h1>
+      <h1 className="contribution-title"> Contribution in the team </h1>
 
       <div className="graph-container">
         <svg ref={ref}></svg>
