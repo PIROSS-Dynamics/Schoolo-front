@@ -1,0 +1,75 @@
+{
+    "name": "Root",
+    "level": 0,
+    "children": [
+      {
+        "name": "Frontend",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Home",
+                "level": 2,
+                "children" : [
+                    {
+                        "name": "Carousel",
+                        "level": 3
+                    },
+                    {
+                        "name": "Carousel",
+                        "level": 3
+                        
+                    }
+                    
+                ]
+            },
+            { 
+                "name": "Quiz",
+                "level": 2
+            },
+            { 
+                "name": "Challenges",
+                "level": 2
+               
+            },
+            { 
+                "name": "About",
+                "level": 2
+              
+            }
+        ]
+      },
+      {
+        "name": "Backend",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Child B1",
+                "level": 2
+           
+            },
+            { 
+                "name": "Child B2",
+                "level": 2
+             
+            }
+        ]
+      },
+      {
+        "name": "Test",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Child B1",
+                "level": 2
+           
+            },
+            { 
+                "name": "Child B2",
+                "level": 2
+             
+            }
+        ]
+      }
+    ]
+  }
+  

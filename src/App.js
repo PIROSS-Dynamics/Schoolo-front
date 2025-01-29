@@ -18,6 +18,7 @@ import About from './components/About';
 import Auth from './components/Auth'; 
 import Profile from './components/User/Profile';
 import EditQuizz from './components/Quizz/EditQuizz';
+import Contribution from './components/Contribution';
 
 
 function AppContent() {
@@ -66,7 +67,13 @@ function AppContent() {
           <Route path="/challenge" element={<ChallengeList />} />
 
           {/* A propos */}
-          <Route path="/about" element={<About />} />
+          <Route path="/about" element={ 
+            <div> 
+
+              <About />  
+              <Contribution /> 
+            </div>} 
+          />
 
           {/* Connexion / Inscription */}
           <Route path="/login" element={<Auth />} />
