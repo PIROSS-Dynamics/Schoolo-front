@@ -1,0 +1,25 @@
+name: Generate Changelog PDF
+
+on:
+  push:
+    branches:
+      - main  # Runs when changes are pushed to main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Pandoc
+        run: sudo apt-get install pandoc -y
+
+      - name: Convert Markdown to PDF
+        run: pandoc CHANGELOG.md -o CHANGELOG.pdf
+
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: changelog-pdf
+          path: CHANGELOG.pdf
