@@ -69,11 +69,13 @@ function AppContent() {
           {/* A propos */}
           <Route path="/about" element={ 
             <div> 
-
-              <About />  
+              <About />
+            
               <Contribution /> 
             </div>} 
           />
+
+          
 
           {/* Connexion / Inscription */}
           <Route path="/login" element={<Auth />} />
@@ -81,6 +83,7 @@ function AppContent() {
           {/* User routes */}
           <Route path="/profile" element={<Profile />} />
 
+            
         </Routes>
 
 
