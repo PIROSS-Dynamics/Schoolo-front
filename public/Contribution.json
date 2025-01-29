@@ -212,6 +212,11 @@
                 "name": "Tests fonctionnels",
                 "level": 2,
                 "worker": ["Ronan BESNARD","Piravine JEYAMOHAN","Hossein ZAER","Romain CERNON"]
+            },
+            { 
+                "name": "Documentation",
+                "level": 2,
+                "worker": ["Piravine JEYAMOHAN", "Romain CERNON"]
             }
         ]
       }
