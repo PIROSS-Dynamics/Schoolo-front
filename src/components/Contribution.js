@@ -8,6 +8,8 @@ const Contribution = () => {
 
   const [focus, setFocus] = useState(null);
 
+  let zoomedNode = null;
+
   // laod the JSON
   useEffect(() => {
     fetch("/Contribution.json")
@@ -85,6 +87,13 @@ const Contribution = () => {
   
   const zoom = (event, d) => {
     
+    if (!d.children && (d.data.name === zoomedNode)) {
+      alert(d.data.worker);
+    }
+
+    zoomedNode = d.data.name;
+
+
     setFocus(d); 
 
     //smooth animation
