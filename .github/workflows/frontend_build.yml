@@ -1,0 +1,38 @@
+name: React Frontend CI
+
+on:
+  push:
+    branches:
+      - main  # Runs CI when pushing to main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  
+
+      - name: Install Dependencies
+        run: npm install
+
+      # - name: Run Linter (Check Code Quality)
+      #   run: npm run lint  # Make sure you have "lint" in your package.json scripts
+
+      # - name: Run Tests
+      #   run: npm test  # This will run Jest tests (modify if using another test framework)
+
+      - name: Build Frontend
+        run: npm run build  # Generates the production build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: build/
