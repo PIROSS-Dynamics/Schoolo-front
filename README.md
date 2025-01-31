@@ -2,6 +2,8 @@
 
 [![Build Status](https://github.com/PIROSS-Dynamics/Schoolo-front/actions/workflows/frontend_build.yml/badge.svg)](https://github.com/PIROSS-Dynamics/Schoolo-front/actions)
 
+[![Build Status](https://github.com/PIROSS-Dynamics/Schoolo-front/actions/workflows/git_fame.yml/badge.svg)](https://github.com/PIROSS-Dynamics/Schoolo-front/actions)
+
 
 🔗 **Lien vers le répertoire Schoolo back:** 
 [![Backend Django](https://img.shields.io/badge/Backend-Django-blue?style=for-the-badge&logo=django)](https://github.com/PIROSS-Dynamics/Schoolo-back)
