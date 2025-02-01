@@ -129,6 +129,7 @@ const Header = () => {
       <div className="user-dropdown">
         <ul>
           <li><a href="/profile">Profil</a></li>
+          <li><a href="/notifications">Notifications</a></li>
           <li><button onClick={handleLogout}>Déconnexion</button></li>
         </ul>
       </div>

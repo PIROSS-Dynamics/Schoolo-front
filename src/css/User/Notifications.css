@@ -1,0 +1,152 @@
+/* src/css/User/Notifications.css */
+
+/* Conteneur principal */
+.notif-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff; /* Fond blanc */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    margin-top: 60px; /* Espacement avec la navbar */
+    overflow-x: hidden; /* Empêche le débordement horizontal */
+  }
+
+  .notif-container h1 {
+    text-align: center;
+    color: #00a5e7;
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  /* Liste de notifications avec défilement */
+  .notif-list {
+    list-style: none;
+    padding: 0;
+    max-height: 400px; /* Limiter la hauteur de la liste */
+    overflow-y: auto; /* Activer la barre de défilement */
+    overflow-x: hidden; /* Empêche le débordement horizontal */
+  }
+  
+  /* Chaque notification */
+  .notif-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd; /* Séparation des notifications */
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition fluide */
+    width: 100%; /* Garantir que la largeur ne dépasse pas le conteneur */
+    box-sizing: border-box; /* Assure que le padding ne modifie pas la largeur */
+    max-width: 100%; /* Empêche toute largeur excessive */
+  }
+  
+  .notif-item:hover {
+    background-color: #e0f7fa; /* Couleur plus claire pour une meilleure visibilité */
+    transform: scale(1.02); /* Effet de légère agrandissement */
+    overflow: hidden; /* Empêche le débordement pendant le hover */
+  }
+  
+  /* Notification non lue */
+  .notif-item.notif-unread {
+    background-color: #e0f7fa; /* Assure que la notification non lue est visible */
+  }
+  
+  /* Notification lue */
+  .notif-item.notif-read {
+    background-color: #f3f3f3; /* Pour les notifications lues */
+  }
+  
+  /* Titre de la notification */
+  .notif-title {
+    font-weight: bold;
+    color: #333;
+    font-size: 1em;
+    flex-grow: 1; /* Permet au titre de prendre tout l'espace disponible */
+  }
+  
+  /* Icône de la notification */
+  .notif-icon {
+    font-size: 1.5em;
+    margin-left: 10px;
+  }
+  
+  /* Affichage de la date/heure */
+  .notif-time {
+    font-size: 0.85em;
+    color: #888;
+    margin-left: 10px;
+  }
+  
+  /* Pop-up */
+  .notif-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .notif-popup-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+  }
+  
+  .notif-popup h2 {
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  
+  .notif-popup p {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  button.notif-close {
+    background-color: #ff4d4d;
+  }
+  
+  button.notif-close:hover {
+    background-color: #cc0000;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .notif-container {
+      padding: 15px;
+    }
+  
+    .notif-popup-content {
+      width: 90%;
+      padding: 20px;
+    }
+  }
+  

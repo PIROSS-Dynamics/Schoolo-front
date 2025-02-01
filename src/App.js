@@ -17,6 +17,7 @@ import ChallengeList from './components/Challenges/ChallengeList';
 import About from './components/About';
 import Auth from './components/Auth'; 
 import Profile from './components/User/Profile';
+import Notifications from './components/User/Notifications';
 import EditQuizz from './components/Quizz/EditQuizz';
 import Contribution from './components/Contribution';
 import GuessWord from './components/Challenges/GuessWord';
@@ -84,6 +85,7 @@ function AppContent() {
 
           {/* User routes */}
           <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications/>} />
 
             
         </Routes>
