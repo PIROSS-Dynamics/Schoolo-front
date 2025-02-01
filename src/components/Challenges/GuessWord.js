@@ -35,16 +35,16 @@ function GuessWord() {
   }, []);
 
   return (
-    <div className="game-wrapper">
-      <div className="game-container">
-        <h1 className="title">Trouve la bonne traduction :</h1>
+    <div className="gwgame-wrapper">
+      <div className="gwgame-container">
+        <h1 className="gwtitle">Trouve la bonne traduction ce mot :</h1>
         <p className="word">{englishWord}</p>
 
-        <div className="choices">
+        <div className="gwchoices">
           {choices.map((choice, index) => (
             <button 
               key={index} 
-              className={`choice-btn ${selectedChoice === choice ? (result === 'correct' ? 'correct' : 'incorrect') : ''}`}
+              className={`gwchoice-btn ${selectedChoice === choice ? (result === 'correct' ? 'correct' : 'incorrect') : ''}`}
               onClick={() => checkTranslation(choice)}
               disabled={selectedChoice !== null}
             >
