@@ -1,0 +1,77 @@
+.game-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 250px); /* Ajustement pour laisser de l'espace pour la navbar et le footer */
+  }
+  
+  .game-container {
+    width: 60%;
+    max-width: 600px;
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .title {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .word {
+    font-size: 32px;
+    font-weight: bold;
+    color: #007bff;
+    margin: 20px 0;
+  }
+  
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .choice-btn {
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #eee;
+    color: #333;
+  }
+  
+  .choice-btn:hover {
+    background-color: #ddd;
+  }
+  
+  .correct {
+    background-color: #28a745 !important;
+    color: white;
+    animation: correctAnim 0.5s ease-in-out;
+  }
+  
+  .incorrect {
+    background-color: #dc3545 !important;
+    color: white;
+    animation: incorrectAnim 0.5s ease-in-out;
+  }
+  
+  @keyframes correctAnim {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes incorrectAnim {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+  

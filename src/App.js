@@ -19,6 +19,7 @@ import Auth from './components/Auth';
 import Profile from './components/User/Profile';
 import EditQuizz from './components/Quizz/EditQuizz';
 import Contribution from './components/Contribution';
+import GuessWord from './components/Challenges/GuessWord';
 
 
 function AppContent() {
@@ -64,7 +65,8 @@ function AppContent() {
           <Route path="/edit-quiz/:quizId" element={<EditQuizz />} />
 
           {/* Défis */}
-          <Route path="/challenge" element={<ChallengeList />} />
+          <Route path="/challenges" element={<ChallengeList />} />
+          <Route path="/challenges/guessWord" element={<GuessWord />} />
 
           {/* A propos */}
           <Route path="/about" element={ 

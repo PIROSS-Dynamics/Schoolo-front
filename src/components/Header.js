@@ -103,7 +103,7 @@ const Header = () => {
             <li><a href="/">Accueil</a></li>
             <li><a href="/#subject-choice-container">Matières</a></li>
             <li><a href="/quizz">Quiz</a></li>
-            <li><a href="/challenge">Défis</a></li>
+            <li><a href="/challenges">Défis</a></li>
             <li><a href="/about">À Propos</a></li>
           </ul>
         )}
@@ -114,7 +114,7 @@ const Header = () => {
             <li><a href="/">Accueil</a></li>
             <li><a href="/#subject-choice-container">Matières</a></li>
             <li><a href="/quizz">Quiz</a></li>
-            <li><a href="/challenge">Défis</a></li>
+            <li><a href="/challenges">Défis</a></li>
             <li><a href="/about">À Propos</a></li>
           </ul>
         </nav>
