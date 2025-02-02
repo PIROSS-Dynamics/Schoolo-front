@@ -8,6 +8,9 @@ const Profile = () => {
   const [lessons, setLessons] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [quizResults, setQuizResults] = useState([]);
+  const [relationEmail, setRelationEmail] = useState('');
+  const [relationMessage, setRelationMessage] = useState(null);
+  const [relations, setRelations] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +31,7 @@ const Profile = () => {
           setRole(data.role);
         })
         .catch((error) => console.error(error));
+
     }
 
     // verify if it's a teacher to take the lessons and quizzes that he did
@@ -68,6 +72,12 @@ const Profile = () => {
         .then((resultsData) => setQuizResults(resultsData))
         .catch((error) => console.error(error));
     }
+
+    // Récupérer les relations
+    fetch(`http://localhost:8000/activity/api/user-relations/?user_id=${userId}`)
+    .then(response => response.json())
+    .then((data) => setRelations(data))  // Stocker les relations
+    .catch(error => console.error("Erreur récupération relations", error));
   }, []);
 
   const getRoleLabel = (role) => {
@@ -82,6 +92,30 @@ const Profile = () => {
         return 'Utilisateur';
     }
   };
+
+  const handleRelationRequest = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:8000/activity/api/relation-request/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        user_id: localStorage.getItem('id'),
+        email: relationEmail 
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        setRelationMessage({ type: 'error', text: data.error });
+      } else {
+        setRelationMessage({ type: 'success', text: 'Demande envoyée avec succès !' });
+      }
+    })
+    .catch(error => setRelationMessage({ type: 'error', text: 'Erreur envoi de la demande.' }));
+  };
+  
 
   const handleEditLesson = (lessonId) => {
     navigate(`/edit-lesson/${lessonId}`);
@@ -187,6 +221,87 @@ const Profile = () => {
         <p>Prénom: {user?.first_name}</p>
 
         <h2 className='relations'>Relations:</h2>
+        {(role === 'teacher' || role === 'parent') && (
+          <div className="relation-request">
+            <h3>Envoyer une demande de relation</h3>
+            <form onSubmit={handleRelationRequest}>
+              <input 
+                type="email" 
+                placeholder="Email de l'utilisateur" 
+                value={relationEmail} 
+                onChange={(e) => setRelationEmail(e.target.value)} 
+                required 
+              />
+              <button type="submit">Envoyer</button>
+            </form>
+            {relationMessage && <p className={relationMessage.type}>{relationMessage.text}</p>}
+          </div>
+        )}
+        {/* Si l'utilisateur est un professeur */}
+      {role === "teacher" && (
+        <div>
+          <h2>Élèves</h2>
+          {relations.length > 0 ? (
+            relations.map((relation) => (
+              <div key={relation.student.id} className="relation-item">
+                <p>{relation.student.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>Aucun élève.</p>
+          )}
+        </div>
+      )}
+
+      {/* Si l'utilisateur est un parent */}
+      {role === "parent" && (
+        <div>
+          <h2>Enfants</h2>
+          {relations.length > 0 ? (
+            relations.map((relation) => (
+              <div key={relation.student.id} className="relation-item">
+                <p>{relation.student.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>Aucun enfant.</p>
+          )}
+        </div>
+      )}
+
+      {/* Si l'utilisateur est un élève */}
+      {role === "student" && (
+        <div>
+          {/* Affichage des professeurs */}
+          <h2>Professeurs</h2>
+          {relations.filter(r => r.relation_type === "school").length > 0 ? (
+            relations
+              .filter(r => r.relation_type === "school")
+              .map((relation) => (
+                <div key={relation.sender.id} className="relation-item">
+                  <p>{relation.sender.name}</p>
+                </div>
+              ))
+          ) : (
+            <p>Aucun professeur.</p>
+          )}
+
+          {/* Affichage des parents */}
+          <h2>Parents</h2>
+          {relations.filter(r => r.relation_type === "parent").length > 0 ? (
+            relations
+              .filter(r => r.relation_type === "parent")
+              .map((relation) => (
+                <div key={relation.sender.id} className="relation-item">
+                  <p>{relation.sender.name}</p>
+                </div>
+              ))
+          ) : (
+            <p>Aucun parent.</p>
+          )}
+        </div>
+      )}
+
 
       </div>
 

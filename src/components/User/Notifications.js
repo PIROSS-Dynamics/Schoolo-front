@@ -1,39 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/User/Notifications.css';
 
-// Ajout de notifications supplémentaires avec des dates et heures
-const notificationsData = [
-  { id: 1, type: 'systeme', title: 'Marie est désormais une relation', description: 'Tu as accepté une relation avec Marie', read: false, time: '2025-02-01 12:34' },
-  { id: 2, type: 'message', title: 'Tu as un message de Alice', description: 'Ceci est un message.', read: false, time: '2025-02-01 13:20' },
-  { id: 3, type: 'relation', title: 'Tu as une demande de relation de Bob', description: 'Clique pour accepter ou refuser.', read: false, time: '2025-02-01 14:05' },
-  { id: 4, type: 'task', title: 'Nouvelle tâche de Carlos', description: 'Compléter la mission X.', read: false, time: '2025-02-01 15:30' },
-  { id: 5, type: 'systeme', title: 'Maintenance', description: 'Une maintenance est à venir', read: false, time: '2025-02-01 16:45' },
-  { id: 6, type: 'message', title: 'Tu as un message de David', description: 'Message urgent à lire.', read: false, time: '2025-02-02 10:10' },
-  { id: 7, type: 'relation', title: 'Demande de relation de Claire', description: 'Accepte ou refuse cette demande.', read: false, time: '2025-02-02 11:30' },
-  { id: 8, type: 'task', title: 'Mission à compléter', description: 'Nouvelle mission assignée.', read: false, time: '2025-02-02 12:00' },
-  { id: 9, type: 'systeme', title: 'Maintenance du serveur', description: 'Le serveur sera en maintenance.', read: false, time: '2025-02-02 12:45' },
-  { id: 10, type: 'message', title: 'Message de Emma', description: 'Ton message a été reçu.', read: false, time: '2025-02-02 13:00' },
-  { id: 11, type: 'message', title: 'Message de Lucas', description: 'Veux-tu discuter ?', read: false, time: '2025-02-02 14:10' },
-  { id: 12, type: 'relation', title: 'Demande de relation de Sophie', description: 'Une nouvelle demande de relation.', read: false, time: '2025-02-02 15:20' },
-  { id: 13, type: 'task', title: 'Nouveau challenge de travail', description: 'Compléter la tâche assignée.', read: false, time: '2025-02-02 16:35' },
-  { id: 14, type: 'systeme', title: 'Mise à jour importante', description: 'Une mise à jour du système est prévue.', read: false, time: '2025-02-02 17:50' },
-];
-
 const Notifications = () => {
-  const [notifications, setNotifications] = useState(notificationsData);
+  const [notifications, setNotifications] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupContent, setPopupContent] = useState('');
 
-  // Trier les notifications par date décroissante (plus récente en premier)
-  const sortedNotifications = [...notifications].sort((a, b) => new Date(b.time) - new Date(a.time));
+  useEffect(() => {
+    const userId = localStorage.getItem('id');
+
+    fetch(`http://localhost:8000/activity/api/notifications/?user_id=${userId}`)
+      .then(response => response.json())
+      .then(data => setNotifications(data))
+      .catch(error => console.error("Erreur récupération notifications", error));
+  }, []);
+
+  // Tri des notifications du plus récent au plus ancien
+  const sortedNotifications = [...notifications].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   const openPopup = (notification) => {
-    // Marquer la notification comme lue lors du premier clic
-    if (!notification.read) {
-      setNotifications(notifications.map((notif) =>
-        notif.id === notification.id ? { ...notif, read: true } : notif
-      ));
+    // Si la notification n'est pas déjà lue, on la marque comme lue localement
+    if (!notification.is_read) {
+      // Mettre à jour localement l'état de la notification en la marquant comme lue
+      const updatedNotifications = notifications.map((notif) =>
+        notif.id === notification.id ? { ...notif, is_read: true } : notif
+      );
+      setNotifications(updatedNotifications); // Met à jour l'état avec les notifications modifiées
+
+      // Effectuer la requête pour marquer la notification comme lue côté serveur
+      fetch(`http://localhost:8000/activity/api/notifications/${notification.id}/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: localStorage.getItem('id') })
+      })
+        .then(response => response.json())
+        .then(updatedNotification => {
+          // Assurer que l'état local est bien mis à jour avec la réponse du serveur
+          const finalNotifications = notifications.map(n =>
+            n.id === updatedNotification.id ? { ...n, is_read: true } : n
+          );
+          setNotifications(finalNotifications);
+        })
+        .catch(error => console.error("Erreur mise à jour notification", error));
     }
+
+    // Affichage du popup
     setShowPopup(true);
     setPopupContent(notification);
   };
@@ -44,13 +57,50 @@ const Notifications = () => {
   };
 
   const handleRelationAction = (action) => {
-    console.log(`${action} relation request`);
-    closePopup();
+    const userId = localStorage.getItem('id');
+    const notificationId = popupContent.id;
+
+    // Effectuer la requête pour accepter ou refuser la relation
+    fetch(`http://localhost:8000/activity/api/accept-relation/${notificationId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: action,
+        user_id: userId, // Passer l'ID de l'utilisateur pour l'acceptation
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Logique après acceptation (par exemple, mise à jour de la notification dans l'interface)
+        if (action === 'Accept') {
+          console.log("Relation acceptée");
+        } else {
+          console.log("Relation refusée");
+        }
+        closePopup();
+      })
+      .catch(error => console.error("Erreur acceptation/refus de relation", error));
   };
 
   const handleTaskAction = () => {
     console.log('Task completed');
     closePopup();
+  }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString); // Créer un objet Date à partir de la chaîne ISO
+    return date.toLocaleString('fr-FR', {
+      weekday: 'long', // Jour de la semaine complet
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false // 24 heures
+    });
   };
 
   return (
@@ -60,14 +110,12 @@ const Notifications = () => {
         {sortedNotifications.map((notification) => (
           <li
             key={notification.id}
-            className={`notif-item ${notification.read ? 'notif-read' : 'notif-unread'}`}
+            className={`notif-item ${notification.is_read ? 'notif-read' : 'notif-unread'}`}
             onClick={() => openPopup(notification)}
           >
             <span className="notif-title">{notification.title}</span>
-            <span className="notif-icon">
-              {notification.read ? '📨' : '✉️'}
-            </span>
-            <span className="notif-time">{notification.time}</span> {/* Affichage de l'heure */}
+            <span className="notif-icon">{notification.is_read ? '📨' : '✉️'}</span>
+            <span className="notif-time">{formatDate(notification.timestamp)}</span>
           </li>
         ))}
       </ul>
