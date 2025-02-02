@@ -220,23 +220,7 @@ const Profile = () => {
         <p>Nom: {user?.last_name}</p>
         <p>Prénom: {user?.first_name}</p>
 
-        <h2 className='relations'>Relations:</h2>
-        {(role === 'teacher' || role === 'parent') && (
-          <div className="relation-request">
-            <h3>Envoyer une demande de relation</h3>
-            <form onSubmit={handleRelationRequest}>
-              <input 
-                type="email" 
-                placeholder="Email de l'utilisateur" 
-                value={relationEmail} 
-                onChange={(e) => setRelationEmail(e.target.value)} 
-                required 
-              />
-              <button type="submit">Envoyer</button>
-            </form>
-            {relationMessage && <p className={relationMessage.type}>{relationMessage.text}</p>}
-          </div>
-        )}
+
         {/* Si l'utilisateur est un professeur */}
       {role === "teacher" && (
         <div>
@@ -245,6 +229,8 @@ const Profile = () => {
             relations.map((relation) => (
               <div key={relation.student.id} className="relation-item">
                 <p>{relation.student.name}</p>
+                <button>Voir</button>
+                <button>Message</button>
               </div>
             ))
           ) : (
@@ -261,6 +247,8 @@ const Profile = () => {
             relations.map((relation) => (
               <div key={relation.student.id} className="relation-item">
                 <p>{relation.student.name}</p>
+                <button>Voir</button>
+                <button>Message</button>
               </div>
             ))
           ) : (
@@ -280,6 +268,8 @@ const Profile = () => {
               .map((relation) => (
                 <div key={relation.sender.id} className="relation-item">
                   <p>{relation.sender.name}</p>
+                  <button>Voir</button>
+                  <button>Message</button>
                 </div>
               ))
           ) : (
@@ -294,6 +284,8 @@ const Profile = () => {
               .map((relation) => (
                 <div key={relation.sender.id} className="relation-item">
                   <p>{relation.sender.name}</p>
+                  <button>Voir</button>
+                  <button>Message</button>
                 </div>
               ))
           ) : (
@@ -301,6 +293,23 @@ const Profile = () => {
           )}
         </div>
       )}
+
+      {(role === 'teacher' || role === 'parent') && (
+          <div className="relation-request">
+            <h2>Envoyer une demande de relation</h2>
+            <form onSubmit={handleRelationRequest}>
+              <input 
+                type="email" 
+                placeholder="Email de l'utilisateur" 
+                value={relationEmail} 
+                onChange={(e) => setRelationEmail(e.target.value)} 
+                required 
+              />
+              <button type="submit">Envoyer</button>
+            </form>
+            {relationMessage && <p className={relationMessage.type}>{relationMessage.text}</p>}
+          </div>
+        )}
 
 
       </div>
@@ -358,7 +367,7 @@ const Profile = () => {
             <div className="profile-cards-container">
               {quizResults.length > 0 ? (
                 quizResults.map((result) => (
-                  <div key={result.quizz_title} className="profile-card profile-quiz-result-card">
+                  <div key={result.quizz_title} className="quizz-results-card">
                     <h3>{result.quizz_title}</h3>
                     <p>Score: {result.score} / {result.total}</p>
                     <p>Date: {new Date(result.date).toLocaleString()}</p>

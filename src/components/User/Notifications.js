@@ -6,13 +6,19 @@ const Notifications = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupContent, setPopupContent] = useState('');
 
-  useEffect(() => {
+   // Cette fonction permet de récupérer les notifications
+   const fetchNotifications = () => {
     const userId = localStorage.getItem('id');
 
     fetch(`http://localhost:8000/activity/api/notifications/?user_id=${userId}`)
       .then(response => response.json())
       .then(data => setNotifications(data))
       .catch(error => console.error("Erreur récupération notifications", error));
+  };
+
+  useEffect(() => {
+    // Appeler la fonction pour charger les notifications au démarrage
+    fetchNotifications();
   }, []);
 
   // Tri des notifications du plus récent au plus ancien
@@ -54,6 +60,7 @@ const Notifications = () => {
   const closePopup = () => {
     setShowPopup(false);
     setPopupContent('');
+    fetchNotifications();
   };
 
   const handleRelationAction = (action) => {
@@ -128,7 +135,7 @@ const Notifications = () => {
             {popupContent.type === 'relation' && (
               <div>
                 <button onClick={() => handleRelationAction('Accept')}>Accepter</button>
-                <button onClick={() => handleRelationAction('Refuse')}>Refuser</button>
+                <button onClick={closePopup}>Refuser</button>
               </div>
             )}
             {popupContent.type === 'task' && (
