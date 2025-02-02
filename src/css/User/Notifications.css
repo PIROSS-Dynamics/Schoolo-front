@@ -51,18 +51,18 @@
   
   /* Notification non lue */
   .notif-item.notif-unread {
-    background-color: #e0f7fa; /* Assure que la notification non lue est visible */
+    background-color: #5fd0ef; /* Assure que la notification non lue est visible */
   }
   
   /* Notification lue */
   .notif-item.notif-read {
-    background-color: #f3f3f3; /* Pour les notifications lues */
+    background-color: #ffffff; /* Pour les notifications lues */
   }
   
   /* Titre de la notification */
   .notif-title {
     font-weight: bold;
-    color: #333;
+    color: #000000;
     font-size: 1em;
     flex-grow: 1; /* Permet au titre de prendre tout l'espace disponible */
   }
@@ -76,7 +76,7 @@
   /* Affichage de la date/heure */
   .notif-time {
     font-size: 0.85em;
-    color: #888;
+    color: #000000;
     margin-left: 10px;
   }
   
