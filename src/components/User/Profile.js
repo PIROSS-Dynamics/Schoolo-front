@@ -11,6 +11,8 @@ const Profile = () => {
   const [relationEmail, setRelationEmail] = useState('');
   const [relationMessage, setRelationMessage] = useState(null);
   const [relations, setRelations] = useState([]);
+  const [messagePopup, setMessagePopup] = useState({ isOpen: false, receiver: null, receiverName: null });
+  const [messageContent, setMessageContent] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -115,6 +117,43 @@ const Profile = () => {
     })
     .catch(error => setRelationMessage({ type: 'error', text: 'Erreur envoi de la demande.' }));
   };
+
+  
+
+  const openMessagePopup = (receiver, receiverName) => {
+    setMessagePopup({ isOpen: true, receiver , receiverName});
+  };
+
+  const handleMessage = (receiverId, receiverName) => {
+    openMessagePopup({ id: receiverId , name :receiverName});
+  };
+  
+
+  const closeMessagePopup = () => {
+    setMessagePopup({ isOpen: false, receiver: null , receiverName: null});
+    setMessageContent("");
+  };
+
+  const sendMessage = () => {
+    if (!messageContent.trim()) return;
+
+    fetch("http://localhost:8000/activity/api/send-message/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sender_id: localStorage.getItem("id"),
+        receiver_id: messagePopup.receiver.id,
+        message: messageContent,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data.message);
+        closeMessagePopup();
+      })
+      .catch(() => alert("Erreur lors de l'envoi du message."));
+  };
+
   
 
   const handleEditLesson = (lessonId) => {
@@ -221,78 +260,78 @@ const Profile = () => {
         <p>Prénom: {user?.first_name}</p>
 
 
-        {/* Si l'utilisateur est un professeur */}
-      {role === "teacher" && (
-        <div>
-          <h2>Élèves</h2>
-          {relations.length > 0 ? (
-            relations.map((relation) => (
-              <div key={relation.student.id} className="relation-item">
-                <p>{relation.student.name}</p>
-                <button>Voir</button>
-                <button>Message</button>
-              </div>
-            ))
-          ) : (
-            <p>Aucun élève.</p>
-          )}
-        </div>
-      )}
-
-      {/* Si l'utilisateur est un parent */}
-      {role === "parent" && (
-        <div>
-          <h2>Enfants</h2>
-          {relations.length > 0 ? (
-            relations.map((relation) => (
-              <div key={relation.student.id} className="relation-item">
-                <p>{relation.student.name}</p>
-                <button>Voir</button>
-                <button>Message</button>
-              </div>
-            ))
-          ) : (
-            <p>Aucun enfant.</p>
-          )}
-        </div>
-      )}
-
-      {/* Si l'utilisateur est un élève */}
-      {role === "student" && (
-        <div>
-          {/* Affichage des professeurs */}
-          <h2>Professeurs</h2>
-          {relations.filter(r => r.relation_type === "school").length > 0 ? (
-            relations
-              .filter(r => r.relation_type === "school")
-              .map((relation) => (
-                <div key={relation.sender.id} className="relation-item">
-                  <p>{relation.sender.name}</p>
+      {/* Si l'utilisateur est un professeur */}
+        {role === "teacher" && (
+          <div>
+            <h2>Élèves</h2>
+            {relations.length > 0 ? (
+              relations.map((relation) => (
+                <div key={relation.student.id} className="relation-item">
+                  <p>{relation.student.name}</p>
                   <button>Voir</button>
-                  <button>Message</button>
+                  <button onClick={() => handleMessage(relation.student.id, relation.student.name)}>Message</button>
                 </div>
               ))
-          ) : (
-            <p>Aucun professeur.</p>
-          )}
+            ) : (
+              <p>Aucun élève.</p>
+            )}
+          </div>
+        )}
 
-          {/* Affichage des parents */}
-          <h2>Parents</h2>
-          {relations.filter(r => r.relation_type === "parent").length > 0 ? (
-            relations
-              .filter(r => r.relation_type === "parent")
-              .map((relation) => (
-                <div key={relation.sender.id} className="relation-item">
-                  <p>{relation.sender.name}</p>
+        {/* Si l'utilisateur est un parent */}
+        {role === "parent" && (
+          <div>
+            <h2>Enfants</h2>
+            {relations.length > 0 ? (
+              relations.map((relation) => (
+                <div key={relation.student.id} className="relation-item">
+                  <p>{relation.student.name}</p>
                   <button>Voir</button>
-                  <button>Message</button>
+                  <button onClick={() => handleMessage(relation.student.id, relation.student.name)}>Message</button>
                 </div>
               ))
-          ) : (
-            <p>Aucun parent.</p>
-          )}
-        </div>
-      )}
+            ) : (
+              <p>Aucun enfant.</p>
+            )}
+          </div>
+        )}
+
+        {/* Si l'utilisateur est un élève */}
+        {role === "student" && (
+          <div>
+            {/* Affichage des professeurs */}
+            <h2>Professeurs</h2>
+            {relations.filter(r => r.relation_type === "school").length > 0 ? (
+              relations
+                .filter(r => r.relation_type === "school")
+                .map((relation) => (
+                  <div key={relation.sender.id} className="relation-item">
+                    <p>{relation.sender.name}</p>
+                    <button>Voir</button>
+                    <button onClick={() => handleMessage(relation.sender.id, relation.sender.name)}>Message</button>
+                  </div>
+                ))
+            ) : (
+              <p>Aucun professeur.</p>
+            )}
+
+            {/* Affichage des parents */}
+            <h2>Parents</h2>
+            {relations.filter(r => r.relation_type === "parent").length > 0 ? (
+              relations
+                .filter(r => r.relation_type === "parent")
+                .map((relation) => (
+                  <div key={relation.sender.id} className="relation-item">
+                    <p>{relation.sender.name}</p>
+                    <button onClick={() => handleMessage(relation.sender.id, relation.sender.name)}>Message</button>
+                  </div>
+                ))
+            ) : (
+              <p>Aucun parent.</p>
+            )}
+          </div>
+        )}
+
 
       {(role === 'teacher' || role === 'parent') && (
           <div className="relation-request">
@@ -380,6 +419,21 @@ const Profile = () => {
           </div>
         )}
       </div>
+      {messagePopup.isOpen && (
+      <>
+        <div className="message-popup-overlay" onClick={closeMessagePopup}></div>
+        <div className="message-popup">
+          <h3>Envoyer un message</h3>
+          <textarea 
+            value={messageContent} 
+            onChange={(e) => setMessageContent(e.target.value)} 
+            placeholder="Écrivez votre message..."
+          />
+          <button onClick={sendMessage}>Envoyer</button>
+          <button onClick={closeMessagePopup}>Annuler</button>
+        </div>
+      </>
+      )}
     </div>
   );
 };
