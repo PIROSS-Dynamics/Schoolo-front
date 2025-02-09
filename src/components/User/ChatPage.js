@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import EmojiPicker from "emoji-picker-react";
 import { database } from "../../firebase";
 import { ref, onValue, push, set } from "firebase/database";
 import '../../css/User/ChatPage.css';
+
+
 
 const ChatPage = () => {
   const userId = localStorage.getItem("id");
@@ -11,6 +14,9 @@ const ChatPage = () => {
   const [messageContent, setMessageContent] = useState("");
   const [recentMessages, setRecentMessages] = useState({});
   const messagesEndRef = useRef(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef(null);
+
 
   useEffect(() => {
     fetch(`http://localhost:8000/activity/api/user-relations/?user_id=${userId}`)
@@ -28,6 +34,7 @@ const ChatPage = () => {
       })
       .catch(error => console.error("Erreur récupération relations", error));
   }, [userId]);
+
 
   // Écoute des nouveaux messages pour tous les contacts
   useEffect(() => {
@@ -113,6 +120,24 @@ const ChatPage = () => {
       .catch((error) => console.error("Erreur envoi message", error));
   };
 
+  
+  const addEmoji = (emoji) => {
+    setMessageContent((prev) => prev + ` <span role="img" aria-label="${emoji.names[0]}">${emoji.emoji}</span>`);
+  };
+  
+
+   // Ferme le selecteur d'emoji en casde clique en dehors
+   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className="chat-container">
       <div className="chat-sidebar">
@@ -142,7 +167,8 @@ const ChatPage = () => {
                   key={index}
                   className={`message ${msg.sender === userId ? "sent" : "received"}`}
                 >
-                  <p>{msg.description}</p>
+                  <p dangerouslySetInnerHTML={{ __html: msg.description }}></p>
+
                   <span className="timestamp">{new Date(msg.timestamp).toLocaleTimeString()}</span>
                 </div>
               ))}
@@ -150,14 +176,33 @@ const ChatPage = () => {
             </div>
 
             <div className="chat-input">
-              <input
-                type="text"
-                value={messageContent}
-                onChange={(e) => setMessageContent(e.target.value)}
-                placeholder="Écrivez un message..."
-              />
-              <button onClick={sendMessage}>Envoyer</button>
-            </div>
+
+            {showEmojiPicker && (
+              <div ref={emojiPickerRef} className="emoji-picker active">
+                <EmojiPicker 
+                  onEmojiClick={addEmoji} 
+                  searchDisabled={true} // Désactive la barre de recherche
+                  skinTonesDisabled={true} // Désactive la sélection du ton de peau
+                  previewConfig={{ showPreview: false }} // Désactive l'aperçu des emojis
+                  // categories={[]} // Désactive la sélection par catégories
+                />
+              </div>
+            )}
+
+            <input
+              type="text"
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
+              placeholder="Écrivez un message..."
+            />
+            <button className="emoji-button" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+              <span role="img" aria-label="emoji">🙂</span>
+            </button>
+
+            <button onClick={sendMessage}>Envoyer</button>
+          </div>
+
+
           </>
         ) : (
           <p>Sélectionnez un contact pour commencer à discuter.</p>
