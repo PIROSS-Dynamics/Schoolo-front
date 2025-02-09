@@ -1,78 +1,71 @@
 import React, { useState, useEffect } from "react";
 import { database } from "../../firebase";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, push, set } from "firebase/database";
 import '../../css/User/ChatPage.css';
 
 const ChatPage = () => {
   const userId = localStorage.getItem("id");
-  const userRole = localStorage.getItem("role");
   const [relations, setRelations] = useState([]);
   const [messages, setMessages] = useState([]);
   const [selectedContact, setSelectedContact] = useState(null);
   const [messageContent, setMessageContent] = useState("");
 
-  // Charger les relations depuis l'API
   useEffect(() => {
     fetch(`http://localhost:8000/activity/api/user-relations/?user_id=${userId}`)
       .then(response => response.json())
       .then((data) => {
         const formattedRelations = data.map(relation => {
-          let relatedUser = relation.teacher || relation.parent || relation.student;
-          return relatedUser ? { id: relatedUser.id, username: relatedUser.name } : null;
-        }).filter(user => user !== null);
-
+          if (relation.student.id === parseInt(userId)) {
+            // Si l'utilisateur est un étudiant, récupérer le sender (parent ou professeur)
+            return { id: relation.sender.id, username: relation.sender.name };
+          } else {
+            // Si l'utilisateur est un professeur ou un parent, récupérer l'étudiant
+            return { id: relation.student.id, username: relation.student.name};
+          }
+        });
+  
         setRelations(formattedRelations);
       })
       .catch(error => console.error("Erreur récupération relations", error));
-  }, [userId, userRole]);
+  }, [userId]);
+  
 
-  // Charger les messages depuis la base de données (notifications de type message)
+  // Récupérer les messages en temps réel depuis Firebase
   useEffect(() => {
     if (selectedContact) {
-      fetch(`http://localhost:8000/activity/api/notifications/?user_id=${userId}`)
-        .then(response => response.json())
-        .then((data) => {
-          console.log("Données reçues du back :", data); // Vérifier ce que le back envoie
-          
-          const chatMessages = data.filter(
-            (notif) => notif.type === 'message' || notif.type === 'system' && 
-            ((notif.receiver === selectedContact.id) ||
-            (notif.sender === selectedContact.id))
-          );   
-                 
-          console.log("Messages filtrés :", chatMessages); // Vérifier si le filtre fonctionne
-          console.log(selectedContact.id)
-  
-          setMessages(chatMessages);
-        })
-        .catch(error => console.error("Erreur récupération messages", error));
+      const conversationId = userId < selectedContact.id ? `${userId}_${selectedContact.id}` : `${selectedContact.id}_${userId}`;
+      const messagesRef = ref(database, `messages/${conversationId}`);
+      
+      const unsubscribe = onValue(messagesRef, (snapshot) => {
+        const data = snapshot.val();
+        const chatMessages = data ? Object.values(data) : [];
+        setMessages(chatMessages);
+      });
+
+      return () => unsubscribe(); // Nettoyage lors du changement de contact
     }
   }, [selectedContact, userId]);
-  
 
-  // Envoyer un message
+  // Envoyer un message à Firebase
   const sendMessage = () => {
     if (!messageContent.trim() || !selectedContact) return;
     
-    fetch("http://localhost:8000/activity/api/send-message/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        sender_id: userId,
-        receiver_id: selectedContact.id,
-        message: messageContent,
-      }),
+    const conversationId = userId < selectedContact.id ? `${userId}_${selectedContact.id}` : `${selectedContact.id}_${userId}`;
+    const messagesRef = ref(database, `messages/${conversationId}`);
+    const newMessageRef = push(messagesRef);
+    
+    set(newMessageRef, {
+      sender: userId,
+      receiver: selectedContact.id,
+      description: messageContent,
+      timestamp: Date.now()
     })
-    .then(response => response.json())
-    .then(() => {
-      setMessageContent("");
-    })
+    .then(() => setMessageContent(""))
     .catch(error => console.error("Erreur envoi message", error));
   };
 
   return (
     <div className="chat-container">
-      {/* Liste des contacts */}
       <div className="chat-sidebar">
         <h2>Contacts</h2>
         <ul>
@@ -88,25 +81,21 @@ const ChatPage = () => {
         </ul>
       </div>
 
-      {/* Zone de chat */}
       <div className="chat-messages">
         {selectedContact ? (
           <>
             <h2>Chat avec {selectedContact.username}</h2>
             <div className="messages-list">
-            {messages.map((msg, index) => (
+              {messages.map((msg, index) => (
                 <div 
-                key={index} 
-                className={`message ${msg.type === 'message' ? "receveid" : "sent"}`}
+                  key={index} 
+                  className={`message ${msg.sender === userId ? "sent" : "received"}`}
                 >
-                <p>{msg.description}</p>
-                <span className="timestamp">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                  <p>{msg.description}</p>
+                  <span className="timestamp">{new Date(msg.timestamp).toLocaleTimeString()}</span>
                 </div>
-            ))}
+              ))}
             </div>
-
-
-            {/* Champ d'envoi de message */}
             <div className="chat-input">
               <input
                 type="text"
