@@ -21,6 +21,7 @@ import Notifications from './components/User/Notifications';
 import EditQuizz from './components/Quizz/EditQuizz';
 import Contribution from './components/Contribution';
 import GuessWord from './components/Challenges/GuessWord';
+import ChatPage from './components/User/ChatPage';
 
 
 function AppContent() {
@@ -86,6 +87,7 @@ function AppContent() {
           {/* User routes */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications/>} />
+          <Route path="/chat" element={<ChatPage/>} />
 
             
         </Routes>

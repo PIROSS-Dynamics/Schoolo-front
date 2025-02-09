@@ -1,22 +1,22 @@
-// src/firebase.js
-import { initializeApp } from 'firebase/app';
-import { getStorage } from 'firebase/storage';
-import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getDatabase } from "firebase/database";
 
-// Firebase config
+// Configuration Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyB2ACY7ivRcopqedbhXTbW2ijbVNptcvWQ",
-  authDomain: "bookmyevent-piross.firebaseapp.com",
-  projectId: "bookmyevent-piross",
-  storageBucket: "bookmyevent-piross.appspot.com",
-  messagingSenderId: "697272212013",
-  appId: "1:697272212013:web:352a2ccb633b1ebdc5f6a4",
-  measurementId: "G-JCC00C4170"
+  apiKey: "AIzaSyASlfVCJmN_eeZFNSzTqU4MOnrOWHgiysk",
+  authDomain: "chatschool-6585e.firebaseapp.com",
+  databaseURL: "https://chatschool-6585e-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "chatschool-6585e",
+  storageBucket: "chatschool-6585e.appspot.com", // ✅ Correction ici
+  messagingSenderId: "827308843030",
+  appId: "1:827308843030:web:2525b97b720a3cd19e1537",
+  measurementId: "G-DQ3QZ1339E"
 };
 
-// Initialization
+// Initialisation de Firebase
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
 const analytics = getAnalytics(app);
+const database = getDatabase(app); // ✅ Ajout pour Firebase Database
 
-export { storage };
+export { analytics, database };
