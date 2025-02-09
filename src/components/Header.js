@@ -122,7 +122,7 @@ const Header = () => {
                     <a href="/notifications">Notifications</a>
                     {unreadCount > 0 && <span className="notif-badge">{unreadCount}</span>}
                   </li>
-                  <li><a href="/chat">Messagerie</a></li>
+                  <li><a href="/chat">Conversations</a></li>
                   <li><button onClick={handleLogout}>Déconnexion</button></li>
                 </ul>
               </div>

@@ -335,11 +335,11 @@ const Profile = () => {
 
       {(role === 'teacher' || role === 'parent') && (
           <div className="relation-request">
-            <h2>Envoyer une demande de relation</h2>
+            <h2>Envoyer une demande de relation à un élève</h2>
             <form onSubmit={handleRelationRequest}>
               <input 
                 type="email" 
-                placeholder="Email de l'utilisateur" 
+                placeholder="Email de l'élève" 
                 value={relationEmail} 
                 onChange={(e) => setRelationEmail(e.target.value)} 
                 required 
