@@ -4,8 +4,6 @@ import { database } from "../../firebase";
 import { ref, onValue, push, set } from "firebase/database";
 import '../../css/User/ChatPage.css';
 
-
-
 const ChatPage = () => {
   const userId = localStorage.getItem("id");
   const [relations, setRelations] = useState([]);
@@ -16,7 +14,6 @@ const ChatPage = () => {
   const messagesEndRef = useRef(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiPickerRef = useRef(null);
-
 
   useEffect(() => {
     fetch(`http://localhost:8000/activity/api/user-relations/?user_id=${userId}`)
@@ -29,17 +26,13 @@ const ChatPage = () => {
             return { id: relation.student.id, username: relation.student.name };
           }
         });
-
         setRelations(formattedRelations);
       })
       .catch(error => console.error("Erreur récupération relations", error));
   }, [userId]);
 
-
-  // Écoute des nouveaux messages pour tous les contacts
   useEffect(() => {
     if (!relations.length) return;
-
     const unsubscribes = relations.map((contact) => {
       const conversationId =
         userId < contact.id ? `${userId}_${contact.id}` : `${contact.id}_${userId}`;
@@ -50,33 +43,26 @@ const ChatPage = () => {
         if (data) {
           const chatMessages = Object.values(data);
           const lastMessage = chatMessages[chatMessages.length - 1];
-
           if (lastMessage.sender !== userId) {
             const now = Date.now();
             const diffMinutes = (now - lastMessage.timestamp) / (1000 * 60);
-
             let status = null;
             if (diffMinutes < 10) {
-              status = "green"; // 🟢 Moins de 10 min
+              status = "green"; 
             } else if (diffMinutes < 60) {
-              status = "orange"; // 🟠 Moins d'une heure
+              status = "orange"; 
             }
-
             setRecentMessages((prev) => ({
               ...prev,
               [contact.id]: status,
             }));
-
-            
           }
         }
       });
     });
-
-    return () => unsubscribes.forEach((unsub) => unsub()); // Nettoyage
+    return () => unsubscribes.forEach((unsub) => unsub());
   }, [relations, userId]);
 
-  // Récupérer les messages en temps réel pour le contact sélectionné
   useEffect(() => {
     if (selectedContact) {
       const conversationId =
@@ -88,28 +74,23 @@ const ChatPage = () => {
         const chatMessages = data ? Object.values(data) : [];
         setMessages(chatMessages);
   
-        // Faire défiler vers le bas après la mise à jour des messages
         setTimeout(() => {
           if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
           }
         }, 100);
-        
       });
   
       return () => unsubscribe();
     }
   }, [selectedContact, userId]);
 
-  // Envoyer un message
   const sendMessage = () => {
     if (!messageContent.trim() || !selectedContact) return;
-
     const conversationId =
       userId < selectedContact.id ? `${userId}_${selectedContact.id}` : `${selectedContact.id}_${userId}`;
     const messagesRef = ref(database, `messages/${conversationId}`);
     const newMessageRef = push(messagesRef);
-
     set(newMessageRef, {
       sender: userId,
       receiver: selectedContact.id,
@@ -120,20 +101,16 @@ const ChatPage = () => {
       .catch((error) => console.error("Erreur envoi message", error));
   };
 
-  
   const addEmoji = (emoji) => {
-    setMessageContent((prev) => prev + ` <span role="img" aria-label="${emoji.names[0]}">${emoji.emoji}</span>`);
+    setMessageContent((prev) => prev + emoji.emoji);
   };
-  
 
-   // Ferme le selecteur d'emoji en casde clique en dehors
-   useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
         setShowEmojiPicker(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -156,53 +133,37 @@ const ChatPage = () => {
           ))}
         </ul>
       </div>
-
       <div className="chat-messages">
         {selectedContact ? (
           <>
             <h2>Conversation avec {selectedContact.username}</h2>
             <div className="messages-list">
               {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`message ${msg.sender === userId ? "sent" : "received"}`}
-                >
+                <div key={index} className={`message ${msg.sender === userId ? "sent" : "received"}`}>
                   <p dangerouslySetInnerHTML={{ __html: msg.description }}></p>
-
                   <span className="timestamp">{new Date(msg.timestamp).toLocaleTimeString()}</span>
                 </div>
               ))}
-              <div ref={messagesEndRef}></div> {/* Permet de scroller en bas */}
+              <div ref={messagesEndRef}></div>
             </div>
-
             <div className="chat-input">
-
-            {showEmojiPicker && (
-              <div ref={emojiPickerRef} className="emoji-picker active">
-                <EmojiPicker 
-                  onEmojiClick={addEmoji} 
-                  searchDisabled={true} // Désactive la barre de recherche
-                  skinTonesDisabled={true} // Désactive la sélection du ton de peau
-                  previewConfig={{ showPreview: false }} // Désactive l'aperçu des emojis
-                  // categories={[]} // Désactive la sélection par catégories
-                />
-              </div>
-            )}
-
-            <input
-              type="text"
-              value={messageContent}
-              onChange={(e) => setMessageContent(e.target.value)}
-              placeholder="Écrivez un message..."
-            />
-            <button className="emoji-button" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-              <span role="img" aria-label="emoji">🙂</span>
-            </button>
-
-            <button onClick={sendMessage}>Envoyer</button>
-          </div>
-
-
+              {showEmojiPicker && (
+                <div ref={emojiPickerRef} className="emoji-picker active">
+                  <EmojiPicker onEmojiClick={addEmoji} searchDisabled={true} skinTonesDisabled={true} previewConfig={{ showPreview: false }} />
+                </div>
+              )}
+              <input
+                type="text"
+                value={messageContent}
+                onChange={(e) => setMessageContent(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                placeholder="Écrivez un message..."
+              />
+              <button className="emoji-button" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                <span role="img" aria-label="emoji">🙂</span>
+              </button>
+              <button onClick={sendMessage}>Envoyer</button>
+            </div>
           </>
         ) : (
           <p>Sélectionnez un contact pour commencer à discuter.</p>
