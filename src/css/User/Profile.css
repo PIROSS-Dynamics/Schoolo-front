@@ -142,3 +142,131 @@
 .relations{
   margin-top: 100px;
 }
+
+.relation-item{
+  max-width: 200px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    color: #fffdfd;
+    background-color: #4f46ff;
+    text-align: center;
+}
+
+.relation-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.quizz-results-card{
+  max-width: 200px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    color: #fffdfd;
+    background-color: #feb71b;
+    text-align: center;
+}
+
+.quizz-results-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style général de la pop-up */
+.message-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  max-width: 90%; /* Évite que la pop-up soit trop large sur petits écrans */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center; /* Centre les éléments horizontalement */
+}
+
+/* Fond semi-transparent derrière la pop-up */
+.message-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+
+/* Titre de la pop-up */
+.message-popup h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  width: 100%; /* Assure que le titre prenne toute la largeur */
+}
+
+/* Style du textarea pour le message */
+.message-popup textarea {
+  width: 100%;
+  max-width: 100%; /* Empêche de dépasser */
+  height: 150px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  resize: none;
+  box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur */
+}
+
+/* Boutons d'envoi et d'annulation */
+.message-popup .button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.message-popup button {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 5px; /* Espacement entre les boutons */
+}
+
+.message-popup button:nth-child(1) {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.message-popup button:nth-child(2) {
+  background-color: #f44336;
+  color: white;
+}
+
+.message-popup button:hover {
+  opacity: 0.8;
+}
+
+.message-popup button:nth-child(1):hover {
+  background-color: #45a049;
+}
+
+.message-popup button:nth-child(2):hover {
+  background-color: #e53935;
+}

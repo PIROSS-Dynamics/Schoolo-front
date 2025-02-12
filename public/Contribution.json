@@ -1,0 +1,225 @@
+{
+    "name": "",
+    "level": 0,
+    "children": [
+      {
+        "name": "Frontend",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Home",
+                "level": 2,
+                "children" : [
+                    {
+                        "name": "Carousel",
+                        "level": 3,
+                        "worker": ["Ronan BESNARD", "Piravine JEYAMOHAN"]
+                    },
+                    {
+                        "name": "Subject Choice",
+                        "level": 3,
+                        "worker": ["Ronan BESNARD", "Piravine JEYAMOHAN"]
+                        
+                    }
+                    
+                ]
+            },
+            { 
+                "name": "Quiz",
+                "level": 2,
+                "children": [
+                    {
+                        "name": "Barre recherche Quiz",
+                        "level": 3,
+                        "worker": ["Romain CERNON"]
+                        
+                    },
+                    {
+                        "name": "Liste Quiz",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Ronan BESNARD"]
+                        
+                    },
+                    {
+                        "name": "Jouer Quiz",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN","Ronan BESNARD"]
+                        
+                    },
+                    {
+                        "name": "Ajouter un Quiz",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN"]
+                        
+                    }
+                ]
+            },
+            { 
+                "name": "Challenges",
+                "level": 2,
+                "worker": ["Piravine"]
+               
+            },
+            { 
+                "name": "Cours",
+                "level": 2,
+                "children": [
+                    {
+                        "name": "Barre recherche ",
+                        "level": 3,
+                        "worker": ["Hossein ZAER"]
+                        
+                    },
+                    {
+                        "name": "Liste par matières",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Ronan BESNARD"]
+                        
+                    },
+                    {
+                        "name": "Contenu Cours",
+                        "level": 3,
+                        "worker": ["Ronan BESNARD","Piravine JEYAMOHAN"]
+                        
+                    }
+                ]
+            },
+            { 
+                "name": "Header",
+                "level": 2,
+                "worker": ["Ronan BESNARD"]
+            },
+            { 
+                "name": "Footer",
+                "level": 2,
+                "worker": ["Ronan BESNARD"]
+            },
+            { 
+                "name": "About",
+                "level": 2,
+                "worker": ["Ronan BESNARD","Piravine JEYAMOHAN"]
+              
+            },
+            { 
+                "name": "Profil",
+                "level": 2,
+                "worker": ["Hossein ZAER","Piravine JEYAMOHAN","Ronan BESNARD"]
+            },
+            { 
+                "name": "Connexion / Inscription",
+                "level": 2,
+                "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+            }
+        ]
+      },
+      {
+        "name": "Backend",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Leçons",
+                "level": 2,
+                "children": [
+                    { 
+                        "name": "Création et consultation",
+                        "level": 3,
+                        
+                        "worker": ["Piravine JEYAMOHAN", "Ronan BESNARD"]
+                    },
+                    { 
+                        "name": "Suppression le créateur",
+                        "level": 3,
+                        "worker": ["Ronan BESNARD"]
+                    },
+                    { 
+                        "name": "Modification le créateur",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+                    }
+                ]
+            },
+            { 
+                "name": "Quizz",
+                "level": 2,
+                "children": [
+                    { 
+                        "name": "Création et jouabilité",
+                        "level": 3,
+                        
+                        "worker": ["Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Suppression par créateur",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Modification par créateur",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+                    }
+                ]
+            },
+            { 
+                "name": "Interface utilisateur",
+                "level": 2,
+                "children": [
+                    { 
+                        "name": "Connexion / Inscription",
+                        "level": 3,
+                        
+                        "worker": ["Hossein Zaer", "Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Profil",
+                        "level": 3,
+                        "worker": ["Hossein ZAER", "Piravine JEYAMOHAN"]
+                    },
+                    { 
+                        "name": "Liste objets crées",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+                    },
+                    { 
+                        "name": "Résultats quizz",
+                        "level": 3,
+                        "worker": ["Piravine JEYAMOHAN"]
+                    }
+                ]
+            }
+        ]
+      },
+      {
+        "name": "Tests et Github",
+        "level": 1,
+        "children": [
+            { 
+                "name": "Tests unitaires",
+                "level": 2,
+                "worker": ["Romain CERNON"]
+            },
+            { 
+                "name": "Tests d'intégrations",
+                "level": 2,
+                "worker": ["Romain CERNON"]
+            },
+            { 
+                "name": "Intégration continue",
+                "level": 2,
+                "worker": ["Piravine JEYAMOHAN", "Hossein ZAER"]
+            },
+            { 
+                "name": "Tests fonctionnels",
+                "level": 2,
+                "worker": ["Ronan BESNARD","Piravine JEYAMOHAN","Hossein ZAER","Romain CERNON"]
+            },
+            { 
+                "name": "Documentation",
+                "level": 2,
+                "worker": ["Piravine JEYAMOHAN", "Romain CERNON"]
+            }
+        ]
+      }
+    ]
+  }
+  

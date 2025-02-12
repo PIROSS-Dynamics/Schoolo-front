@@ -1,0 +1,37 @@
+name: Git Fame Report (Front-end)
+
+on:
+  push:
+    branches:
+      - main  # S'exécute uniquement sur un push sur main
+
+jobs:
+  git-fame:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Récupérer tout l'historique et toutes les branches
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install git-fame
+        run: pip install git-fame
+
+      - name: Generate git-fame report
+        run: git-fame --format=markdown > git_fame_report_front.md
+
+      - name: Upload Git Fame report as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: git-fame-report-front
+          path: git_fame_report_front.md
+          retention-days: 30  # Garde le fichier dispo 30 jours
+
+      - name: Display git-fame output
+        run: git-fame

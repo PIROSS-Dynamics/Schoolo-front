@@ -17,8 +17,14 @@ import ChallengeList from './components/Challenges/ChallengeList';
 import About from './components/About';
 import Auth from './components/Auth'; 
 import Profile from './components/User/Profile';
+import Notifications from './components/User/Notifications';
 import EditQuizz from './components/Quizz/EditQuizz';
+<<<<<<< HEAD
 import Calendar from './components/Calendrier/Calendrier';
+=======
+import Contribution from './components/Contribution';
+import GuessWord from './components/Challenges/GuessWord';
+>>>>>>> develop
 
 
 function AppContent() {
@@ -64,20 +70,34 @@ function AppContent() {
           <Route path="/edit-quiz/:quizId" element={<EditQuizz />} />
 
           {/* Défis */}
-          <Route path="/challenge" element={<ChallengeList />} />
+          <Route path="/challenges" element={<ChallengeList />} />
+          <Route path="/challenges/guessWord" element={<GuessWord />} />
 
           {/* A propos */}
-          <Route path="/about" element={<About />} />
+          <Route path="/about" element={ 
+            <div> 
+              <About />
+            
+              <Contribution /> 
+            </div>} 
+          />
+
+          
 
           {/* Connexion / Inscription */}
           <Route path="/login" element={<Auth />} />
 
           {/* User routes */}
           <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications/>} />
 
+<<<<<<< HEAD
           {/* Calendar routes */}
           <Route path="/Calendar" element={<Calendar />} />
           
+=======
+            
+>>>>>>> develop
         </Routes>
 
 

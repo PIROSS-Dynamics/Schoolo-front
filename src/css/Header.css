@@ -263,3 +263,21 @@ header {
         height: 40px;
     }
 }
+
+.notif-link {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .notif-badge {
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 5px 8px;
+    position: absolute;
+    top: -5px;
+    left: -10px;
+  }
+  
