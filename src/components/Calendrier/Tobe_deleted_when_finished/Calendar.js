@@ -1,15 +1,19 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { gapi } from "gapi-script";
+
+
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-
 const GoogleCalendar = () => {
-    const [events, setEvents] = useState([]);
-    const [isSignedIn, setIsSignedIn] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
-    useEffect(() => {
+  // Fetch events/tasks data from the backend API using `userId`
+      useEffect(() => {
         function start() {
             gapi.client.init({
                 apiKey: API_KEY,
@@ -70,4 +74,4 @@ const GoogleCalendar = () => {
     );
 };
 
-export default GoogleCalendar;
+export default CalendarComponent;

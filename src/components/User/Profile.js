@@ -259,9 +259,8 @@ const Profile = () => {
         <p>Nom: {user?.last_name}</p>
         <p>Prénom: {user?.first_name}</p>
 
-<<<<<<< HEAD
+
         <h2 className='relations'>Relations: (Fonctionnalité à développer)</h2>
-=======
 
       {/* Si l'utilisateur est un professeur */}
         {role === "teacher" && (
@@ -353,7 +352,6 @@ const Profile = () => {
           </div>
         )}
 
->>>>>>> develop
 
       </div>
 
@@ -424,9 +422,7 @@ const Profile = () => {
             </div>
           </div>
         )}
-      </div>
-<<<<<<< HEAD
-=======
+      </div>)}
       {messagePopup.isOpen && (
       <>
         <div className="message-popup-overlay" onClick={closeMessagePopup}></div>
@@ -441,7 +437,7 @@ const Profile = () => {
           <button onClick={closeMessagePopup}>Annuler</button>
         </div>
       </>
->>>>>>> develop
+
       )}
     </div>
   );

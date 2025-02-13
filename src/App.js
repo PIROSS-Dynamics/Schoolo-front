@@ -19,12 +19,9 @@ import Auth from './components/Auth';
 import Profile from './components/User/Profile';
 import Notifications from './components/User/Notifications';
 import EditQuizz from './components/Quizz/EditQuizz';
-<<<<<<< HEAD
 import Calendar from './components/Calendrier/Calendrier';
-=======
 import Contribution from './components/Contribution';
 import GuessWord from './components/Challenges/GuessWord';
->>>>>>> develop
 
 
 function AppContent() {
@@ -91,13 +88,11 @@ function AppContent() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications/>} />
 
-<<<<<<< HEAD
+
           {/* Calendar routes */}
           <Route path="/Calendar" element={<Calendar />} />
           
-=======
-            
->>>>>>> develop
+
         </Routes>
 
 

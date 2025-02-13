@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import '../css/style.css';
 import '../css/Header.css';
 import { Link } from 'react-router-dom';
+import { signOut } from './Calendrier/Calendrier.js'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -128,7 +130,7 @@ const Header = () => {
                     <a href="/notifications">Notifications</a>
                     {unreadCount > 0 && <span className="notif-badge">{unreadCount}</span>}
                   </li>
-                  <li><button onClick={handleLogout}>Déconnexion</button></li>
+                  <li><button onClick={() => { handleLogout(); signOut();}}>Déconnexion</button></li>
                 </ul>
               </div>
             </div>
