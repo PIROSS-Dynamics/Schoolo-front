@@ -28,18 +28,28 @@ function GuessWord() {
 
   const startTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current); // Delete the last timer
-  
+    
     setTimeLeft(10);
+    document.getElementById('timer-text').textContent = 10;
+    
+    
+    const timerProgress = document.getElementById('timer-progress');
+    const totalLength = 2 * Math.PI * 40; 
+    timerProgress.style.strokeDasharray = totalLength; 
+    timerProgress.style.strokeDashoffset = 251.2; 
 
-    document.getElementById('timer').textContent = 10;
     
     timerRef.current = setInterval(() => {
       
       setTimeLeft(prevTime => {
-        document.getElementById('timer').textContent = prevTime-1;
+        document.getElementById('timer-text').textContent = prevTime-1;
         
+        // update the animation
+        timerProgress.style.strokeDashoffset = ((prevTime - 1) / 10) * totalLength;
+
         if (prevTime <= 1) {
           clearInterval(timerRef.current);
+          timerProgress.style.strokeDashoffset = 0; 
           fetchWord();
           return 0;
         }
@@ -68,7 +78,15 @@ function GuessWord() {
         <h1 className="gwtitle">Trouve la bonne traduction ce mot :</h1>
         <p className="word">{englishWord}</p>
 
-        <p id='timer'></p>
+        <div id="timer-circle">
+          <svg width="100" height="100">
+            <circle cx="50" cy="50" r="40" stroke="#ddd" stroke-width="8" fill="none"/>
+            <circle id="timer-progress" cx="50" cy="50" r="40" stroke="#4CAF50" stroke-width="8" fill="none" 
+                    stroke-dasharray="0" stroke-dashoffset="251.2"/>
+          </svg>
+          <p id="timer-text">10</p>
+        </div>
+
 
         <div className="gwchoices">
           {choices.map((choice, index) => (
