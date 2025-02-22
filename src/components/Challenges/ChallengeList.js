@@ -13,6 +13,11 @@ const ChallengeList = () => {
         <p>Mets à l'épreuve ton vocabulaire anglais avec le "Guess the Word"</p>
         <Link to="/challenges/guessWord" className="challenge-button">Jouer maintenant</Link>
       </div>
+      <div className="challenge-banner">
+        <img src="/images/englishGuy.png" alt="Personnage anglais" className="challenge-image" />
+        <h2>Trouve le pays</h2>
+        <p>Sauras tu retoruver le pays sur la carte ?</p>
+        <Link to="/challenges/findCountry" className="challenge-button">Jouer maintenant</Link>      </div>
       {/* <div className="about-container">
         <h1>Les Défis</h1>
         <p>
