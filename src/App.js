@@ -1,27 +1,28 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import './css/style.css'; 
-import Header from './components/Header'; 
-import SubjectChoice from './components/SubjectChoice';
+import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import About from './components/About';
+import Auth from './components/Auth';
 import Carousel from './components/Carousel';
-import Footer from './components/Footer'; 
-import LessonList from './components/Lessons/LessonList'; 
-import LessonDetail from './components/Lessons/LessonDetail'; 
+import ChallengeList from './components/Challenges/ChallengeList';
+import FindCountry from './components/Challenges/FindCountry';
+import GuessWord from './components/Challenges/GuessWord';
+import Contribution from './components/Contribution';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import HomePopup from './components/HomePopup';
 import AddLesson from './components/Lessons/AddLesson';
 import EditLesson from './components/Lessons/EditLesson';
-import QuizzList from './components/Quizz/QuizzList';
-import QuizzGame from './components/Quizz/QuizzGame';
+import LessonDetail from './components/Lessons/LessonDetail';
+import LessonList from './components/Lessons/LessonList';
 import AddQuizz from './components/Quizz/AddQuizz';
-import HomePopup from './components/HomePopup'; 
-import ChallengeList from './components/Challenges/ChallengeList';
-import About from './components/About';
-import Auth from './components/Auth'; 
-import Profile from './components/User/Profile';
-import Notifications from './components/User/Notifications';
 import EditQuizz from './components/Quizz/EditQuizz';
-import Contribution from './components/Contribution';
-import GuessWord from './components/Challenges/GuessWord';
+import QuizzGame from './components/Quizz/QuizzGame';
+import QuizzList from './components/Quizz/QuizzList';
+import SubjectChoice from './components/SubjectChoice';
 import ChatPage from './components/User/ChatPage';
+import Notifications from './components/User/Notifications';
+import Profile from './components/User/Profile';
+import './css/style.css';
 
 
 function AppContent() {
@@ -69,6 +70,8 @@ function AppContent() {
           {/* Défis */}
           <Route path="/challenges" element={<ChallengeList />} />
           <Route path="/challenges/guessWord" element={<GuessWord />} />
+          <Route path="/challenges/findCountry" element={<FindCountry />} />
+
 
           {/* A propos */}
           <Route path="/about" element={ 
