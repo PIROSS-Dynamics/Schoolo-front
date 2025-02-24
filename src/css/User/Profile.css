@@ -271,3 +271,37 @@
 .message-popup button:nth-child(2):hover {
   background-color: #e53935;
 }
+
+
+
+
+
+
+
+
+
+.chart-container {
+  width: 100%;
+  max-width: 450px;  /* ✅ Prevent huge charts */
+  height: auto;
+  margin: 20px auto;
+  padding: 15px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 300px; /* ✅ Ensures proper scaling */
+  display: flex;
+  justify-content: center;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

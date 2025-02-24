@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/User/Profile.css';
-import { Bar, Pie, Line } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -17,7 +14,6 @@ const Profile = () => {
   const [messagePopup, setMessagePopup] = useState({ isOpen: false, receiver: null, receiverName: null });
   const [messageContent, setMessageContent] = useState("");
   const navigate = useNavigate();
-  const [scoreProgressionData, setScoreProgressionData] = useState([]);
 
   useEffect(() => {
     const userId = localStorage.getItem('id');
@@ -68,25 +64,16 @@ const Profile = () => {
     // verify if it's a student to recup his results of quizzes
     if (userRole === 'student') {
       fetch(`http://localhost:8000/stats/api/userQuizResults/${userId}/`)
-        .then(response => response.json())
-        .then(resultsData => {
-          setQuizResults(resultsData); // ✅ Store raw quiz results
-    
-          // ✅ Process Score Progression Data (Convert to Percentage)
-          const processedScoreProgression = resultsData.map(q => ({
-            date: new Date(q.date).toLocaleDateString(),
-            scorePercentage: (q.score / q.total) * 100 // Convert to percentage
-          }));
-    
-          // ✅ Sort by date (ensures progression makes sense)
-          processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
-    
-          // ✅ Update state with sorted progression data
-          setScoreProgressionData(processedScoreProgression);
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Erreur lors de la récupération des résultats des quiz.');
+          }
         })
-        .catch(error => console.error("Erreur lors de la récupération des résultats des quiz:", error));
+        .then((resultsData) => setQuizResults(resultsData))
+        .catch((error) => console.error(error));
     }
-    
 
     // Récupérer les relations
     fetch(`http://localhost:8000/activity/api/user-relations/?user_id=${userId}`)
@@ -94,24 +81,6 @@ const Profile = () => {
     .then((data) => setRelations(data))  // Stocker les relations
     .catch(error => console.error("Erreur récupération relations", error));
   }, []);
-
-
-      // deuxième useEffect qui calcule les résultats pour scorePercentage
-  useEffect(() => {
-    if (role === 'student' && quizResults.length > 0) {
-      const processedScoreProgression = quizResults.map(q => ({
-        date: new Date(q.date).toLocaleDateString(),
-        scorePercentage: (q.score / q.total) * 100 // Convert to percentage
-      }));
-  
-      // Sort by date
-      processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
-  
-      setScoreProgressionData(processedScoreProgression); // ✅ Now inside useEffect
-    }
-  }, [quizResults, role]); // ✅ Only updates when quizResults or role changes
-  
-
 
   const getRoleLabel = (role) => {
     switch (role) {
@@ -278,16 +247,6 @@ const Profile = () => {
     navigate(`/quizz/play/${quizId}`);
   };
 
-
-
-
-
-
-
-
-
-
-
   return (
     <div className="profile-container">
       {/* Top Section: Personal and User Details */}
@@ -440,9 +399,8 @@ const Profile = () => {
             </div>
           </div>
         )}
-
-                {/* For students: Display quiz results */}
-                {role === 'student' && (
+        {/* For students: Display quiz results */}
+        {role === 'student' && (
           <div className="profile-column">
             <h2>Résultats des quiz :</h2>
             <div className="profile-cards-container">
@@ -460,106 +418,6 @@ const Profile = () => {
             </div>
           </div>
         )}
-
-        {/* For students: Display quiz results */}
-        {role === 'student' && (
-        <div className="profile-column">
-              <h2>Analyses des réultats obtenus :</h2>
-              {quizResults.length > 0 ? (
-                <>
-
-                  {/* Line Chart: Score Progression */}
-                  <div className="chart-container">
-                    <h3>Progression des Scores</h3>
-                    <div className="chart-wrapper">
-                      <Line
-                        data={{
-                          labels: scoreProgressionData.map(q => q.date),
-                          datasets: [
-                            {
-                              label: "Progression des Scores (%)",
-                              data: scoreProgressionData.map(q => q.scorePercentage),
-                              borderColor: "#36A2EB",
-                              backgroundColor: "rgba(54, 162, 235, 0.2)",
-                              tension: 0.3, // Smooth curve
-                            },
-                          ],
-                        }}
-                        options={{
-                          responsive: true,
-                          maintainAspectRatio: false,
-                          scales: {
-                            y: {
-                              beginAtZero: true,
-                              max: 100, // Scores in percentage
-                            },
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Pie Chart: Distribution of scores */}
-                  <div className="chart-container">
-                    <h3>Répartition des Scores</h3>
-                    <div className="chart-wrapper">
-                      <Pie
-                        data={{
-                          labels: quizResults.map(q => q.quizz_title),
-                          datasets: [{
-                            data: quizResults.map(q => q.score),
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-                          }]
-                        }}
-                        options={{
-                          responsive: true,
-                          maintainAspectRatio: false,
-                          plugins: {
-                            legend: { position: 'top' }
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-
-
-                  {/* Bar Chart: Scores over time */}
-                  <div className="chart-container">
-                    <h3>Évolution des Scores</h3>
-                    <div className="chart-wrapper">
-                    <Bar
-                      data={{
-                        labels: quizResults.map(q => new Date(q.date).toLocaleDateString()),
-                        datasets: [{
-                          label: 'Score',
-                          data: quizResults.map(q => q.score),
-                          backgroundColor: '#36A2EB'
-                        }]
-                      }}
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                          x: {
-                            ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } // ✅ Fix label cutting
-                          },
-                          y: {
-                            beginAtZero: true,
-                            max: Math.max(...quizResults.map(q => q.total))
-                          }
-                        }
-                      }}
-                    />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <p>Aucun résultat pour ce quiz.</p>
-              )}
-            </div>
-          )}
-
       </div>
       {messagePopup.isOpen && (
       <>
