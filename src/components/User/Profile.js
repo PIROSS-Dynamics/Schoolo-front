@@ -96,21 +96,33 @@ const Profile = () => {
   }, []);
 
 
+
+
+
+
+
       // deuxième useEffect qui calcule les résultats pour scorePercentage
-  useEffect(() => {
-    if (role === 'student' && quizResults.length > 0) {
-      const processedScoreProgression = quizResults.map(q => ({
-        date: new Date(q.date).toLocaleDateString(),
-        scorePercentage: (q.score / q.total) * 100 // Convert to percentage
-      }));
+      useEffect(() => {
+        if (role === 'student' && quizResults.length > 0) {
+          const processedScoreProgression = quizResults.map(q => ({
+            title: q.title,  // Include quiz title
+            subject: q.subject,     // Include subject
+            date: new Date(q.date).toLocaleDateString(),
+            scorePercentage: (q.score / q.total) * 100 // Convert to percentage
+
+          }));
+      
+          // Sort by date
+          processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
+      
+          setScoreProgressionData(processedScoreProgression); // ✅ Now inside useEffect
+        }
+      }, [quizResults, role]); 
+      
   
-      // Sort by date
-      processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
-  
-      setScoreProgressionData(processedScoreProgression); // ✅ Now inside useEffect
-    }
-  }, [quizResults, role]); // ✅ Only updates when quizResults or role changes
-  
+
+
+
 
 
   const getRoleLabel = (role) => {
@@ -441,8 +453,8 @@ const Profile = () => {
           </div>
         )}
 
-                {/* For students: Display quiz results */}
-                {role === 'student' && (
+          {/* For students: Display quiz results */}
+          {role === 'student' && (
           <div className="profile-column">
             <h2>Résultats des quiz :</h2>
             <div className="profile-cards-container">
