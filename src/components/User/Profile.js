@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/User/Profile.css';
-import { Bar, Pie, Line } from 'react-chartjs-2';
+import { Bar, Pie, Line, Bubble, Scatter  } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
@@ -18,6 +18,8 @@ const Profile = () => {
   const [messageContent, setMessageContent] = useState("");
   const navigate = useNavigate();
   const [scoreProgressionData, setScoreProgressionData] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState("Toutes les Matières");
+
 
   useEffect(() => {
     const userId = localStorage.getItem('id');
@@ -70,18 +72,18 @@ const Profile = () => {
       fetch(`http://localhost:8000/stats/api/userQuizResults/${userId}/`)
         .then(response => response.json())
         .then(resultsData => {
-          setQuizResults(resultsData); // ✅ Store raw quiz results
+          setQuizResults(resultsData); // Store raw quiz results
     
-          // ✅ Process Score Progression Data (Convert to Percentage)
+          // Process Score Progression Data (Convert to Percentage)
           const processedScoreProgression = resultsData.map(q => ({
             date: new Date(q.date).toLocaleDateString(),
             scorePercentage: (q.score / q.total) * 100 // Convert to percentage
           }));
     
-          // ✅ Sort by date (ensures progression makes sense)
+          // Sort by date (ensures progression makes sense)
           processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
     
-          // ✅ Update state with sorted progression data
+          // Update state with sorted progression data
           setScoreProgressionData(processedScoreProgression);
         })
         .catch(error => console.error("Erreur lors de la récupération des résultats des quiz:", error));
@@ -100,11 +102,13 @@ const Profile = () => {
 
 
 
-
+      const [subjects, setSubjects] = useState(["Toutes les Matières"]);
       // deuxième useEffect qui calcule les résultats pour scorePercentage
       useEffect(() => {
         if (role === 'student' && quizResults.length > 0) {
-          const processedScoreProgression = quizResults.map(q => ({
+          const uniqueSubjects = ["Toutes les Matières", ...new Set(quizResults.map(q => q.subject || "Matière inconnue"))];
+          setSubjects(uniqueSubjects);
+          const processedScoreProgression = quizResults .map(q => ({
             title: q.title,  // Include quiz title
             subject: q.subject,     // Include subject
             date: new Date(q.date).toLocaleDateString(),
@@ -115,9 +119,10 @@ const Profile = () => {
           // Sort by date
           processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
       
-          setScoreProgressionData(processedScoreProgression); // ✅ Now inside useEffect
+          setScoreProgressionData(processedScoreProgression); // Now inside useEffect
+          
         }
-      }, [quizResults, role]); 
+      }, [quizResults , role]); 
       
   
 
@@ -297,7 +302,63 @@ const Profile = () => {
 
 
 
+  const [filteredQuizResults, setFilteredQuizResults] = useState([]);
 
+  useEffect(() => {
+    if (quizResults.length > 0) {
+      const results = selectedSubject === "Toutes les Matières"
+        ? quizResults
+        : quizResults.filter(q => q.subject === selectedSubject);
+  
+      setFilteredQuizResults(results);
+    }
+  }, [selectedSubject, quizResults]); // Updates when subject or quiz results change
+  
+
+
+  // const stackedBarData = {
+  //   labels: subjects.filter(s => s !== "Toutes les Matières"),
+  //   datasets: [
+  //     {
+  //       label: "Score Obtenu",
+  //       data: subjects
+  //         .filter(s => s !== "Toutes les Matières")
+  //         .map(subject => {
+  //           return quizResults
+  //             .filter(q => q.subject === subject)
+  //             .reduce((sum, q) => sum + q.score, 0);
+  //         }),
+  //       backgroundColor: "#36A2EB",
+  //     },
+  //     {
+  //       label: "Score Maximum Possible",
+  //       data: subjects
+  //         .filter(s => s !== "Toutes les Matières")
+  //         .map(subject => {
+  //           return quizResults
+  //             .filter(q => q.subject === subject)
+  //             .reduce((sum, q) => sum + q.total, 0);
+  //         }),
+  //       backgroundColor: "#FF6384",
+  //     },
+  //   ],
+  // };
+
+  
+  
+  // const scatterData = {
+  //   datasets: [
+  //     {
+  //       label: "Score vs. Difficulté",
+  //       data: quizResults.map(q => ({
+  //         x: q.difficulty || 5, // Assuming API returns difficulty (1-10)
+  //         y: (q.score / q.total) * 100, // Score percentage
+  //       })),
+  //       backgroundColor: "#4BC0C0",
+  //     },
+  //   ],
+  // };
+  
 
 
   return (
@@ -457,9 +518,10 @@ const Profile = () => {
           {role === 'student' && (
           <div className="profile-column">
             <h2>Résultats des quiz :</h2>
+
             <div className="profile-cards-container">
-              {quizResults.length > 0 ? (
-                quizResults.map((result) => (
+              {filteredQuizResults.length > 0 ? (
+                filteredQuizResults.map((result) => (
                   <div key={result.quizz_title} className="quizz-results-card">
                     <h3>{result.quizz_title}</h3>
                     <p>Score: {result.score} / {result.total}</p>
@@ -477,63 +539,157 @@ const Profile = () => {
         {role === 'student' && (
         <div className="profile-column">
               <h2>Analyses des réultats obtenus :</h2>
-              {quizResults.length > 0 ? (
+              <div className="filter-container">
+                <label htmlFor="subject-filter">Sélectionner une matière :</label>
+                <select 
+                  id="subject-filter"
+                  value={selectedSubject}
+                  onChange={(e) => setSelectedSubject(e.target.value)}
+                >
+                  {subjects.map(subject => (
+                    <option key={subject} value={subject}>{subject}</option>
+                  ))}
+                </select>
+              </div>
+              {filteredQuizResults.length > 0 ? (
                 <>
 
-                  {/* Line Chart: Score Progression */}
-                  <div className="chart-container">
-                    <h3>Progression des Scores</h3>
-                    <div className="chart-wrapper">
-                      <Line
-                        data={{
-                          labels: scoreProgressionData.map(q => q.date),
-                          datasets: [
-                            {
-                              label: "Progression des Scores (%)",
-                              data: scoreProgressionData.map(q => q.scorePercentage),
-                              borderColor: "#36A2EB",
-                              backgroundColor: "rgba(54, 162, 235, 0.2)",
-                              tension: 0.3, // Smooth curve
-                            },
-                          ],
-                        }}
-                        options={{
-                          responsive: true,
-                          maintainAspectRatio: false,
-                          scales: {
-                            y: {
-                              beginAtZero: true,
-                              max: 100, // Scores in percentage
-                            },
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
 
-                  {/* Pie Chart: Distribution of scores */}
-                  <div className="chart-container">
-                    <h3>Répartition des Scores</h3>
-                    <div className="chart-wrapper">
-                      <Pie
-                        data={{
-                          labels: quizResults.map(q => q.quizz_title),
-                          datasets: [{
-                            data: quizResults.map(q => q.score),
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-                          }]
-                        }}
-                        options={{
-                          responsive: true,
-                          maintainAspectRatio: false,
-                          plugins: {
-                            legend: { position: 'top' }
+
+
+              {/* Line Chart: Score Progression */}
+              <div className="chart-container">
+                <h3>Progression des Scores</h3>
+                <div className="chart-wrapper">
+                  <Line
+                    data={{
+                      labels: scoreProgressionData.map(q => q.date),
+                      datasets: [
+                        {
+                          label: "Progression des Scores (%)",
+                          data: scoreProgressionData.map(q => q.scorePercentage),
+                          borderColor: "#36A2EB",
+                          backgroundColor: "rgba(54, 162, 235, 0.2)",
+                          tension: 0.3, // Smooth curve
+                        },
+                      ],
+                    }}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins:{
+                        tooltip: {
+                          callbacks: {
+                            title: (tooltipItems) => {
+                              const index = tooltipItems[0].dataIndex;
+                              const quiz = scoreProgressionData[index];
+                              return `${quiz.title} (${quiz.subject})`; // Display title & subject in tooltip
+                            }
                           }
-                        }}
-                      />
-                    </div>
-                  </div>
+                        }
+                      },
+                      scales: {
+                        y: {
+                          beginAtZero: true,
+                          max: 100, // Scores in percentage
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+
+
+            {/* Scatter Plot: Score vs. Quiz Difficulty */}
+            {/* <div className="chart-container">
+              <h3>Relation entre Difficulté et Score</h3>
+              <div className="chart-wrapper">
+                <Scatter
+                  data={scatterData}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: { title: { display: true, text: "Difficulté du Quiz (1-10)" } },
+                      y: { title: { display: true, text: "Score (%)" }, max: 100, beginAtZero: true },
+                    },
+                  }}
+                />
+              </div>
+            </div> */}
+
+
+            {/* Stacked Bar Chart: Score Breakdown */}
+            {/* <div className="chart-container">
+              <h3>Répartition des Scores par Matière</h3>
+              <div className="chart-wrapper">
+                <Bar
+                  data={stackedBarData}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: { stacked: true },
+                      y: { stacked: true, beginAtZero: true },
+                    },
+                  }}
+                />
+              </div>
+            </div> */}
+
+
+            {/* Scatter Chart: Distribution of scores */}
+            {/* <div className="chart-container">         
+              <h3>Répartition des Scores</h3>
+              <div className="chart-wrapper">
+              <Bubble
+                  data={{
+                    datasets: filteredQuizResults.map((q, index) => ({
+                      label: q.quizz_title,
+                      data: [{
+                        x: q.difficulty || 5, // Assuming API returns difficulty (1-10)
+                        y: (q.score / q.total) * 100, // Score percentage
+                        r: q.total / 2, // Bubble size (based on number of questions)
+                      }],
+                      backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'][index % 3],
+                    }))
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: { title: { display: true, text: "Difficulté (1-10)" } },
+                      y: { title: { display: true, text: "Score (%)" }, max: 100 },
+                    },
+                  }}
+                />
+              </div>
+            </div> */}
+
+
+            {/* Pie Chart: Distribution of scores */}
+            <div className="chart-container">
+              <h3>Répartition des Scores</h3>
+              <div className="chart-wrapper">
+                <Pie
+                  data={{
+                    labels: filteredQuizResults.map(q => q.quizz_title),
+                    datasets: [{
+                      data: filteredQuizResults.map(q => q.score),
+                      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: { position: 'top' }
+                    }
+                  }}
+                />
+              </div>
+            </div>
 
 
                   {/* Bar Chart: Scores over time */}
@@ -542,10 +698,10 @@ const Profile = () => {
                     <div className="chart-wrapper">
                     <Bar
                       data={{
-                        labels: quizResults.map(q => new Date(q.date).toLocaleDateString()),
+                        labels: filteredQuizResults.map(q => new Date(q.date).toLocaleDateString()),
                         datasets: [{
                           label: 'Score',
-                          data: quizResults.map(q => q.score),
+                          data: filteredQuizResults.map(q => q.score),
                           backgroundColor: '#36A2EB'
                         }]
                       }}
@@ -554,11 +710,11 @@ const Profile = () => {
                         maintainAspectRatio: false,
                         scales: {
                           x: {
-                            ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } // ✅ Fix label cutting
+                            ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } // Fix label cutting
                           },
                           y: {
                             beginAtZero: true,
-                            max: Math.max(...quizResults.map(q => q.total))
+                            max: Math.max(...filteredQuizResults.map(q => q.total))
                           }
                         }
                       }}
