@@ -21,7 +21,7 @@
     margin-left: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
     background-color: #cbffee;
@@ -64,21 +64,15 @@
 
 .quizz-title {
     font-size: 1.5rem;
-    color: #00a5e7; 
+    color: #ffffff; 
     font-weight: bold;
     margin-bottom: 8px;
 }
 
-.teacher-name {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 12px;
-}
 
 .quizz-description {
     font-size: 0.9rem;
-    color: #555;
+    color: #ffffff;
 }
 
 .subject-section {
