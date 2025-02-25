@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../css/Loading.css';
 import '../../css/Quizz/QuizzList.css';
 import SubjectPopup from './SubjectPopup';
+import subjectColors from '../../data/subjectColors.json';
 
 function QuizzList() {
     const [quizz, setQuizz] = useState([]);
@@ -48,7 +49,7 @@ function QuizzList() {
     }, {});
 
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); // Mettre à jour le terme de recherche
+        setSearchTerm(e.target.value);
     };
 
     const handleQuizzClick = (quizzId) => {
@@ -126,18 +127,22 @@ function QuizzList() {
                             {subject}
                         </h3>
                         <div className="quizz-list-row">
-                            {quizzBySubject[subject]?.map((quizzItem) => (
-                                <div
-                                    key={quizzItem.id}
-                                    className={`quizz-card ${clickedQuizzId === quizzItem.id ? "clicked" : ""}`}
-                                    onClick={() => handleQuizzClick(quizzItem.id)}
-                                >
-                                    <h3 className="quizz-title">{quizzItem.title}</h3>
-                                    <p className="quizz-subject">Matière : <strong>{quizzItem.subject}</strong></p>
-                                    <p className="teacher-name">Par : <strong>{quizzItem.teacher_name}</strong></p>
-                                    <p className="quizz-questions">Nombre de questions : {quizzItem.number_of_questions}</p>
-                                </div>
-                            ))}
+                            {quizzBySubject[subject]?.map((quizzItem) => {
+                                const subjectColor = subjectColors[quizzItem.subject] || "#cbffee";
+                                return (
+                                    <div
+                                        key={quizzItem.id}
+                                        className={`quizz-card ${clickedQuizzId === quizzItem.id ? "clicked" : ""}`}
+                                        onClick={() => handleQuizzClick(quizzItem.id)}
+                                        style={{ backgroundColor: subjectColor }}
+                                    >
+                                        <h3 className="quizz-title">{quizzItem.title}</h3>
+                                        <p className="quizz-description">Matière : <strong>{quizzItem.subject}</strong></p>
+                                        <p className="quizz-description">Par : <strong>{quizzItem.teacher_name}</strong></p>
+                                        <p className="quizz-description">Nombre de questions : {quizzItem.number_of_questions}</p>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 ))

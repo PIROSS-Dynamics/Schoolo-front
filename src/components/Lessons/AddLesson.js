@@ -177,12 +177,15 @@ function AddLesson() {
                     />
                 </div>
                 
+                <p>Ajoutez le texte \newpage lorsque vous souhaitez passer le texte suivant sur une nouvelle page</p>
+                <p>Vous pouvez également ajouter un fichier PDF pour extraire le texte automatiquement avec le bouton ci-dessous</p>
+
                 <input
                     type="file"
                     accept="application/pdf"
                     onChange={handlePdfUpload}
                 />
-                
+
                 <div className='description'>
                     <label>Description</label>
                     <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>

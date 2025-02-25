@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
-import '../../css/Lessons/LessonDetail.css'; 
-import '../../css/Loading.css'; 
+import subjectColors from '../../data/subjectColors.json';
+import '../../css/Lessons/LessonDetail.css';
+import '../../css/Loading.css';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import PopupTeacherProfile from '../User/PopupTeacherProfile'; 
 
 function LessonDetail() {
     const { lessonId } = useParams();
     const [lesson, setLesson] = useState(null);
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [showPopup, setShowPopup] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`)
             .then((response) => response.json())
             .then((data) => {
                 setLesson(data);
-                setLoading(false); // End loading
+                setLoading(false);
             })
             .catch((error) => {
                 console.error('Erreur:', error);
-                setLoading(false); // If error, desactivate the loading
+                setLoading(false);
             });
     }, [lessonId]);
 
     if (loading) {
-        // Loading animation
         return (
             <div className="loading-container">
                 <div className="spinner"></div>
@@ -33,34 +37,61 @@ function LessonDetail() {
     }
 
     if (!lesson) {
-        // if no lesson is found
         return (
             <div className="lesson-container">
                 <p>La leçon demandée n'existe pas ou une erreur est survenue.</p>
-                <Link to="/lessons" className="back-link">
-                    ← Retour à la liste des leçons
-                </Link>
+                <Link to="/lessons" className="back-link">← Retour à la liste des leçons</Link>
             </div>
         );
     }
 
-    // purifing html of lesson's content
     const sanitizedContent = DOMPurify.sanitize(lesson.content);
+    const backgroundColor = subjectColors[lesson.subject] || "#cbffee";
+
+    const pages = sanitizedContent.split('\\newpage').map(page => page.trim());
+    const totalPages = pages.length;
+
+    const goToPreviousPage = () => {
+        setCurrentPage((prev) => (prev > 0 ? prev - 1 : prev));
+    };
+
+    const goToNextPage = () => {
+        setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : prev));
+    };
 
     return (
-        <div className="lesson-container fade-in">
+        <div className="lesson-container fade-in" style={{ backgroundColor }}>
             <h1 className="lesson-detail-title">{lesson.title}</h1>
             <div className="lesson-details">
                 <span>Matière : {lesson.subject}</span>
-                <span>Professeur : {lesson.teacher_name}</span>
+                <button className="teacher-button" onClick={() => setShowPopup(true)}>
+                    Professeur : {lesson.teacher_name}
+                </button>
             </div>
-            <div
-                className="lesson-content"
-                dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-            />
-            <Link to={`/lessons/subject/${lesson.subject}`}  className="back-link">
+            <div className="lesson-content-wrapper">
+                <div className="lesson-content" dangerouslySetInnerHTML={{ __html: pages[currentPage] }} />
+            </div>
+            <div className="pagination-controls">
+                <button onClick={goToPreviousPage} disabled={currentPage === 0} className="pagination-button">
+                    <FaArrowLeft /> Précédent
+                </button>
+                <span className="lesson-page-indicator">{currentPage + 1}/{totalPages}</span>
+                <button onClick={goToNextPage} disabled={currentPage === totalPages - 1} className="pagination-button">
+                    Suivant <FaArrowRight />
+                </button>
+            </div>
+            <Link to={`/lessons/subject/${lesson.subject}`} className="back-link">
                 ← Retour à la liste des leçons de {lesson.subject}
             </Link>
+
+            {/* Pop-up affichée si showPopup est true */}
+            {showPopup && (
+                <PopupTeacherProfile
+                    teacherId={lesson.teacher}
+                    teacherName={lesson.teacher_name}
+                    onClose={() => setShowPopup(false)}
+                />
+            )}
         </div>
     );
 }

@@ -1,60 +1,138 @@
+/* Appliquer la police ADLaM Display partout sur la page */
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap');
+
 .lesson-container {
-    max-width: 90%;
-    margin: 20px auto; /* Réduit l'espace latéral */
-    padding: 20px;
-    
-    border-radius: 15px;
-    background-color: #cbffee; /* Couleur jaune pâle pour un style enfantin */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    max-width: 80%;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #cbffee;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    font-family: 'ADLaM Display', sans-serif;
 }
+
 
 .lesson-detail-title {
     font-size: 2.5rem;
     text-align: center;
-    color: #007bff; 
+    color: #ffffff;
     margin-bottom: 20px;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+
+.teacher-button {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.teacher-button:hover {
+    background-color: #ffffff;
+    color: #000000;
+    transform: scale(1.05);
 }
 
 .lesson-details {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 40px;
     font-size: 1.2rem;
-    color: #000000; 
+    color: #ffffff;
     margin-bottom: 20px;
+    text-shadow: 2px 2px 4px #000000;
 }
 
-.lesson-content {
-    font-size: 1.4rem;
-    line-height: 1.8;
-    color: #000;
-    background-color: #FFFFFF; /* Fond blanc */
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #000000; 
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
+.lesson-content-wrapper {
+    background-color: #fefae0;
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid #000000;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
 }
 
+/* Forcer le style du contenu et éviter tout conflit avec d'autres styles du site */
+.lesson-content * {
+    font-family: 'ADLaM Display', sans-serif !important;
+    font-size: 1.6rem !important;
+    line-height: 2 !important;
+    color: #333 !important;
+    background-color: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
-/* Lien pour les retours */
+.lesson-content p {
+    margin-bottom: 15px !important;
+}
+
 .back-link {
     display: inline-block;
-    margin-top: 20px;
+    margin-top: 25px;
     text-decoration: none;
-    color: #0056b3;
+    color: #ffffff;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.2rem;
     transition: color 0.3s ease;
+    text-shadow: 1px 1px 3px #000000;
 }
 
 .back-link:hover {
-    color: #003d82;
+    color: #d0dbe7;
     text-decoration: underline;
 }
 
-.lesson-container p {
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.pagination-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
     font-size: 1.2rem;
-    color: #555;
-    text-align: center;
-    margin-top: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #45a049;
+}
+
+
+.lesson-page-indicator {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
