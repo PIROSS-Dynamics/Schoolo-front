@@ -1,167 +1,256 @@
+/* Conteneur principal du quiz */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 70%; 
-    margin: 40px auto; 
-    padding: 20px;
-    
-    border-radius: 15px;
-    background-color: #cbffee; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    max-width: 80%; 
+    margin: 20px auto; 
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #f4f7fb; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     text-align: center;
+    transition: all 0.3s ease-in-out;
 }
 
+/* Animation au survol du conteneur */
+.container:hover {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* Titre du quiz */
 .quiz-title {
-    font-size: 2.5rem;
-    color: #007bff; 
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.quiz-subject {
-    font-size: 1.2rem;
-    color: #000000;
-    text-align: center;
+    font-size: 3rem;
+    color: #ffffff;
     margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre portée pour plus de contraste */
 }
 
+/* Sujet du quiz */
+.quiz-subject {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* Ombre portée */
+}
+
+/* Boîte de question */
 .question-box {
-    background-color: #ffffff; 
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #000000; 
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 15px;
+    border: 1px solid #e0e0e0;
     margin: 20px 0;
-    width: 100%; /* Utiliser 100% de la largeur disponible */
+    width: 100%;
+    max-width: 650px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centre le contenu horizontalement */
-    text-align: center; /* Centre le texte */
-    margin: 20px auto; /* Ajoute une marge automatique pour centrer */
-    box-sizing: border-box; /* Inclut le padding dans la largeur totale */
+    align-items: center; /* Centrer horizontalement */
+    justify-content: center; /* Centrer verticalement */
+    text-align: center; /* Centrer le texte */
+    box-sizing: border-box;
 }
 
+
+/* Titre de la question */
 .question-title {
-    color: #000000; 
-    margin-bottom: 20px;
     font-size: 1.8rem;
-    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
 }
 
+/* Labels des choix */
 label {
-    display: block;
-    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    margin: 12px 0;
     font-size: 1.2rem;
+    color: #444;
     cursor: pointer;
 }
 
+/* Choix radio */
 label input {
-    margin-right: 10px;
+    margin-right: 15px;
+    cursor: pointer;
 }
 
+/* Input texte */
 input[type="text"] {
-    width: 90%;
-    padding: 10px;
+    width: 100%;
+    padding: 12px 15px;
     font-size: 1.2rem;
     border: 2px solid #007bff;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
 }
 
+/* Effet de focus sur l'input */
+input[type="text"]:focus {
+    border-color: #0056b3;
+    outline: none;
+}
+
+/* Progression de la question */
 .progress {
-    font-size: 1.3em;
-    margin: 15px 0;
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #333;
     font-weight: bold;
-    color: #ff5722; 
 }
 
-.submit-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1.2em;
+/* Bouton soumettre */
+.submit-button, .next-button, .show-correction, .back-to-quiz-list {
+    padding: 12px 30px;
+    font-size: 1.2rem;
     cursor: pointer;
     color: #fff;
-    background-color: #007bff; 
     border: none;
     border-radius: 8px;
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Bouton soumettre */
+.submit-button {
+    background-color: #28a745; /* Vert */
 }
 
 .submit-button:hover {
-    background-color: #0056b3; 
+    background-color: #218838;
 }
 
+/* Bouton suivant */
 .next-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1.2em;
-    cursor: pointer;
-    color: #fff;
-    background-color: #007bff; 
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
+    background-color: #007bff; /* Bleu */
 }
 
 .next-button:hover {
-    background-color: #0056b3; /* Bleu plus foncé au survol */
+    background-color: #0056b3;
 }
 
-.correction {
-    background-color: #fff4c4; 
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #ffd700; 
-    margin-top: 20px;
-}
-
-.correction-item {
-    margin: 15px 0;
-    font-size: 1.1rem;
-    text-align: left;
-}
-
-.success-icon {
-    color: green;
-}
-
-.error-icon {
-    color: red;
-}
-
-
+/* Bouton correction */
 .show-correction {
-    background-color: #28a745; /* Vert */
-    color: #fff; /* Texte blanc */
-    border: none;
-    border-radius: 8px;
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #ffc107; /* Jaune */
 }
 
 .show-correction:hover {
-    background-color: #218838; /* Vert plus foncé au survol */
+    background-color: #e0a800;
 }
 
+/* Bouton retour */
 .back-to-quiz-list {
     background-color: #dc3545; /* Rouge */
-    color: #fff; /* Texte blanc */
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    margin-top: 20px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .back-to-quiz-list:hover {
-    background-color: #c82333; /* Rouge plus foncé au survol */
+    background-color: #c82333;
+}
+
+/* Correction */
+.correction {
+    background-color: #e9f7ef;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #b5e6c2;
+    margin-top: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Item de correction */
+.correction-item {
+    margin: 20px 0;
+    font-size: 1.1rem;
+    color: #444;
+}
+
+/* Style des bonnes réponses */
+.success-icon {
+    color: green;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Style des mauvaises réponses */
+.error-icon {
+    color: red;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Animation de fade-in pour l'apparition de l'élément */
+.fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Spinner de chargement */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #007bff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.correctionpopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.correctionpopup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
+.close-correctionpopup {
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
 
+.close-correctionpopup:hover {
+    background-color: #e04e28;
+}

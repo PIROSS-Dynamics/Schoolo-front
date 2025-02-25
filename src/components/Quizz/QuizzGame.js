@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../css/Quizz/QuizzGame.css';
 import '../../css/Loading.css';
+import subjectColors from '../../data/subjectColors.json';
 
 function QuizzGame() {
     const { quizzId } = useParams();
@@ -13,6 +14,8 @@ function QuizzGame() {
     const [corrections, setCorrections] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [loading, setLoading] = useState(true); 
+
+    const currentSubjectColor = subjectColors[quizz?.subject] || '#007bff';  // Default color if subject not found
 
     useEffect(() => {
         fetch(`http://localhost:8000/quizz/api/quizzlist/${quizzId}/`)
@@ -35,14 +38,12 @@ function QuizzGame() {
     const handleSubmit = async (event) => {
         event.preventDefault();
     
-        // Vérifier si toutes les réponses sont fournies
         if (Object.keys(responses).length < quizz.questions.length) {
             alert("Veuillez répondre à toutes les questions avant de soumettre.");
             return;
         }
     
         try {
-            // Envoi des réponses au backend
             const response = await fetch(`http://localhost:8000/quizz/api/quizzlist/${quizzId}/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -54,12 +55,10 @@ function QuizzGame() {
             }
     
             const data = await response.json();
-    
             setResult(data.result);
             setCorrections(data.corrections);
             setCurrentQuestionIndex(-1);
     
-            // Récupération de l'ID utilisateur
             const userId = localStorage.getItem('id');
             if (!userId) {
                 alert("Veuillez vous connecter pour enregistrer vos résultats.");
@@ -75,8 +74,6 @@ function QuizzGame() {
                     total : data.total
                 }),
             });
-            
-            
     
             if (!statsResponse.ok) {
                 throw new Error(`Erreur lors de l'enregistrement du score : ${statsResponse.statusText}`);
@@ -88,7 +85,6 @@ function QuizzGame() {
             alert(`Une erreur est survenue : ${error.message}`);
         }
     };
-    
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -103,8 +99,11 @@ function QuizzGame() {
         }
     };
 
+    const handleClosePopup = () => {
+        setShowCorrection(false);  // Close the popup
+    };
+
     if (loading) {
-        // loading animation
         return (
             <div className="loading-container">
                 <div className="spinner"></div>
@@ -118,7 +117,7 @@ function QuizzGame() {
     const currentQuestion = quizz.questions[currentQuestionIndex];
 
     return (
-        <div className="container fade-in">
+        <div className="container" style={{ backgroundColor: currentSubjectColor }}>
             <h2 className="quiz-title">{quizz.title}</h2>
             <p className="quiz-subject"><strong>Matière :</strong> {quizz.subject}</p>
 
@@ -172,28 +171,41 @@ function QuizzGame() {
                     <div className="question-box">
                         <h2>Résultat</h2>
                         <p>{result}</p>
-                        <button className="show-correction" type="button" onClick={() => setShowCorrection(!showCorrection)}>
-                            {showCorrection ? "Masquer la correction" : "Afficher la correction"}
+                        <button className="show-correction" type="button" onClick={() => setShowCorrection(true)}>
+                            Afficher la correction
                         </button>
                         {showCorrection && corrections && (
-                            <div className="correction">
-                                {corrections.map((correction, index) => (
-                                    <div key={index} className="correction-item">
-                                        <p><strong>Question {index + 1} :</strong> {correction.question_text}</p>
-                                        <p><strong>Bonne réponse :</strong> {correction.correct_answer}</p>
-                                        <span
-                                            className={correction.is_correct ? "success-icon" : "error-icon"}
-                                            style={{
-                                                color: correction.is_correct ? "green" : "red",
-                                                fontWeight: "bold"
-                                            }}
-                                        >
-                                            {correction.is_correct ? "✓ Réussi" : "✗ Raté"}
-                                        </span>
+                                <div 
+                                    className="correctionpopup" 
+                                    onClick={handleClosePopup} // Ajout du gestionnaire de clics
+                                >
+                                    <div 
+                                        className="correctionpopup-content"
+                                        onClick={(e) => e.stopPropagation()} // Empêche le clic sur la pop-up de se propager à l'arrière-plan
+                                    >
+                                        <h3>Correction</h3>
+                                        {corrections.map((correction, index) => (
+                                            <div key={index} className="correction-item">
+                                                <p><strong>Question {index + 1} :</strong> {correction.question_text}</p>
+                                                <p><strong>Bonne réponse :</strong> {correction.correct_answer}</p>
+                                                <span
+                                                    className={correction.is_correct ? "success-icon" : "error-icon"}
+                                                    style={{
+                                                        color: correction.is_correct ? "green" : "red",
+                                                        fontWeight: "bold"
+                                                    }}
+                                                >
+                                                    {correction.is_correct ? "✓ Réussi" : "✗ Raté"}
+                                                </span>
+                                            </div>
+                                        ))}
+                                        <button className="close-correctionpopup" type="button" onClick={handleClosePopup}>
+                                            Fermer
+                                        </button>
                                     </div>
-                                ))}
-                            </div>
-                        )}
+                                </div>
+                            )}
+
                         <button className="back-to-quiz-list" type="button" onClick={() => navigate('/quizz')}>Retourner à la Liste des Quiz</button>
                     </div>
                 )}
