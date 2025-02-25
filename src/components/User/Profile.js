@@ -108,9 +108,10 @@ const Profile = () => {
         if (role === 'student' && quizResults.length > 0) {
           const uniqueSubjects = ["Toutes les Matières", ...new Set(quizResults.map(q => q.subject || "Matière inconnue"))];
           setSubjects(uniqueSubjects);
+
           const processedScoreProgression = quizResults .map(q => ({
-            title: q.title,  // Include quiz title
-            subject: q.subject,     // Include subject
+            title: q.quizz_title, 
+            subject: q.subject, 
             date: new Date(q.date).toLocaleDateString(),
             scorePercentage: (q.score / q.total) * 100 // Convert to percentage
 
@@ -554,16 +555,13 @@ const Profile = () => {
               {filteredQuizResults.length > 0 ? (
                 <>
 
-
-
-
               {/* Line Chart: Score Progression */}
               <div className="chart-container">
                 <h3>Progression des Scores</h3>
                 <div className="chart-wrapper">
                   <Line
                     data={{
-                      labels: scoreProgressionData.map(q => q.date),
+                      labels: scoreProgressionData.map(q => q.title),
                       datasets: [
                         {
                           label: "Progression des Scores (%)",
@@ -698,7 +696,7 @@ const Profile = () => {
                     <div className="chart-wrapper">
                     <Bar
                       data={{
-                        labels: filteredQuizResults.map(q => new Date(q.date).toLocaleDateString()),
+                        labels: filteredQuizResults.map(q => q.quizz_title),
                         datasets: [{
                           label: 'Score',
                           data: filteredQuizResults.map(q => q.score),
