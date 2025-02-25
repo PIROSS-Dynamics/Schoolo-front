@@ -36,6 +36,11 @@ function FindCountry() {
             .catch(err => console.error("❌ Erreur de chargement du pays cible :", err));
     };
 
+    useEffect(() => {
+        fetchCountry();
+        window.scrollTo(0, 0); // 🔹 Remet la page tout en haut à chaque chargement
+    }, []);    
+
     // Charger le premier pays
     useEffect(fetchCountry, []);
 
