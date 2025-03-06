@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../../css/User/Profile.css';
-import { Bar, Pie, Line, Bubble, Scatter  } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../css/User/Profile.css";
+import { Bar, Pie, Line, Bubble, Scatter } from "react-chartjs-2";
+import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const Profile = () => {
@@ -11,45 +11,77 @@ const Profile = () => {
   const [lessons, setLessons] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [quizResults, setQuizResults] = useState([]);
-  const [relationEmail, setRelationEmail] = useState('');
+  const [relationEmail, setRelationEmail] = useState("");
   const [relationMessage, setRelationMessage] = useState(null);
   const [relations, setRelations] = useState([]);
-  const [messagePopup, setMessagePopup] = useState({ isOpen: false, receiver: null, receiverName: null });
+  const [messagePopup, setMessagePopup] = useState({
+    isOpen: false,
+    receiver: null,
+    receiverName: null,
+  });
   const [messageContent, setMessageContent] = useState("");
   const navigate = useNavigate();
   const [scoreProgressionData, setScoreProgressionData] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState("Toutes les Matières");
-
+  const [activeSection, setActiveSection] = useState("personalInfo");
+  const [menuItems, setMenuItems] = useState([
+    { key: "personalInfo", label: "Profil" },
+    { key: "stats", label: "Statistiques" },
+    { key: "contacts", label: "Relations" },
+  ]);
 
   useEffect(() => {
-    const userId = localStorage.getItem('id');
-    const userRole = localStorage.getItem('role');
+    if (role === "teacher") {
+      setMenuItems((prevMenu) => {
+        if (!prevMenu.some((item) => item.key === "create")) {
+          return [...prevMenu, { key: "create", label: "Créer Quiz/Leçon" }];
+        }
+        return prevMenu;
+      });
+    }
+  }, [role]);
 
-    if (userRole === localStorage.getItem('role')) {
+  if (role === "teacher" && !menuItems.some((item) => item.key === "create")) {
+    menuItems.push({ key: "create", label: "Créer Quiz/Leçon" });
+  }
+
+  const handleMenuClick = (section) => {
+    console.log("Clicked section:", section); // Debugging line
+    setActiveSection(section);
+  };
+
+  useEffect(() => {
+    console.log("Active section:", activeSection); // Debugging line to trace current active section
+  }, [activeSection]);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("id");
+    const userRole = localStorage.getItem("role");
+
+    if (userRole === localStorage.getItem("role")) {
       fetch(`http://localhost:8000/users/api/${userRole}/${userId}/`)
         .then((response) => {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error('Erreur lors de la récupération des informations.');
+            throw new Error("Erreur lors de la récupération des informations.");
           }
         })
         .then((data) => {
+          console.log("Fetched user data:", data); // Debugging line
           setUser(data);
           setRole(data.role);
         })
         .catch((error) => console.error(error));
-
     }
 
-    // verify if it's a teacher to take the lessons and quizzes that he did
-    if (userRole === 'teacher') {
+    if (userRole === "teacher") {
       fetch(`http://localhost:8000/lessons/api/teacher/${userId}/lessons/`)
         .then((response) => {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error('Erreur lors de la récupération des leçons.');
+            throw new Error("Erreur lors de la récupération des leçons.");
           }
         })
         .then((lessonsData) => setLessons(lessonsData))
@@ -60,126 +92,119 @@ const Profile = () => {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error('Erreur lors de la récupération des quiz.');
+            throw new Error("Erreur lors de la récupération des quiz.");
           }
         })
         .then((quizzesData) => setQuizzes(quizzesData))
         .catch((error) => console.error(error));
     }
 
-    // verify if it's a student to recup his results of quizzes
-    if (userRole === 'student') {
+    if (userRole === "student") {
       fetch(`http://localhost:8000/stats/api/userQuizResults/${userId}/`)
-        .then(response => response.json())
-        .then(resultsData => {
-          setQuizResults(resultsData); // Store raw quiz results
-    
-          // Process Score Progression Data (Convert to Percentage)
-          const processedScoreProgression = resultsData.map(q => ({
+        .then((response) => response.json())
+        .then((resultsData) => {
+          setQuizResults(resultsData);
+          const processedScoreProgression = resultsData.map((q) => ({
             date: new Date(q.date).toLocaleDateString(),
-            scorePercentage: (q.score / q.total) * 100 // Convert to percentage
+            scorePercentage: (q.score / q.total) * 100,
           }));
-    
-          // Sort by date (ensures progression makes sense)
-          processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
-    
-          // Update state with sorted progression data
+          processedScoreProgression.sort(
+            (a, b) => new Date(a.date) - new Date(b.date)
+          );
           setScoreProgressionData(processedScoreProgression);
         })
-        .catch(error => console.error("Erreur lors de la récupération des résultats des quiz:", error));
+        .catch((error) =>
+          console.error(
+            "Erreur lors de la récupération des résultats des quiz:",
+            error
+          )
+        );
     }
-    
 
-    // Récupérer les relations
-    fetch(`http://localhost:8000/activity/api/user-relations/?user_id=${userId}`)
-    .then(response => response.json())
-    .then((data) => setRelations(data))  // Stocker les relations
-    .catch(error => console.error("Erreur récupération relations", error));
+    fetch(
+      `http://localhost:8000/activity/api/user-relations/?user_id=${userId}`
+    )
+      .then((response) => response.json())
+      .then((data) => setRelations(data))
+      .catch((error) => console.error("Erreur récupération relations", error));
   }, []);
 
+  const [subjects, setSubjects] = useState(["Toutes les Matières"]);
+  useEffect(() => {
+    if (role === "student" && quizResults.length > 0) {
+      const uniqueSubjects = [
+        "Toutes les Matières",
+        ...new Set(quizResults.map((q) => q.subject || "Matière inconnue")),
+      ];
+      setSubjects(uniqueSubjects);
 
-
-
-
-
-      const [subjects, setSubjects] = useState(["Toutes les Matières"]);
-      // deuxième useEffect qui calcule les résultats pour scorePercentage
-      useEffect(() => {
-        if (role === 'student' && quizResults.length > 0) {
-          const uniqueSubjects = ["Toutes les Matières", ...new Set(quizResults.map(q => q.subject || "Matière inconnue"))];
-          setSubjects(uniqueSubjects);
-
-          const processedScoreProgression = quizResults .map(q => ({
-            title: q.quizz_title, 
-            subject: q.subject, 
-            date: new Date(q.date).toLocaleDateString(),
-            scorePercentage: (q.score / q.total) * 100 // Convert to percentage
-
-          }));
-      
-          // Sort by date
-          processedScoreProgression.sort((a, b) => new Date(a.date) - new Date(b.date));
-      
-          setScoreProgressionData(processedScoreProgression); // Now inside useEffect
-          
-        }
-      }, [quizResults , role]); 
-      
-  
-
-
-
-
+      const processedScoreProgression = quizResults.map((q) => ({
+        title: q.quizz_title,
+        subject: q.subject,
+        date: new Date(q.date).toLocaleDateString(),
+        scorePercentage: (q.score / q.total) * 100,
+      }));
+      processedScoreProgression.sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      );
+      setScoreProgressionData(processedScoreProgression);
+    }
+  }, [quizResults, role]);
 
   const getRoleLabel = (role) => {
     switch (role) {
-      case 'student':
-        return 'Étudiant';
-      case 'teacher':
-        return 'Professeur';
-      case 'parent':
-        return 'Parent';
+      case "student":
+        return "Étudiant";
+      case "teacher":
+        return "Professeur";
+      case "parent":
+        return "Parent";
       default:
-        return 'Utilisateur';
+        return "Utilisateur";
     }
   };
 
   const handleRelationRequest = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8000/activity/api/relation-request/', {
-      method: 'POST',
+    fetch("http://localhost:8000/activity/api/relation-request/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ 
-        user_id: localStorage.getItem('id'),
-        email: relationEmail 
+      body: JSON.stringify({
+        user_id: localStorage.getItem("id"),
+        email: relationEmail,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          setRelationMessage({ type: "error", text: data.error });
+        } else {
+          setRelationMessage({
+            type: "success",
+            text: "Demande envoyée avec succès !",
+          });
+        }
       })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.error) {
-        setRelationMessage({ type: 'error', text: data.error });
-      } else {
-        setRelationMessage({ type: 'success', text: 'Demande envoyée avec succès !' });
-      }
-    })
-    .catch(error => setRelationMessage({ type: 'error', text: 'Erreur envoi de la demande.' }));
+      .catch((error) =>
+        setRelationMessage({
+          type: "error",
+          text: "Erreur envoi de la demande.",
+        })
+      );
   };
 
-  
-
   const openMessagePopup = (receiver, receiverName) => {
-    setMessagePopup({ isOpen: true, receiver , receiverName});
+    setMessagePopup({ isOpen: true, receiver, receiverName });
   };
 
   const handleMessage = (receiverId, receiverName) => {
-    openMessagePopup({ id: receiverId , name :receiverName});
+    openMessagePopup({ id: receiverId, name: receiverName });
   };
-  
 
   const closeMessagePopup = () => {
-    setMessagePopup({ isOpen: false, receiver: null , receiverName: null});
+    setMessagePopup({ isOpen: false, receiver: null, receiverName: null });
     setMessageContent("");
   };
 
@@ -203,8 +228,6 @@ const Profile = () => {
       .catch(() => alert("Erreur lors de l'envoi du message."));
   };
 
-  
-
   const handleEditLesson = (lessonId) => {
     navigate(`/edit-lesson/${lessonId}`);
   };
@@ -218,29 +241,30 @@ const Profile = () => {
   };
 
   const handleDeleteQuiz = (quizId) => {
-    const userId = localStorage.getItem('id'); // ID de l'utilisateur connecté
-  
-    // Récupérer les informations du quiz pour vérifier l'ID du professeur
+    const userId = localStorage.getItem("id");
     fetch(`http://localhost:8000/quizz/api/quizzlist/${quizId}/`)
-      .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération du quiz.'))
+      .then((response) =>
+        response.ok
+          ? response.json()
+          : Promise.reject("Erreur lors de la récupération du quiz.")
+      )
       .then((quizData) => {
         if (String(quizData.teacher_id) !== String(userId)) {
-          
-          // Si l'utilisateur connecté n'est pas le créateur du quiz
-          alert('Vous n\'êtes pas autorisé à supprimer ce quiz.');
+          alert("Vous n'êtes pas autorisé à supprimer ce quiz.");
         } else {
-          // Si l'utilisateur connecté est le créateur du quiz
-          const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer ce quiz ?');
+          const confirmDelete = window.confirm(
+            "Êtes-vous sûr de vouloir supprimer ce quiz ?"
+          );
           if (confirmDelete) {
             fetch(`http://localhost:8000/quizz/api/quizzlist/${quizId}/`, {
-              method: 'DELETE',
+              method: "DELETE",
             })
               .then((response) => {
                 if (response.ok) {
                   setQuizzes(quizzes.filter((quiz) => quiz.id !== quizId));
-                  alert('Quiz supprimé avec succès.');
+                  alert("Quiz supprimé avec succès.");
                 } else {
-                  throw new Error('Erreur lors de la suppression du quiz.');
+                  throw new Error("Erreur lors de la suppression du quiz.");
                 }
               })
               .catch((error) => console.error(error));
@@ -249,37 +273,40 @@ const Profile = () => {
       })
       .catch((error) => {
         console.error(error);
-        alert('Impossible de récupérer les informations du quiz.');
+        alert("Impossible de récupérer les informations du quiz.");
       });
   };
-  
-  const handleDeleteLesson = (lessonId) => {
 
-    const userId = localStorage.getItem('id'); // ID of the connected user
-    // get informations about the lesson to verify the professor ID
-    
+  const handleDeleteLesson = (lessonId) => {
+    const userId = localStorage.getItem("id");
     fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`)
-      .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération de la leçon.'))
-      
+      .then((response) =>
+        response.ok
+          ? response.json()
+          : Promise.reject("Erreur lors de la récupération de la leçon.")
+      )
       .then((lessonData) => {
         if (String(lessonData.teacher) !== String(userId)) {
-
-          // If the connected user isn't the lesson creator
-          alert('Vous n\'êtes pas autorisé à supprimer cette leçon.');
+          alert("Vous n'êtes pas autorisé à supprimer cette leçon.");
         } else {
-          
-          // If he is the lesson creator
-          const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette leçon ?');
+          const confirmDelete = window.confirm(
+            "Êtes-vous sûr de vouloir supprimer cette leçon ?"
+          );
           if (confirmDelete) {
-            fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`, {
-              method: 'DELETE',
-            })
+            fetch(
+              `http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`,
+              {
+                method: "DELETE",
+              }
+            )
               .then((response) => {
                 if (response.ok) {
-                  setLessons(lessons.filter((lesson) => lesson.id !== lessonId));
-                  alert('Leçon supprimé avec succès.');
+                  setLessons(
+                    lessons.filter((lesson) => lesson.id !== lessonId)
+                  );
+                  alert("Leçon supprimé avec succès.");
                 } else {
-                  throw new Error('Erreur lors de la suppression de la leçon.');
+                  throw new Error("Erreur lors de la suppression de la leçon.");
                 }
               })
               .catch((error) => console.error(error));
@@ -288,7 +315,7 @@ const Profile = () => {
       })
       .catch((error) => {
         console.error(error);
-        alert('Impossible de récupérer les informations de la leçon.');
+        alert("Impossible de récupérer les informations de la leçon.");
       });
   };
 
@@ -296,95 +323,75 @@ const Profile = () => {
     navigate(`/quizz/play/${quizId}`);
   };
 
-
-
-
-
-
-
-
   const [filteredQuizResults, setFilteredQuizResults] = useState([]);
 
   useEffect(() => {
     if (quizResults.length > 0) {
-      const results = selectedSubject === "Toutes les Matières"
-        ? quizResults
-        : quizResults.filter(q => q.subject === selectedSubject);
-  
+      const results =
+        selectedSubject === "Toutes les Matières"
+          ? quizResults
+          : quizResults.filter((q) => q.subject === selectedSubject);
       setFilteredQuizResults(results);
     }
-  }, [selectedSubject, quizResults]); // Updates when subject or quiz results change
-  
-
-
-  // const stackedBarData = {
-  //   labels: subjects.filter(s => s !== "Toutes les Matières"),
-  //   datasets: [
-  //     {
-  //       label: "Score Obtenu",
-  //       data: subjects
-  //         .filter(s => s !== "Toutes les Matières")
-  //         .map(subject => {
-  //           return quizResults
-  //             .filter(q => q.subject === subject)
-  //             .reduce((sum, q) => sum + q.score, 0);
-  //         }),
-  //       backgroundColor: "#36A2EB",
-  //     },
-  //     {
-  //       label: "Score Maximum Possible",
-  //       data: subjects
-  //         .filter(s => s !== "Toutes les Matières")
-  //         .map(subject => {
-  //           return quizResults
-  //             .filter(q => q.subject === subject)
-  //             .reduce((sum, q) => sum + q.total, 0);
-  //         }),
-  //       backgroundColor: "#FF6384",
-  //     },
-  //   ],
-  // };
-
-  
-  
-  // const scatterData = {
-  //   datasets: [
-  //     {
-  //       label: "Score vs. Difficulté",
-  //       data: quizResults.map(q => ({
-  //         x: q.difficulty || 5, // Assuming API returns difficulty (1-10)
-  //         y: (q.score / q.total) * 100, // Score percentage
-  //       })),
-  //       backgroundColor: "#4BC0C0",
-  //     },
-  //   ],
-  // };
-  
-
+  }, [selectedSubject, quizResults]);
 
   return (
     <div className="profile-container">
-      {/* Top Section: Personal and User Details */}
-      <div className="profile-top">
-        <h2 className='donnees-utilisateur'>Données utilisateur:</h2>
-        <p>Mail: {user?.email}</p>
-        <p>Rôle: {getRoleLabel(role)}</p>
+      <div className="sidebar">
+        <ul>
+          {menuItems.map((item) => (
+            <li
+              key={item.key}
+              className={activeSection === item.key ? "active" : ""}
+              onClick={() => handleMenuClick(item.key)}
+            >
+              {item.label}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-        <h2 className='donnees-personnelles'>Données Personnelles:</h2>
-        <p>Nom: {user?.last_name}</p>
-        <p>Prénom: {user?.first_name}</p>
+      <div className="info-container">
+        {activeSection === "personalInfo" && (
+          <div>
+            {user ? (
+              <>
+                <h2 className="donnees-utilisateur">Données utilisateur:</h2>
+                <p>
+                  <strong>Mail:</strong> {user.email}
+                </p>
+                <p>
+                  <strong>Rôle:</strong> {getRoleLabel(role)}
+                </p>
+                <h2 className="donnees-personnelles">Données Personnelles:</h2>
+                <p>
+                  <strong>Nom:</strong> {user.last_name}
+                </p>
+                <p>
+                  <strong>Prénom:</strong> {user.first_name}
+                </p>
+              </>
+            ) : (
+              <p>Chargement des données...</p>
+            )}
+          </div>
+        )}
 
-
-      {/* Si l'utilisateur est un professeur */}
-        {role === "teacher" && (
+        {activeSection === "contacts" && role === "teacher" && (
           <div>
             <h2>Élèves</h2>
             {relations.length > 0 ? (
               relations.map((relation) => (
-                <div key={relation.student.id} className="relation-item">
+                <div key={relation.student.id}>
                   <p>{relation.student.name}</p>
                   <button>Voir</button>
-                  <button onClick={() => handleMessage(relation.student.id, relation.student.name)}>Message</button>
+                  <button
+                    onClick={() =>
+                      handleMessage(relation.student.id, relation.student.name)
+                    }
+                  >
+                    Message
+                  </button>
                 </div>
               ))
             ) : (
@@ -393,16 +400,21 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Si l'utilisateur est un parent */}
-        {role === "parent" && (
+        {activeSection === "contacts" && role === "parent" && (
           <div>
             <h2>Enfants</h2>
             {relations.length > 0 ? (
               relations.map((relation) => (
-                <div key={relation.student.id} className="relation-item">
+                <div key={relation.student.id}>
                   <p>{relation.student.name}</p>
                   <button>Voir</button>
-                  <button onClick={() => handleMessage(relation.student.id, relation.student.name)}>Message</button>
+                  <button
+                    onClick={() =>
+                      handleMessage(relation.student.id, relation.student.name)
+                    }
+                  >
+                    Message
+                  </button>
                 </div>
               ))
             ) : (
@@ -411,34 +423,45 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Si l'utilisateur est un élève */}
-        {role === "student" && (
+        {activeSection === "contacts" && role === "student" && (
           <div>
-            {/* Affichage des professeurs */}
-            <h2>Professeurs</h2>
-            {relations.filter(r => r.relation_type === "school").length > 0 ? (
+            <h2 className="professors">Professeurs</h2>
+            {relations.filter((r) => r.relation_type === "school").length >
+            0 ? (
               relations
-                .filter(r => r.relation_type === "school")
+                .filter((r) => r.relation_type === "school")
                 .map((relation) => (
                   <div key={relation.sender.id} className="relation-item">
-                    <p>{relation.sender.name}</p>
+                    <h3>{relation.sender.name}</h3>
                     <button>Voir</button>
-                    <button onClick={() => handleMessage(relation.sender.id, relation.sender.name)}>Message</button>
+                    <button
+                      onClick={() =>
+                        handleMessage(relation.sender.id, relation.sender.name)
+                      }
+                    >
+                      Message
+                    </button>
                   </div>
                 ))
             ) : (
               <p>Aucun professeur.</p>
             )}
 
-            {/* Affichage des parents */}
-            <h2>Parents</h2>
-            {relations.filter(r => r.relation_type === "parent").length > 0 ? (
+            <h2 className="parents">Parents</h2>
+            {relations.filter((r) => r.relation_type === "parent").length >
+            0 ? (
               relations
-                .filter(r => r.relation_type === "parent")
+                .filter((r) => r.relation_type === "parent")
                 .map((relation) => (
                   <div key={relation.sender.id} className="relation-item">
-                    <p>{relation.sender.name}</p>
-                    <button onClick={() => handleMessage(relation.sender.id, relation.sender.name)}>Message</button>
+                    <h3>{relation.sender.name}</h3>
+                    <button
+                      onClick={() =>
+                        handleMessage(relation.sender.id, relation.sender.name)
+                      }
+                    >
+                      Message
+                    </button>
                   </div>
                 ))
             ) : (
@@ -447,54 +470,37 @@ const Profile = () => {
           </div>
         )}
 
-
-      {(role === 'teacher' || role === 'parent') && (
-          <div className="relation-request">
-            <h2>Envoyer une demande de relation à un élève</h2>
-            <form onSubmit={handleRelationRequest}>
-              <input 
-                type="email" 
-                placeholder="Email de l'élève" 
-                value={relationEmail} 
-                onChange={(e) => setRelationEmail(e.target.value)} 
-                required 
-              />
-              <button type="submit">Envoyer</button>
-            </form>
-            {relationMessage && <p className={relationMessage.type}>{relationMessage.text}</p>}
-          </div>
-        )}
-
-
-      </div>
-
-      {/* Bottom Section: Lessons and Quizzes */}
-      <div className="profile-bottom">
-        {/* Left Column: Lessons (only for teachers) */}
-        {role === 'teacher' && (
-          <div className="profile-column">
-            <h2>Leçons créées :</h2>
-            <div className="profile-cards-container">
-              {lessons.length > 0 ? (
-                lessons.map((lesson) => (
-                  <div  className="profile-card profile-lesson-card" key={lesson.id}>
-                    <div onClick={() => handleViewLesson(lesson.id)}>
-                      <h3>{lesson.title}</h3>
-                      <p>{lesson.subject}</p>
-                    </div>
-                    <button onClick={() => handleEditLesson(lesson.id)}>Modifier</button>
-                    <button onClick={() => handleDeleteLesson(lesson.id)}>Supprimer</button>
-                  </div>
-                ))
-              ) : (
-                <p>Aucune leçon créée.</p>
+        {activeSection === "contacts" &&
+          (role === "teacher" || role === "parent") && (
+            <div className="relation-request">
+              <h2>Envoyer une demande de relation à un élève</h2>
+              <form onSubmit={handleRelationRequest}>
+                <input
+                  type="email"
+                  placeholder="Email de l'élève"
+                  value={relationEmail}
+                  onChange={(e) => setRelationEmail(e.target.value)}
+                  required
+                />
+                <button type="submit">Envoyer</button>
+              </form>
+              {relationMessage && (
+                <p className={relationMessage.type}>{relationMessage.text}</p>
               )}
             </div>
+          )}
+
+        {activeSection === "create" && role === "teacher" && (
+          <div>
+            <h2>Créer un Quiz ou une Leçon</h2>
+            <button onClick={() => navigate("/add-quiz")}>Créer un Quiz</button>
+            <button onClick={() => navigate("/add-lesson")}>
+              Créer une Leçon
+            </button>
           </div>
         )}
 
-        {/* Right Column: Quizzes (only for teachers) */}
-        {role === 'teacher' && (
+        {activeSection === "stats" && role === "teacher" && (
           <div className="profile-column">
             <h2>Quiz créés :</h2>
             <div className="profile-cards-container">
@@ -504,243 +510,224 @@ const Profile = () => {
                     <div onClick={() => handleViewQuiz(quiz.id)}>
                       <h3>{quiz.title}</h3>
                     </div>
-                    <button onClick={() => handleEditQuiz(quiz.id)}>Modifier</button>
-                    <button onClick={() => handleDeleteQuiz(quiz.id)}>Supprimer</button>
+                    <button onClick={() => handleEditQuiz(quiz.id)}>
+                      Modifier
+                    </button>
+                    <button onClick={() => handleDeleteQuiz(quiz.id)}>
+                      Supprimer
+                    </button>
                   </div>
                 ))
               ) : (
                 <p>Aucun quiz créé.</p>
               )}
             </div>
-          </div>
-        )}
 
-          {/* For students: Display quiz results */}
-          {role === 'student' && (
-          <div className="profile-column">
-            <h2>Résultats des quiz :</h2>
-
+            <h2>Leçons créées :</h2>
             <div className="profile-cards-container">
-              {filteredQuizResults.length > 0 ? (
-                filteredQuizResults.map((result) => (
-                  <div key={result.quizz_title} className="quizz-results-card">
-                    <h3>{result.quizz_title}</h3>
-                    <p>Score: {result.score} / {result.total}</p>
-                    <p>Date: {new Date(result.date).toLocaleString()}</p>
+              {lessons.length > 0 ? (
+                lessons.map((lesson) => (
+                  <div
+                    className="profile-card profile-lesson-card"
+                    key={lesson.id}
+                  >
+                    <div onClick={() => handleViewLesson(lesson.id)}>
+                      <h3>{lesson.title}</h3>
+                      <p>{lesson.subject}</p>
+                    </div>
+                    <button onClick={() => handleEditLesson(lesson.id)}>
+                      Modifier
+                    </button>
+                    <button onClick={() => handleDeleteLesson(lesson.id)}>
+                      Supprimer
+                    </button>
                   </div>
                 ))
               ) : (
-                <p>Aucun résultat pour ce quiz.</p>
+                <p>Aucune leçon créée.</p>
               )}
             </div>
           </div>
         )}
 
-        {/* For students: Display quiz results */}
-        {role === 'student' && (
-        <div className="profile-column">
-              <h2>Analyses des réultats obtenus :</h2>
-              <div className="filter-container">
-                <label htmlFor="subject-filter">Sélectionner une matière :</label>
-                <select 
-                  id="subject-filter"
-                  value={selectedSubject}
-                  onChange={(e) => setSelectedSubject(e.target.value)}
-                >
-                  {subjects.map(subject => (
-                    <option key={subject} value={subject}>{subject}</option>
-                  ))}
-                </select>
-              </div>
-              {filteredQuizResults.length > 0 ? (
-                <>
-
-              {/* Line Chart: Score Progression */}
-              <div className="chart-container">
-                <h3>Progression des Scores</h3>
-                <div className="chart-wrapper">
-                  <Line
-                    data={{
-                      labels: scoreProgressionData.map(q => q.title),
-                      datasets: [
-                        {
-                          label: "Progression des Scores (%)",
-                          data: scoreProgressionData.map(q => q.scorePercentage),
-                          borderColor: "#36A2EB",
-                          backgroundColor: "rgba(54, 162, 235, 0.2)",
-                          tension: 0.3, // Smooth curve
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      plugins:{
-                        tooltip: {
-                          callbacks: {
-                            title: (tooltipItems) => {
-                              const index = tooltipItems[0].dataIndex;
-                              const quiz = scoreProgressionData[index];
-                              return `${quiz.title} (${quiz.subject})`; // Display title & subject in tooltip
-                            }
-                          }
-                        }
-                      },
-                      scales: {
-                        y: {
-                          beginAtZero: true,
-                          max: 100, // Scores in percentage
-                        },
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-
-
-            {/* Scatter Plot: Score vs. Quiz Difficulty */}
-            {/* <div className="chart-container">
-              <h3>Relation entre Difficulté et Score</h3>
-              <div className="chart-wrapper">
-                <Scatter
-                  data={scatterData}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                      x: { title: { display: true, text: "Difficulté du Quiz (1-10)" } },
-                      y: { title: { display: true, text: "Score (%)" }, max: 100, beginAtZero: true },
-                    },
-                  }}
-                />
-              </div>
-            </div> */}
-
-
-            {/* Stacked Bar Chart: Score Breakdown */}
-            {/* <div className="chart-container">
-              <h3>Répartition des Scores par Matière</h3>
-              <div className="chart-wrapper">
-                <Bar
-                  data={stackedBarData}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                      x: { stacked: true },
-                      y: { stacked: true, beginAtZero: true },
-                    },
-                  }}
-                />
-              </div>
-            </div> */}
-
-
-            {/* Scatter Chart: Distribution of scores */}
-            {/* <div className="chart-container">         
-              <h3>Répartition des Scores</h3>
-              <div className="chart-wrapper">
-              <Bubble
-                  data={{
-                    datasets: filteredQuizResults.map((q, index) => ({
-                      label: q.quizz_title,
-                      data: [{
-                        x: q.difficulty || 5, // Assuming API returns difficulty (1-10)
-                        y: (q.score / q.total) * 100, // Score percentage
-                        r: q.total / 2, // Bubble size (based on number of questions)
-                      }],
-                      backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'][index % 3],
-                    }))
-                  }}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                      x: { title: { display: true, text: "Difficulté (1-10)" } },
-                      y: { title: { display: true, text: "Score (%)" }, max: 100 },
-                    },
-                  }}
-                />
-              </div>
-            </div> */}
-
-
-            {/* Pie Chart: Distribution of scores */}
-            <div className="chart-container">
-              <h3>Répartition des Scores</h3>
-              <div className="chart-wrapper">
-                <Pie
-                  data={{
-                    labels: filteredQuizResults.map(q => q.quizz_title),
-                    datasets: [{
-                      data: filteredQuizResults.map(q => q.score),
-                      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-                    }]
-                  }}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                      legend: { position: 'top' }
-                    }
-                  }}
-                />
-              </div>
+        {activeSection === "stats" && role === "student" && (
+          <div className="profile-column">
+            <h2>Analyses des réultats obtenus :</h2>
+            <div className="filter-container">
+              <label htmlFor="subject-filter">Sélectionner une matière :</label>
+              <select
+                id="subject-filter"
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+              >
+                {subjects.map((subject) => (
+                  <option key={subject} value={subject}>
+                    {subject}
+                  </option>
+                ))}
+              </select>
             </div>
+            {filteredQuizResults.length > 0 ? (
+              <>
+                <div className="profile-column">
+                  <h2>Résultats des quiz :</h2>
+                  <div className="profile-cards-container">
+                    {filteredQuizResults.map((result) => (
+                      <div
+                        key={result.quizz_title}
+                        className="quizz-results-card"
+                      >
+                        <h3>{result.quizz_title}</h3>
+                        <p>
+                          Score: {result.score} / {result.total}
+                        </p>
+                        <p>Date: {new Date(result.date).toLocaleString()}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
+                <div className="chart-container">
+                  <h3>Progression des Scores</h3>
+                  <div className="chart-wrapper">
+                    <Line
+                      data={{
+                        labels: scoreProgressionData.map((q) => q.title),
+                        datasets: [
+                          {
+                            label: "Progression des Scores (%)",
+                            data: scoreProgressionData.map(
+                              (q) => q.scorePercentage
+                            ),
+                            borderColor: "#36A2EB",
+                            backgroundColor: "rgba(54, 162, 235, 0.2)",
+                            tension: 0.3,
+                          },
+                        ],
+                      }}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          tooltip: {
+                            callbacks: {
+                              title: (tooltipItems) => {
+                                const index = tooltipItems[0].dataIndex;
+                                const quiz = scoreProgressionData[index];
+                                return `${quiz.title} (${quiz.subject})`;
+                              },
+                            },
+                          },
+                        },
+                        scales: {
+                          y: {
+                            beginAtZero: true,
+                            max: 100,
+                          },
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
 
-                  {/* Bar Chart: Scores over time */}
-                  <div className="chart-container">
-                    <h3>Évolution des Scores</h3>
-                    <div className="chart-wrapper">
+                <div className="chart-container">
+                  <h3>Répartition des Scores</h3>
+                  <div className="chart-wrapper">
+                    <Pie
+                      data={{
+                        labels: filteredQuizResults.map((q) => q.quizz_title),
+                        datasets: [
+                          {
+                            data: filteredQuizResults.map((q) => q.score),
+                            backgroundColor: [
+                              "#FF6384",
+                              "#36A2EB",
+                              "#FFCE56",
+                              "#4BC0C0",
+                              "#9966FF",
+                            ],
+                            hoverBackgroundColor: [
+                              "#FF6384",
+                              "#36A2EB",
+                              "#FFCE56",
+                              "#4BC0C0",
+                              "#9966FF",
+                            ],
+                          },
+                        ],
+                      }}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: { position: "top" },
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="chart-container">
+                  <h3>Évolution des Scores</h3>
+                  <div className="chart-wrapper">
                     <Bar
                       data={{
-                        labels: filteredQuizResults.map(q => q.quizz_title),
-                        datasets: [{
-                          label: 'Score',
-                          data: filteredQuizResults.map(q => q.score),
-                          backgroundColor: '#36A2EB'
-                        }]
+                        labels: filteredQuizResults.map((q) => q.quizz_title),
+                        datasets: [
+                          {
+                            label: "Score",
+                            data: filteredQuizResults.map((q) => q.score),
+                            backgroundColor: "#36A2EB",
+                          },
+                        ],
                       }}
                       options={{
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
                           x: {
-                            ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } // Fix label cutting
+                            ticks: {
+                              autoSkip: false,
+                              maxRotation: 45,
+                              minRotation: 45,
+                            },
                           },
                           y: {
                             beginAtZero: true,
-                            max: Math.max(...filteredQuizResults.map(q => q.total))
-                          }
-                        }
+                            max: Math.max(
+                              ...filteredQuizResults.map((q) => q.total)
+                            ),
+                          },
+                        },
                       }}
                     />
-                    </div>
                   </div>
-                </>
-              ) : (
-                <p>Aucun résultat pour ce quiz.</p>
-              )}
-            </div>
-          )}
-
+                </div>
+              </>
+            ) : (
+              <p>Aucun résultat pour ce quiz.</p>
+            )}
+          </div>
+        )}
       </div>
+
       {messagePopup.isOpen && (
-      <>
-        <div className="message-popup-overlay" onClick={closeMessagePopup}></div>
-        <div className="message-popup">
-          <h3>Envoyer un message</h3>
-          <textarea 
-            value={messageContent} 
-            onChange={(e) => setMessageContent(e.target.value)} 
-            placeholder="Écrivez votre message..."
-          />
-          <button onClick={sendMessage}>Envoyer</button>
-          <button onClick={closeMessagePopup}>Annuler</button>
-        </div>
-      </>
+        <>
+          <div
+            className="message-popup-overlay"
+            onClick={closeMessagePopup}
+          ></div>
+          <div className="message-popup">
+            <h3>Envoyer un message</h3>
+            <textarea
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
+              placeholder="Écrivez votre message..."
+            />
+            <button onClick={sendMessage}>Envoyer</button>
+            <button onClick={closeMessagePopup}>Annuler</button>
+          </div>
+        </>
       )}
     </div>
   );

@@ -1,19 +1,94 @@
 .profile-container {
-  max-width: 1200px;
+  display: flex;
+  height: fit-content;
   margin: 0 auto;
-  padding: 20px;
+  margin-left: 10%;
+  margin-right: 10%;
   background-color: #e8faff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 60px;
-  margin-bottom: 60px;
+  min-height: 60vh; 
+}
+
+.sidebar, .info-container {
+  margin-top: 3%;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.sidebar {
+  width: 20%;
+  height: 50%;
+  background-color: #222;
+  color: #fff;
+  
+}
+
+.info-container {
+  min-height: 40px;
+  height: fit-content;
+  width: 70%;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-grow: 1; /* Allow the body to take up remaining space */
+}
+
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size:  20px;
+  transition: background 0.3s ease;
+  width: 100%;
+  text-align: left;
+}
+
+
+.sidebar li:hover, .sidebar li.active {
+  background-color: #444;
+}
+
+.sidebar li.active {
+
+  background-color: #555;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .sidebar, .info-container {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+
+
+.donnees-utilisateur, .donnees-personnelles, .professors, .parents{
+  text-align: center;
+  font-size: 30px;
+}
+
+.profile-top, .profile-card, .relation-item, .quizz-results-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .profile-top {
   background-color: #f9f9f9;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
@@ -76,29 +151,26 @@
 
 .profile-cards-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
-.profile-card {
+.profile-card, .relation-item, .quizz-results-card {
   border: 1px solid #ddd;
-  border-radius: 8px;
   padding: 10px;
-  background-color: #f9f9f9;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  height: 150px; /* Uniform card height */
+  cursor: pointer;
+}
+
+.profile-card {
+  background-color: #f9f9f9;
+  height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.profile-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.profile-card h3 {
+.profile-card h3, .relation-item, .quizz-results-card {
   margin-bottom: 10px;
   font-size: 16px;
   color: #333;
@@ -128,59 +200,54 @@
   background-color: #0056b3;
 }
 
-
-.donnees-utilisateur{
-  /* margin-top: 20px; */
-}
-
-
-.donnees-personnelles{
-  margin-top: 100px;
-}
-
-
-
-.relations{
-  margin-top: 100px;
-}
-
-.relation-item{
+.quizz-results-card, .relation-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers content vertically */
+  align-items: center;      /* Centers content horizontally */
   max-width: 200px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    color: #fffdfd;
-    background-color: #4f46ff;
-    text-align: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  color: #fffdfd;
+  background-color: #feb71b;
+  text-align: center;
 }
 
-.relation-item:hover {
+.quizz-results-card h3, .relation-item h3 {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 19px;
+  color: black;
+}
+
+.quizz-results-card p, .relation-item p {
+  font-size: 14px;
+  color: #333;
+  margin: 5px 0;
+}
+
+.quizz-results-card:hover, .relation-item:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.quizz-results-card{
-  max-width: 200px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    color: #fffdfd;
-    background-color: #feb71b;
-    text-align: center;
+.relation-item {
+  background-color: #4f46ff;
 }
 
-.quizz-results-card:hover {
+.quizz-results-card {
+  background-color: #feb71b;
+}
+
+.relation-item:hover, .quizz-results-card:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Style général de la pop-up */
 .message-popup {
   position: fixed;
   top: 50%;
@@ -191,15 +258,14 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   width: 400px;
-  max-width: 90%; /* Évite que la pop-up soit trop large sur petits écrans */
+  max-width: 90%;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  align-items: center; /* Centre les éléments horizontalement */
+  align-items: center;
 }
 
-/* Fond semi-transparent derrière la pop-up */
 .message-popup-overlay {
   position: fixed;
   top: 0;
@@ -210,30 +276,27 @@
   z-index: 999;
 }
 
-/* Titre de la pop-up */
 .message-popup h3 {
   font-size: 18px;
   margin: 0;
   color: #333;
   font-weight: bold;
   text-align: center;
-  width: 100%; /* Assure que le titre prenne toute la largeur */
+  width: 100%;
 }
 
-/* Style du textarea pour le message */
 .message-popup textarea {
   width: 100%;
-  max-width: 100%; /* Empêche de dépasser */
+  max-width: 100%;
   height: 150px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 14px;
   resize: none;
-  box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur */
+  box-sizing: border-box;
 }
 
-/* Boutons d'envoi et d'annulation */
 .message-popup .button-container {
   display: flex;
   justify-content: space-between;
@@ -247,7 +310,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  margin: 5px; /* Espacement entre les boutons */
+  margin: 5px;
 }
 
 .message-popup button:nth-child(1) {
@@ -272,17 +335,9 @@
   background-color: #e53935;
 }
 
-
-
-
-
-
-
-
-
 .chart-container {
   width: 100%;
-  max-width: 450px;  /* ✅ Prevent huge charts */
+  max-width: 450px;
   height: auto;
   margin: 20px auto;
   padding: 15px;
@@ -296,7 +351,7 @@
 
 .chart-wrapper {
   width: 100%;
-  height: 300px; /* ✅ Ensures proper scaling */
+  height: 300px;
   display: flex;
   justify-content: center;
 }
