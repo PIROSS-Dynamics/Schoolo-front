@@ -103,6 +103,7 @@ const Profile = () => {
       fetch(`http://localhost:8000/stats/api/userQuizResults/${userId}/`)
         .then((response) => response.json())
         .then((resultsData) => {
+          console.log("resultsData:", resultsData); // Debugging line to inspect quizResults
           setQuizResults(resultsData);
           const processedScoreProgression = resultsData.map((q) => ({
             date: new Date(q.date).toLocaleDateString(),
@@ -134,7 +135,7 @@ const Profile = () => {
     if (role === "student" && quizResults.length > 0) {
       const uniqueSubjects = [
         "Toutes les Matières",
-        ...new Set(quizResults.map((q) => q.subject || "Matière inconnue")),
+        ...new Set(quizResults.map((q) => q.subject)),
       ];
       setSubjects(uniqueSubjects);
 
@@ -327,6 +328,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (quizResults.length > 0) {
+      console.log("Quiz Results:", quizResults); // Debugging line to inspect quizResult
       const results =
         selectedSubject === "Toutes les Matières"
           ? quizResults
