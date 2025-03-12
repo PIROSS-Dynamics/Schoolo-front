@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "name": "Quiz Parfait",
+    "description": "Obtenez un score maximal sur 5 quiz.",
+    "criteria": {
+      "type": "quiz",
+      "condition": "max_score",
+      "value": 5
+    },
+    "icon": "images/quizbadge.png"
+  },
+  {
+    "id": 2,
+    "name": "Il veut gagner un million",
+    "description": "Complétez 10 quiz.",
+    "criteria": {
+      "type": "quiz",
+      "condition": "completed",
+      "value": 10
+    },
+    "icon": "images/quizbadge.png"
+  },
+  {
+    "id": 3,
+    "name": "Fou de Quiz",
+    "description": "Complétez 100 quiz.",
+    "criteria": {
+      "type": "quiz",
+      "condition": "completed",
+      "value": 100
+    },
+    "icon": "images/quizbadge.png"
+  }
+]

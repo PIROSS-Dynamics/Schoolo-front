@@ -4,6 +4,7 @@ import "../../css/User/Profile.css";
 import { Bar, Pie, Line} from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import PopupTeacherProfile from '../User/PopupTeacherProfile';
+import Achievements from '../User/Achievements';
 
 
 Chart.register(...registerables);
@@ -368,7 +369,7 @@ const Profile = () => {
           <div>
             {user ? (
               <>
-                <h2 className="donnees-utilisateur">Données utilisateur:</h2>
+                <h2 className="donnees-utilisateur">Données Utilisateur:</h2>
                 <p>
                   <strong>Mail:</strong> {user.email}
                 </p>
@@ -382,6 +383,12 @@ const Profile = () => {
                 <p>
                   <strong>Prénom:</strong> {user.first_name}
                 </p>
+                {role === "student" && (
+                  <div> 
+                    <h2 className="donnees-personnelles">Accomplissements :</h2>
+                    <Achievements quizResults={quizResults} />
+                  </div>
+                )}
               </>
             ) : (
               <p>Chargement des données...</p>
@@ -396,7 +403,6 @@ const Profile = () => {
               relations.map((relation) => (
                 <div key={relation.student.id}>
                   <p>{relation.student.name}</p>
-                  <button>Voir</button>
                   <button
                     onClick={() =>
                       handleMessage(relation.student.id, relation.student.name)
@@ -564,7 +570,7 @@ const Profile = () => {
 
         {activeSection === "stats" && role === "student" && (
           <div className="profile-column">
-            <h2>Analyses des réultats obtenus :</h2>
+            <h2>Analyses des résultats obtenus :</h2>
             <div className="filter-container">
               <label htmlFor="subject-filter">Sélectionner une matière :</label>
               <select
@@ -598,7 +604,7 @@ const Profile = () => {
                     ))}
                   </div>
                 </div>
-
+                <h2>Résultats des quiz :</h2>
                 <div className="chart-container">
                   <h3>Progression des Scores</h3>
                   <div className="chart-wrapper">
