@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../../css/User/Profile.css";
 import { Bar, Pie, Line} from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import PopupTeacherProfile from '../User/PopupTeacherProfile';
+
+
 Chart.register(...registerables);
 
 const Profile = () => {
@@ -19,6 +22,8 @@ const Profile = () => {
     receiver: null,
     receiverName: null,
   });
+  const [showTeacherPopup, setShowTeacherPopup] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [messageContent, setMessageContent] = useState("");
   const navigate = useNavigate();
   const [scoreProgressionData, setScoreProgressionData] = useState([]);
@@ -194,6 +199,11 @@ const Profile = () => {
           text: "Erreur envoi de la demande.",
         })
       );
+  };
+
+  const handleViewTeacher = (teacherId, teacherName) => {
+    setSelectedTeacher({ id: teacherId, name: teacherName });
+    setShowTeacherPopup(true);
   };
 
   const openMessagePopup = (receiver, receiverName) => {
@@ -435,7 +445,7 @@ const Profile = () => {
                 .map((relation) => (
                   <div key={relation.sender.id} className="relation-item">
                     <h3>{relation.sender.name}</h3>
-                    <button>Voir</button>
+                    <button onClick={() => handleViewTeacher(relation.sender.id, relation.sender.name)}>Voir</button>
                     <button
                       onClick={() =>
                         handleMessage(relation.sender.id, relation.sender.name)
@@ -730,6 +740,13 @@ const Profile = () => {
             <button onClick={closeMessagePopup}>Annuler</button>
           </div>
         </>
+      )}
+      {showTeacherPopup && selectedTeacher && (
+        <PopupTeacherProfile
+          teacherId={selectedTeacher.id}
+          teacherName={selectedTeacher.name}
+          onClose={() => setShowTeacherPopup(false)}
+        />
       )}
     </div>
   );
