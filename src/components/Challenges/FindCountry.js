@@ -1,14 +1,15 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useEffect, useState } from "react";
 import ReactMapGL, { Layer, Source } from "react-map-gl";
+import '../../css/Challenges/FindCountry.css'; 
 
 function FindCountry() {
     const [viewport, setViewport] = useState({
-        longitude: 0,   
-        latitude: 0,    
-        zoom: 1.5,     
-        pitch: 0,      
-        bearing: 0,    
+        longitude: 0,
+        latitude: 0,
+        zoom: 1.5,
+        pitch: 0,
+        bearing: 0,
         width: "100%",
         height: "500px"
     });
@@ -18,9 +19,8 @@ function FindCountry() {
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [showCorrect, setShowCorrect] = useState(false);
     const [result, setResult] = useState('');
-    const [message, setMessage] = useState(null); // Message affiché au centre
+    const [message, setMessage] = useState(null);
 
-    // Fonction pour charger un pays
     const fetchCountry = () => {
         fetch("http://localhost:8000/findcountry/api/get_country/")
             .then(res => res.json())
@@ -38,16 +38,14 @@ function FindCountry() {
 
     useEffect(() => {
         fetchCountry();
-        window.scrollTo(0, 0); // 🔹 Remet la page tout en haut à chaque chargement
-    }, []);    
+        window.scrollTo(0, 0);
+    }, []);
 
-    // Charger le premier pays
     useEffect(fetchCountry, []);
 
-    // Fonction de détection au clic
     const onCountryClick = (event) => {
         const features = event.features;
-        
+
         if (!features || features.length === 0) {
             console.log("⚠️ Aucune donnée détectée au clic.");
             return;
@@ -55,7 +53,6 @@ function FindCountry() {
 
         console.log("✅ Données détectées :", features);
 
-        // Essayer d'extraire le pays cliqué
         const clickedCountry = features[0]?.properties?.name_en || features[0]?.properties?.admin;
         console.log("✅ Pays détecté :", clickedCountry);
 
@@ -66,55 +63,24 @@ function FindCountry() {
             setMessage("🎉 Bien joué !");
         } else {
             setResult('incorrect');
-            setShowCorrect(true); // ✅ Afficher le pays correct en vert
+            setShowCorrect(true);
             setMessage(`❌ Non, c'était : ${clickedCountry}`);
         }
     };
 
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", position: "relative" }}>
-            {/* Affichage du pays à trouver */}
-            <h2> Trouve : {countryFr} </h2>
+            <div className="countrypopup">
+                <h2>Trouve : {countryFr}</h2>
+                {message && <p className="message">{message}</p>}
+            </div>
 
-            {/* Message au centre de l'écran */}
-            {message && (
-                <div style={{
-                    position: "absolute",
-                    top: "4.6%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    backgroundColor: "rgba(0, 0, 0, 0.7)",
-                    color: "white",
-                    padding: "15px 20px",
-                    borderRadius: "10px",
-                    fontSize: "1.5em",
-                    fontWeight: "bold",
-                    textAlign: "center"
-                }}>
-                    {message}
-                </div>
-            )}
-
-            {/* Bouton Suivant */}
             {result && (
-                <button 
-                    onClick={fetchCountry} 
-                    style={{
-                        position: "absolute", 
-                        top: "15px", 
-                        right: "10px", 
-                        padding: "10px 15px", 
-                        backgroundColor: "#4CAF50", 
-                        color: "white", 
-                        border: "none", 
-                        borderRadius: "5px", 
-                        cursor: "pointer"
-                    }}>
-                    Suivant →
+                <button className="countrynext-button" onClick={fetchCountry}>
+                    Suivant
                 </button>
             )}
 
-            {/* Carte Mapbox */}
             <ReactMapGL
                 {...viewport}
                 mapStyle="mapbox://styles/rom001/cm7g1tval000j01sb6hrxf5wl"
@@ -136,11 +102,8 @@ function FindCountry() {
                         paint={{
                             "fill-color": [
                                 "case",
-                                // ✅ Pays correct en vert uniquement si mauvaise réponse
                                 ["all", showCorrect, ["==", ["get", "name_en"], countryEn]], "green",
-                                // ❌ Pays cliqué en rouge si erreur
                                 ["==", ["get", "name_en"], selectedCountry], result === "incorrect" ? "red" : "blue",
-                                // 🎨 Pays non concernés transparents
                                 "transparent"
                             ],
                             "fill-opacity": 0.5
