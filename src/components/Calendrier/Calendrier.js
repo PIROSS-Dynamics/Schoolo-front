@@ -5,6 +5,8 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Modal from 'react-modal';
 import Select from 'react-select';
+import '../../css/Calendar.css';
+
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -120,74 +122,87 @@ const GoogleCalendarApp = () => {
     };
 
     return (
-        <div>
+        <div className="calendar-container">
             {isSignedIn ? (
                 <>
-                    <button onClick={signOut}>Se déconnecter</button>
-                    <button onClick={() => setIsModalOpen(true)}>Créer un événement</button>
-                    
+                    <div className="calendar-buttons">
+                        <button onClick={signOut}>Se déconnecter</button>
+                        <button onClick={() => setIsModalOpen(true)}>Créer un événement</button>
+                    </div>
+    
                     <Calendar
                         localizer={localizer}
                         events={events}
                         startAccessor="start"
                         endAccessor="end"
-                        style={{ height: 600, margin: "50px" }}
+                        className="react-big-calendar"
                     />
-
+    
                     {/* Event Creation Modal */}
-                    <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
-                        <h2>Créer un événement</h2>
-                        <label>Titre:</label>
-                        <input
-                            type="text"
-                            value={newEvent.title}
-                            onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-                        />
+                    {isModalOpen && (
+                        <>
+                            <div className="modal-backdrop" onClick={() => setIsModalOpen(false)}></div>
+                            <div className="modal-content">
+                                <h2>Créer un événement</h2>
+                                <label>Titre:</label>
+                                <input
+                                    type="text"
+                                    value={newEvent.title}
+                                    onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+                                />
+    
+                                <label>Début:</label>
+                                <input
+                                    type="datetime-local"
+                                    onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
+                                />
+    
+                                <label>Fin:</label>
+                                <input
+                                    type="datetime-local"
+                                    onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
+                                />
+    
+                                <label>Description:</label>
+                                <textarea
+                                    value={newEvent.description}
+                                    onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
+                                />
+    
+                                <label>Participants:</label>
+                                <div className="react-select-container">
+                                    <Select
+                                        isMulti
+                                        options={relations.map(rel => ({ value: rel.email, label: rel.name }))}
+                                        onChange={(selected) => setNewEvent({ ...newEvent, guests: selected })}
+                                    />
+                                </div>
 
-                        <label>Début:</label>
-                        <input
-                            type="datetime-local"
-                            onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
-                        />
+    
+                                <label>Récurrence:</label>
+                                <select
+                                    onChange={(e) => setNewEvent({ ...newEvent, recurrence: e.target.value })}
+                                >
+                                    <option value="none">Ne pas répéter</option>
+                                    <option value="daily">Tous les jours</option>
+                                    <option value="weekly">Toutes les semaines</option>
+                                    <option value="monthly">Tous les mois</option>
+                                </select>
+    
+                                <div className="button-container">
+                                    <button onClick={handleCreateEvent}>Enregistrer</button>
+                                    <button onClick={() => setIsModalOpen(false)}>Annuler</button>
+                                </div>
 
-                        <label>Fin:</label>
-                        <input
-                            type="datetime-local"
-                            onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
-                        />
-
-                        <label>Description:</label>
-                        <textarea
-                            value={newEvent.description}
-                            onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
-                        />
-
-                        <label>Participants:</label>
-                        <Select
-                            isMulti
-                            options={relations.map(rel => ({ value: rel.email, label: rel.name }))}
-                            onChange={(selected) => setNewEvent({ ...newEvent, guests: selected })}
-                        />
-
-                        <label>Récurrence:</label>
-                        <select
-                            onChange={(e) => setNewEvent({ ...newEvent, recurrence: e.target.value })}
-                        >
-                            <option value="none">Ne pas répéter</option>
-                            <option value="daily">Tous les jours</option>
-                            <option value="weekly">Toutes les semaines</option>
-                            <option value="monthly">Tous les mois</option>
-                        </select>
-
-                        <button onClick={handleCreateEvent}>Enregistrer</button>
-                        <button onClick={() => setIsModalOpen(false)}>Annuler</button>
-                    </Modal>
+                            </div>
+                        </>
+                    )}
                 </>
             ) : (
                 <button onClick={() => gapi.auth2.getAuthInstance().signIn()}>Se connecter avec Google</button>
             )}
         </div>
-    );
+    );    
 };
 
 export default GoogleCalendarApp;
