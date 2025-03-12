@@ -5,14 +5,11 @@ import '../css/TimerAnswer.css';
 
 const TimerAnswer = ({ data }) => {
 
-    const [timeLeft, setTimeLeft] = useState(data.time);
+    // eslint-disable-next-line
+    const [timeLeft, setTimeLeft] = useState(data.time); 
     const timerRef = useRef(null);
 
-      // load the game instant when we join the page
-      useEffect(() => {
-        startTimer();
-      }, [data.questionCount]);
-
+    // eslint-disable-next-line
     const startTimer = () => {
         if (timerRef.current) clearInterval(timerRef.current); // Delete the last timer
         
@@ -46,6 +43,11 @@ const TimerAnswer = ({ data }) => {
         }, 1000);
     };
 
+      // load the game instant when we join the page
+      useEffect(() => {
+            startTimer();
+            // eslint-disable-next-line
+       }, [data.questionCount]);
 
     return (
         <div>

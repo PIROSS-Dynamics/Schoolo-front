@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/User/Profile.css";
-import { Bar, Pie, Line, Bubble, Scatter } from "react-chartjs-2";
+import { Bar, Pie, Line} from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-// Chart.register(...registerables);
+Chart.register(...registerables);
 
 const Profile = () => {
   const [user, setUser] = useState(null);
