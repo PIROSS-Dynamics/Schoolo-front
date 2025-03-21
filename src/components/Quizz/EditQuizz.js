@@ -8,11 +8,11 @@ function EditQuizz() {
     const [teacher, setTeacher] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
+    const [grade, setGrade] = useState(''); 
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    const { quizId } = useParams();  // Pour obtenir l'ID du quiz à modifier
+    const { quizId } = useParams();
 
-    // Récupérer les informations du professeur et du quiz
     useEffect(() => {
         const userId = localStorage.getItem('id');
         const userRole = localStorage.getItem('role');
@@ -22,18 +22,15 @@ function EditQuizz() {
             return;
         }
 
-        // Récupérer les infos du professeur
         fetch(`http://localhost:8000/users/api/teacher/${userId}/`)
             .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération des informations du professeur.'))
             .then((data) => setTeacher(data))
             .catch((error) => console.error(error));
 
-        // Récupérer le quiz à modifier
         fetch(`http://localhost:8000/quizz/api/quizzlist/${quizId}/`)
             .then((response) => response.ok ? response.json() : Promise.reject('Erreur lors de la récupération du quiz.'))
             .then((data) => {
-                
-                if (String(userId) !== String(data.teacher_id)) {  
+                if (String(userId) !== String(data.teacher_id)) {
                     setErrorMessage("Vous n'avez pas le droit de modifier ce quiz.");
                     return;
                 }
@@ -42,9 +39,9 @@ function EditQuizz() {
                 setSubject(data.subject);
                 setIsPublic(data.is_public);
                 setQuestions(data.questions);
+                setGrade(data.grade);
             })
             .catch((error) => console.error(error));
-
     }, [quizId]);
 
     if (errorMessage) {
@@ -55,7 +52,7 @@ function EditQuizz() {
             </div>
         );
     }
-    
+
     if (!teacher) {
         return <p>Chargement des informations du professeur...</p>;
     }
@@ -71,7 +68,6 @@ function EditQuizz() {
         updatedQuestions[questionIndex].choices[choiceIndex].text = value;
         setQuestions(updatedQuestions);
     };
-
 
     const validateQuizz = () => {
         return questions.every(question => {
@@ -96,6 +92,11 @@ function EditQuizz() {
 
         if (!subject || subject === "") {
             alert("Veuillez sélectionner une matière.");
+            return;
+        }
+
+        if (!grade || grade === "") {
+            alert("Veuillez sélectionner un niveau.");
             return;
         }
 
@@ -126,7 +127,8 @@ function EditQuizz() {
                 subject,
                 teacher: teacher?.id,
                 questions,
-                is_public: isPublic
+                is_public: isPublic,
+                grade, 
             })
         })
         .then(response => response.json())
@@ -137,10 +139,9 @@ function EditQuizz() {
     return (
         <div>
             <h1 className="page-title">Modifier un Quiz</h1>
-            {/* Avertissement */}
             <div className="warning-container">
-                <p style={{ color: 'red', fontWeight: 'bold' , }}>
-                    La modification des quizz ne comporte pas l'ajout ou la suppression de question ou de choix. Si vous souhaitez modifier un quizz, veuillez confirmer les réponses correctes à vos questions.
+                <p style={{ color: 'red', fontWeight: 'bold' }}>
+                    La modification des quizz ne comporte pas l'ajout ou la suppression de question ou de choix. Si vous souhaitez modifier un quiz, veuillez confirmer les réponses correctes à vos questions.
                 </p>
             </div>
 
@@ -154,7 +155,7 @@ function EditQuizz() {
                         required
                     />
                 </div>
-    
+
                 <div className="subject">
                     <label>Matière :</label>
                     <select value={subject} onChange={(e) => setSubject(e.target.value)} required>
@@ -166,7 +167,19 @@ function EditQuizz() {
                         <option value="Art">Art</option>
                     </select>
                 </div>
-    
+
+                <div className="grade">
+                    <label>Niveau :</label>
+                    <select value={grade} onChange={(e) => setGrade(e.target.value)} required>
+                        <option value="">Sélectionnez un niveau</option>
+                        <option value="1">CP</option>
+                        <option value="2">CE1</option>
+                        <option value="3">CE2</option>
+                        <option value="4">CM1</option>
+                        <option value="5">CM2</option>
+                    </select>
+                </div>
+
                 <div className="teacher">
                     <label>Enseignant</label>
                     <input
@@ -227,7 +240,7 @@ function EditQuizz() {
                         )}
                     </div>
                 ))}
-    
+
                 <label>
                     Quiz public :
                     <input
@@ -236,7 +249,7 @@ function EditQuizz() {
                         onChange={() => setIsPublic(!isPublic)}
                     />
                 </label>
-    
+
                 <div className="button-container">
                     <button onClick={handleSubmit}>Mettre à jour le Quiz</button>
                 </div>

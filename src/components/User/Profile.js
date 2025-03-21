@@ -401,14 +401,15 @@ const Profile = () => {
             <h2>Élèves</h2>
             {relations.length > 0 ? (
               relations.map((relation) => (
-                <div key={relation.student.id}>
+                <div key={relation.student.id} className="relation-item">
                   <p>{relation.student.name}</p>
+                  <button>Voir</button>
                   <button
                     onClick={() =>
                       handleMessage(relation.student.id, relation.student.name)
                     }
                   >
-                    Message
+                    Message notifié
                   </button>
                 </div>
               ))
@@ -423,7 +424,7 @@ const Profile = () => {
             <h2>Enfants</h2>
             {relations.length > 0 ? (
               relations.map((relation) => (
-                <div key={relation.student.id}>
+                <div key={relation.student.id} className="relation-item">
                   <p>{relation.student.name}</p>
                   <button>Voir</button>
                   <button
@@ -431,7 +432,7 @@ const Profile = () => {
                       handleMessage(relation.student.id, relation.student.name)
                     }
                   >
-                    Message
+                    Message notifié
                   </button>
                 </div>
               ))
@@ -457,7 +458,7 @@ const Profile = () => {
                         handleMessage(relation.sender.id, relation.sender.name)
                       }
                     >
-                      Message
+                      Message notifié
                     </button>
                   </div>
                 ))
@@ -478,7 +479,7 @@ const Profile = () => {
                         handleMessage(relation.sender.id, relation.sender.name)
                       }
                     >
-                      Message
+                      Message notifié
                     </button>
                   </div>
                 ))

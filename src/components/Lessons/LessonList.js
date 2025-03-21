@@ -3,24 +3,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../../css/Lessons/LessonList.css';
 import '../../css/Loading.css';
 import subjectColors from '../../data/subjectColors.json';
+import gradeMapping from '../../data/gradeMapping.json';
 
 function LessonList() {
     const [lessons, setLessons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
-    const { subject } = useParams(); // Extract the subject from the route params
-
+    const { subject } = useParams();
     const [clickedCardId, setClickedCardId] = useState(null);
 
     useEffect(() => {
-        // API endpoint dynamically based on the subject
         const url = `http://localhost:8000/lessons/api/lessonslist/subject/${subject}/`;
 
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                setLessons(data); // Set the lessons based on the subject
+                setLessons(data);
                 setLoading(false);
             })
             .catch((error) => {
@@ -30,10 +29,10 @@ function LessonList() {
     }, [subject]);
 
     const handleLessonClick = (lessonId) => {
-        setClickedCardId(lessonId); // Set the clicked card's ID for animation
+        setClickedCardId(lessonId);
         setTimeout(() => {
-            navigate(`/lessons/detail/${lessonId}`); // Navigate to the lesson details page
-        }, 1100); // Match the animation duration
+            navigate(`/lessons/detail/${lessonId}`);
+        }, 1100);
     };
 
     const filteredLessons = lessons.filter((lesson) =>
@@ -41,7 +40,7 @@ function LessonList() {
     );
 
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); // Update the search term
+        setSearchTerm(e.target.value);
     };
 
     if (loading) {
@@ -60,7 +59,6 @@ function LessonList() {
         <div>
             <h2 className="list-title">Liste des Leçons {subject && `- ${subject}`}</h2>
 
-            {/* Search bar */}
             <div className="search-container">
                 <input
                     type="text"
@@ -71,21 +69,22 @@ function LessonList() {
                 />
             </div>
 
-            {/* Lesson list */}
             <div className="lesson-list">
                 {filteredLessons.length > 0 ? (
                     filteredLessons.map((lesson) => {
-                        const backgroundColor = subjectColors[lesson.subject] || "#cbffee"; // Get subject color
+                        const backgroundColor = subjectColors[lesson.subject] || "#cbffee";
+                        const gradeName = gradeMapping[lesson.grade]; 
 
                         return (
                             <div
                                 key={lesson.id}
                                 className={`lesson-card ${clickedCardId === lesson.id ? "clicked" : ""}`}
                                 onClick={() => handleLessonClick(lesson.id)}
-                                style={{ backgroundColor }} // Apply background color
+                                style={{ backgroundColor }}
                             >
                                 <h3 className="lesson-title">{lesson.title}</h3>
                                 <p className="lesson-description">Par : <strong>{lesson.teacher_name}</strong></p>
+                                <p className="lesson-description">Niveau : <strong>{gradeName}</strong></p>
                                 <p className="lesson-description">{lesson.description}</p>
                             </div>
                         );
