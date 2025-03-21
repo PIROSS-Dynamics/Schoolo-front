@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 import subjectColors from '../../data/subjectColors.json';
 import '../../css/Lessons/LessonDetail.css';
 import '../../css/Loading.css';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaThumbsUp } from 'react-icons/fa';
 import PopupTeacherProfile from '../User/PopupTeacherProfile';
 
 function LessonDetail() {
@@ -13,12 +13,15 @@ function LessonDetail() {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
+    const [likes, setLikes] = useState(0);
+    const [isLiked, setIsLiked] = useState(false); 
 
     useEffect(() => {
         fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`)
             .then((response) => response.json())
             .then((data) => {
                 setLesson(data);
+                setLikes(data.likes);
                 setLoading(false);
             })
             .catch((error) => {
@@ -26,6 +29,24 @@ function LessonDetail() {
                 setLoading(false);
             });
     }, [lessonId]);
+
+    const handleLike = () => {
+        setIsLiked(true); 
+        fetch(`http://localhost:8000/lessons/api/lessonslist/like/${lessonId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            setLikes(data.likes);
+        })
+        .catch((error) => {
+            console.error('Erreur lors du like:', error);
+            setIsLiked(false); 
+        });
+    };
 
     if (loading) {
         return (
@@ -45,13 +66,10 @@ function LessonDetail() {
         );
     }
 
-    // Remplacer les marqueurs \newline et \newpage par des balises HTML appropriées
     const sanitizedContent = DOMPurify.sanitize(
         lesson.content.replace(/\\newline/g, '<br>').replace(/\\newpage/g, '<div class="new-page"></div>')
     );
     const backgroundColor = subjectColors[lesson.subject] || "#cbffee";
-
-    // Diviser le contenu en pages en utilisant le marqueur de nouvelle page
     const pages = sanitizedContent.split('<div class="new-page"></div>').map(page => page.trim());
     const totalPages = pages.length;
 
@@ -71,6 +89,15 @@ function LessonDetail() {
                 <button className="teacher-button" onClick={() => setShowPopup(true)}>
                     Professeur : {lesson.teacher_name}
                 </button>
+                <button
+                    className={`like-button ${isLiked ? 'liked' : ''}`}
+                    onClick={handleLike}
+                    disabled={isLiked}
+                >
+                    <FaThumbsUp />
+                    {likes}
+                </button>
+
             </div>
             <div className="lesson-content-wrapper">
                 <div className="lesson-content" dangerouslySetInnerHTML={{ __html: pages[currentPage] }} />

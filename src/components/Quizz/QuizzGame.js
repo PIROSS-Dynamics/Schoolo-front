@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../../css/Quizz/QuizzGame.css';
 import '../../css/Loading.css';
 import subjectColors from '../../data/subjectColors.json';
+import { FaThumbsUp } from 'react-icons/fa';
 
 function QuizzGame() {
     const { quizzId } = useParams();
@@ -14,6 +15,8 @@ function QuizzGame() {
     const [corrections, setCorrections] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [loading, setLoading] = useState(true); 
+    const [likes, setLikes] = useState(0);
+    const [isLiked, setIsLiked] = useState(false); 
 
     const currentSubjectColor = subjectColors[quizz?.subject] || '#007bff';  // Default color if subject not found
 
@@ -23,6 +26,7 @@ function QuizzGame() {
             .then(data => {
                 const shuffledQuestions = data.questions.sort(() => Math.random() - 0.5);
                 setQuizz({ ...data, questions: shuffledQuestions });
+                setLikes(data.likes);
                 setLoading(false); // End loading
             })
             .catch(error => {
@@ -112,6 +116,24 @@ function QuizzGame() {
         );
     }
 
+    const handleLike = () => {
+        setIsLiked(true);
+        fetch(`http://localhost:8000/quizz/api/quizzlist/like/${quizzId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            setLikes(data.likes);
+        })
+        .catch((error) => {
+            console.error('Erreur lors du like:', error);
+            setIsLiked(false); 
+        });
+    };
+
     if (!quizz) return <p>Erreur lors du chargement du quiz.</p>;
 
     const currentQuestion = quizz.questions[currentQuestionIndex];
@@ -120,6 +142,8 @@ function QuizzGame() {
         <div className="container" style={{ backgroundColor: currentSubjectColor }}>
             <h2 className="quiz-title">{quizz.title}</h2>
             <p className="quiz-subject"><strong>Matière :</strong> {quizz.subject}</p>
+            <p className="quiz-subject"><strong>Professeur :</strong> {quizz.teacher_name}</p>
+
 
             <form onSubmit={handleSubmit}>
                 {currentQuestionIndex >= 0 ? (
@@ -169,6 +193,14 @@ function QuizzGame() {
                     </div>
                 ) : (
                     <div className="question-box">
+                        <button
+                                className={`quizzlike-button ${isLiked ? 'liked' : ''}`}
+                                onClick={handleLike}
+                                disabled={isLiked}
+                            >
+                                <FaThumbsUp />
+                                {likes}
+                        </button>
                         <h2>Résultat</h2>
                         <p>{result}</p>
                         <button className="show-correction" type="button" onClick={() => setShowCorrection(true)}>

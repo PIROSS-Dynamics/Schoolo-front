@@ -5,6 +5,7 @@ import '../../css/Quizz/QuizzList.css';
 import SubjectPopup from './SubjectPopup';
 import subjectColors from '../../data/subjectColors.json';
 import gradeMapping from '../../data/gradeMapping.json';
+import { FaThumbsUp } from 'react-icons/fa';
 
 function QuizzList() {
     const [quizz, setQuizz] = useState([]);
@@ -34,13 +35,15 @@ function QuizzList() {
             });
     }, []);
 
-    // Filtrer les quiz par titre
-    const filteredQuizz = quizz.filter((q) =>
-        q.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
+    // Filtrer et trier les quiz par titre et nombre de likes
+    const filteredAndSortedQuizz = quizz
+        .filter((q) =>
+            q.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .sort((a, b) => b.likes - a.likes); 
+        
     // Grouper les quiz par matière
-    const quizzBySubject = filteredQuizz.reduce((groups, quizzItem) => {
+    const quizzBySubject = filteredAndSortedQuizz.reduce((groups, quizzItem) => {
         const subject = quizzItem.subject || "Autre";
         if (!groups[subject]) {
             groups[subject] = [];
@@ -130,7 +133,7 @@ function QuizzList() {
                         <div className="quizz-list-row">
                             {quizzBySubject[subject]?.map((quizzItem) => {
                                 const subjectColor = subjectColors[quizzItem.subject] || "#cbffee";
-                                const gradeName = gradeMapping[quizzItem.grade]; 
+                                const gradeName = gradeMapping[quizzItem.grade];
                                 return (
                                     <div
                                         key={quizzItem.id}
@@ -143,6 +146,7 @@ function QuizzList() {
                                         <p className="quizz-description">Par : <strong>{quizzItem.teacher_name}</strong></p>
                                         <p className="quizz-description">Niveau : <strong>{gradeName}</strong></p>
                                         <p className="quizz-description">Nombre de questions : {quizzItem.number_of_questions}</p>
+                                        <p className="quizz-description"><FaThumbsUp /> {quizzItem.likes}</p>
                                     </div>
                                 );
                             })}

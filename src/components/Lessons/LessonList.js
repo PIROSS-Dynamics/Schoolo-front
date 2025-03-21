@@ -4,6 +4,7 @@ import '../../css/Lessons/LessonList.css';
 import '../../css/Loading.css';
 import subjectColors from '../../data/subjectColors.json';
 import gradeMapping from '../../data/gradeMapping.json';
+import { FaThumbsUp } from 'react-icons/fa';
 
 function LessonList() {
     const [lessons, setLessons] = useState([]);
@@ -35,9 +36,11 @@ function LessonList() {
         }, 1100);
     };
 
-    const filteredLessons = lessons.filter((lesson) =>
-        lesson.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredAndSortedLessons = lessons
+        .filter((lesson) =>
+            lesson.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .sort((a, b) => b.likes - a.likes); 
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -70,10 +73,10 @@ function LessonList() {
             </div>
 
             <div className="lesson-list">
-                {filteredLessons.length > 0 ? (
-                    filteredLessons.map((lesson) => {
+                {filteredAndSortedLessons.length > 0 ? (
+                    filteredAndSortedLessons.map((lesson) => {
                         const backgroundColor = subjectColors[lesson.subject] || "#cbffee";
-                        const gradeName = gradeMapping[lesson.grade]; 
+                        const gradeName = gradeMapping[lesson.grade];
 
                         return (
                             <div
@@ -86,6 +89,7 @@ function LessonList() {
                                 <p className="lesson-description">Par : <strong>{lesson.teacher_name}</strong></p>
                                 <p className="lesson-description">Niveau : <strong>{gradeName}</strong></p>
                                 <p className="lesson-description">{lesson.description}</p>
+                                <p className="lesson-description"><FaThumbsUp /> {lesson.likes}</p>
                             </div>
                         );
                     })
