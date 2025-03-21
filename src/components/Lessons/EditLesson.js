@@ -159,6 +159,9 @@ function EditLesson() {
                     />
                 </div>
 
+                <p>Ajoutez le texte \newpage lorsque vous souhaitez passer le texte suivant sur une nouvelle page</p>
+                <p>Ajoutez le texte \newline pour sauter une ligne</p>
+
                 <div className="description">
                     <label>Description</label>
                     <textarea

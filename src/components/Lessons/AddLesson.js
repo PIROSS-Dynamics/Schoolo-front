@@ -180,6 +180,7 @@ function AddLesson() {
                 </div>
 
                 <p>Ajoutez le texte \newpage lorsque vous souhaitez passer le texte suivant sur une nouvelle page</p>
+                <p>Ajoutez le texte \newline pour sauter une ligne</p>
                 <p>Vous pouvez également ajouter un fichier PDF pour extraire le texte automatiquement avec le bouton ci-dessous</p>
 
                 <input

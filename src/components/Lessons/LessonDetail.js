@@ -5,7 +5,7 @@ import subjectColors from '../../data/subjectColors.json';
 import '../../css/Lessons/LessonDetail.css';
 import '../../css/Loading.css';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import PopupTeacherProfile from '../User/PopupTeacherProfile'; 
+import PopupTeacherProfile from '../User/PopupTeacherProfile';
 
 function LessonDetail() {
     const { lessonId } = useParams();
@@ -45,10 +45,14 @@ function LessonDetail() {
         );
     }
 
-    const sanitizedContent = DOMPurify.sanitize(lesson.content);
+    // Remplacer les marqueurs \newline et \newpage par des balises HTML appropriées
+    const sanitizedContent = DOMPurify.sanitize(
+        lesson.content.replace(/\\newline/g, '<br>').replace(/\\newpage/g, '<div class="new-page"></div>')
+    );
     const backgroundColor = subjectColors[lesson.subject] || "#cbffee";
 
-    const pages = sanitizedContent.split('\\newpage').map(page => page.trim());
+    // Diviser le contenu en pages en utilisant le marqueur de nouvelle page
+    const pages = sanitizedContent.split('<div class="new-page"></div>').map(page => page.trim());
     const totalPages = pages.length;
 
     const goToPreviousPage = () => {
@@ -84,7 +88,6 @@ function LessonDetail() {
                 ← Retour à la liste des leçons de {lesson.subject}
             </Link>
 
-            {/* Pop-up affichée si showPopup est true */}
             {showPopup && (
                 <PopupTeacherProfile
                     teacherId={lesson.teacher}
