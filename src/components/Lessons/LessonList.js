@@ -73,7 +73,7 @@ function LessonList() {
                 {filteredLessons.length > 0 ? (
                     filteredLessons.map((lesson) => {
                         const backgroundColor = subjectColors[lesson.subject] || "#cbffee";
-                        const gradeName = gradeMapping[lesson.grade]; // Get the grade name
+                        const gradeName = gradeMapping[lesson.grade]; 
 
                         return (
                             <div

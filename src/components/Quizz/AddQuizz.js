@@ -8,6 +8,7 @@ function AddQuizz() {
     const [teacher, setTeacher] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
+    const [grade, setGrade] = useState(''); 
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
@@ -32,7 +33,6 @@ function AddQuizz() {
                 setTeacher(data);
             })
             .catch((error) => console.error(error));
-            
     }, []);
 
     if (errorMessage) {
@@ -43,7 +43,7 @@ function AddQuizz() {
             </div>
         );
     }
-    
+
     if (!teacher) {
         return <p>Chargement des informations du professeur...</p>;
     }
@@ -123,6 +123,11 @@ function AddQuizz() {
             return;
         }
 
+        if (!grade || grade === "") {
+            alert("Veuillez sélectionner un niveau.");
+            return;
+        }
+
         if (questions.length === 0) {
             alert("Veuillez ajouter au moins une question.");
             return;
@@ -155,7 +160,8 @@ function AddQuizz() {
                 subject,
                 teacher: teacher?.id,
                 questions,
-                is_public: isPublic
+                is_public: isPublic,
+                grade, 
             })
         })
         .then(response => response.json())
@@ -181,13 +187,25 @@ function AddQuizz() {
 
                 <div className="subject">
                     <label>Matière :</label>
-                    <select value={subject} onChange={(e) => setSubject(e.target.value)} required>   
+                    <select value={subject} onChange={(e) => setSubject(e.target.value)} required>
                         <option value="">Sélectionnez une matière</option>
                         <option value="Maths">Maths</option>
                         <option value="Français">Français</option>
                         <option value="Histoire">Histoire</option>
                         <option value="Anglais">Anglais</option>
                         <option value="Art">Art</option>
+                    </select>
+                </div>
+
+                <div className="grade">
+                    <label>Niveau :</label>
+                    <select value={grade} onChange={(e) => setGrade(e.target.value)} required>
+                        <option value="">Sélectionnez un niveau</option>
+                        <option value="1">CP</option>
+                        <option value="2">CE1</option>
+                        <option value="3">CE2</option>
+                        <option value="4">CM1</option>
+                        <option value="5">CM2</option>
                     </select>
                 </div>
 
@@ -231,7 +249,7 @@ function AddQuizz() {
                             onChange={(e) => handleQuestionChange(index, 'correct_answer', e.target.value)}
                             required
                         />
-    
+
                         {question.question_type === 'choice' && (
                             <div>
                                 <label>
@@ -244,7 +262,7 @@ function AddQuizz() {
                                         }
                                     />
                                 </label>
-    
+
                                 {question.choices.map((choice, choiceIndex) => (
                                     <div key={choiceIndex} className="choice-container">
                                         <input

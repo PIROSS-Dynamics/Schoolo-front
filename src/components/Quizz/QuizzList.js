@@ -4,6 +4,7 @@ import '../../css/Loading.css';
 import '../../css/Quizz/QuizzList.css';
 import SubjectPopup from './SubjectPopup';
 import subjectColors from '../../data/subjectColors.json';
+import gradeMapping from '../../data/gradeMapping.json';
 
 function QuizzList() {
     const [quizz, setQuizz] = useState([]);
@@ -129,6 +130,7 @@ function QuizzList() {
                         <div className="quizz-list-row">
                             {quizzBySubject[subject]?.map((quizzItem) => {
                                 const subjectColor = subjectColors[quizzItem.subject] || "#cbffee";
+                                const gradeName = gradeMapping[quizzItem.grade]; 
                                 return (
                                     <div
                                         key={quizzItem.id}
@@ -139,6 +141,7 @@ function QuizzList() {
                                         <h3 className="quizz-title">{quizzItem.title}</h3>
                                         <p className="quizz-description">Matière : <strong>{quizzItem.subject}</strong></p>
                                         <p className="quizz-description">Par : <strong>{quizzItem.teacher_name}</strong></p>
+                                        <p className="quizz-description">Niveau : <strong>{gradeName}</strong></p>
                                         <p className="quizz-description">Nombre de questions : {quizzItem.number_of_questions}</p>
                                     </div>
                                 );
