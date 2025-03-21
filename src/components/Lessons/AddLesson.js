@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Importer les styles de base
+import 'react-quill/dist/quill.snow.css';
 import '../../css/Lessons/AddLesson.css';
 
 function AddLesson() {
     const [title, setTitle] = useState('');
-    const [subject, setSubject] = useState([]);
+    const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
     const [isPublic, setIsPublic] = useState(true);
     const [teacher, setTeacher] = useState(null);
+    const [grade, setGrade] = useState(''); 
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
@@ -18,12 +19,11 @@ function AddLesson() {
         const userId = localStorage.getItem('id');
         const userRole = localStorage.getItem('role');
 
-        // Vérify user is teacher
         if (userRole !== 'teacher') {
             setErrorMessage("Vous n'avez pas accès à cette fonctionnalité, il vous faut un compte Professeur.");
             return;
         }
-        // if he is a teacher we recup his data
+
         fetch(`http://localhost:8000/users/api/teacher/${userId}/`)
             .then((response) => {
                 if (response.ok) {
@@ -33,23 +33,22 @@ function AddLesson() {
                 }
             })
             .then((data) => {
-                setTeacher(data); // Stocker les infos du professeur 
+                setTeacher(data);
             })
             .catch((error) => console.error(error));
     }, []);
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
-
 
         const lessonData = {
             title,
             subject,
-            content, // React Quill gère automatiquement le HTML
+            content,
             description,
             is_public: isPublic,
             teacher: teacher?.id,
+            grade, 
         };
 
         fetch('http://localhost:8000/lessons/api/lessonslist/add', {
@@ -78,48 +77,40 @@ function AddLesson() {
         return cookieValue || '';
     };
 
-
     const handlePdfUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
-            uploadAndExtractPdf(file); // send the pdf for extraction
+            uploadAndExtractPdf(file);
         }
     };
 
     const uploadAndExtractPdf = (pdfFile) => {
-        
-        // Create an object FormData to send the file
         const formData = new FormData();
         formData.append('pdf', pdfFile);
-        
+
         fetch('http://localhost:8000/lessons/api/lessonslist/extract-pdf', {
             method: 'POST',
             headers: {
-                'X-CSRFToken': getCsrfToken(), // Add CSRF token if needed
+                'X-CSRFToken': getCsrfToken(),
             },
-            body: formData, // The PDF is end is the body
-
+            body: formData,
         })
             .then((response) => {
-                
                 if (response.ok) {
-                    return response.json(); // Get the JSON response
+                    return response.json();
                 } else {
                     console.error("Erreur lors de l'extraction du texte depuis le PDF");
                 }
             })
-            .then((data ) => {
-                
+            .then((data) => {
                 if (data && data.content) {
-                    // Update content
                     const formattedContent = data.content.replace(/\n/g, "<br>");
                     setContent(formattedContent);
-                    
                 }
             })
             .catch((error) => console.error("Erreur réseau :", error));
     };
-    
+
     if (errorMessage) {
         return (
             <div>
@@ -137,7 +128,6 @@ function AddLesson() {
         <div>
             <h1 className='form-title'>Ajouter une Leçon</h1>
             <form className='add-lesson-form' onSubmit={handleSubmit}>
-
                 <div className='title'>
                     <label>Titre de la Leçon</label>
                     <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -155,6 +145,18 @@ function AddLesson() {
                     </select>
                 </div>
 
+                <div className='grade'>
+                    <label>Niveau :</label>
+                    <select value={grade} onChange={(e) => setGrade(e.target.value)} required>
+                        <option value="">Sélectionnez un niveau</option>
+                        <option value="1">CP</option>
+                        <option value="2">CE1</option>
+                        <option value="3">CE2</option>
+                        <option value="4">CM1</option>
+                        <option value="5">CM2</option>
+                    </select>
+                </div>
+
                 <div className='content'>
                     <label>Contenu</label>
                     <ReactQuill
@@ -162,11 +164,11 @@ function AddLesson() {
                         onChange={setContent}
                         modules={{
                             toolbar: [
-                                ['bold', 'italic', 'underline'], // Bold, italics, underline
-                                [{ 'header': [1, 2, 3, false] }], // title size
-                                [{ 'list': 'ordered' }, { 'list': 'bullet' }], // List
-                                [{ 'color': [] }, { 'background': [] }], // Color
-                                ['clean'] // Clean Format
+                                ['bold', 'italic', 'underline'],
+                                [{ 'header': [1, 2, 3, false] }],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                [{ 'color': [] }, { 'background': [] }],
+                                ['clean']
                             ]
                         }}
                         formats={[
@@ -176,7 +178,7 @@ function AddLesson() {
                         placeholder="Écrivez le contenu ici..."
                     />
                 </div>
-                
+
                 <p>Ajoutez le texte \newpage lorsque vous souhaitez passer le texte suivant sur une nouvelle page</p>
                 <p>Vous pouvez également ajouter un fichier PDF pour extraire le texte automatiquement avec le bouton ci-dessous</p>
 

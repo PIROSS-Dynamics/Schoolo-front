@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import '../../css/Lessons/AddLesson.css'; // 
+import '../../css/Lessons/AddLesson.css';
 
 function EditLesson() {
     const [title, setTitle] = useState('');
@@ -11,8 +11,9 @@ function EditLesson() {
     const [description, setDescription] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [teacher, setTeacher] = useState(null);
+    const [grade, setGrade] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const { lessonId } = useParams(); // get lesson id
+    const { lessonId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,15 +25,12 @@ function EditLesson() {
             return;
         }
 
-
-        // get lesson to modity datas
         fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`)
             .then(response => {
                 if (response.ok) return response.json();
                 throw new Error("Erreur lors de la récupération des données de la leçon.");
             })
             .then(data => {
-
                 if (String(userId) !== String(data.teacher)) {
                     setErrorMessage("Vous n'avez pas le droit de modifier cette leçon.");
                     return;
@@ -43,13 +41,12 @@ function EditLesson() {
                 setContent(data.content);
                 setDescription(data.description);
                 setIsPublic(data.is_public);
-                setTeacher(data.teacher);            
+                setGrade(data.grade);
+                setTeacher(data.teacher);
             })
             .catch(error => console.error(error));
     }, [lessonId]);
 
-
-    // when we click on "modifier" to modify the lesson to the back-end
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -60,6 +57,7 @@ function EditLesson() {
             description,
             is_public: isPublic,
             teacher: teacher?.id,
+            grade, 
         };
 
         fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`, {
@@ -121,6 +119,22 @@ function EditLesson() {
                         <option value="Histoire">Histoire</option>
                         <option value="Anglais">Anglais</option>
                         <option value="Art">Art</option>
+                    </select>
+                </div>
+
+                <div className="grade">
+                    <label>Niveau :</label>
+                    <select
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                        required
+                    >
+                        <option value="">Sélectionnez un niveau</option>
+                        <option value="1">CP</option>
+                        <option value="2">CE1</option>
+                        <option value="3">CE2</option>
+                        <option value="4">CM1</option>
+                        <option value="5">CM2</option>
                     </select>
                 </div>
 
