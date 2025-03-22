@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '../../css/Lessons/AddLesson.css';
+import LessonPreview from './LessonPreview'; 
 
 function EditLesson() {
     const [title, setTitle] = useState('');
@@ -13,6 +14,7 @@ function EditLesson() {
     const [teacher, setTeacher] = useState(null);
     const [grade, setGrade] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [showPreview, setShowPreview] = useState(false); 
     const { lessonId } = useParams();
     const navigate = useNavigate();
 
@@ -57,7 +59,7 @@ function EditLesson() {
             description,
             is_public: isPublic,
             teacher: teacher?.id,
-            grade, 
+            grade,
         };
 
         fetch(`http://localhost:8000/lessons/api/lessonslist/detail/${lessonId}/`, {
@@ -158,9 +160,9 @@ function EditLesson() {
                         ]}
                     />
                 </div>
+                <button type="button" onClick={() => setShowPreview(true)}>Prévisualiser</button>
 
                 <p>Ajoutez le texte \newpage lorsque vous souhaitez passer le texte suivant sur une nouvelle page</p>
-                <p>Ajoutez le texte \newline pour sauter une ligne</p>
 
                 <div className="description">
                     <label>Description</label>
@@ -183,6 +185,18 @@ function EditLesson() {
                     <button type="submit">Modifier la Leçon</button>
                 </div>
             </form>
+
+            {showPreview && (
+                <LessonPreview
+                    lesson={{
+                        title,
+                        subject,
+                        content,
+                        description
+                    }}
+                    onClose={() => setShowPreview(false)}
+                />
+            )}
         </div>
     );
 }

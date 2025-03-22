@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '../../css/Lessons/AddLesson.css';
+import LessonPreview from './LessonPreview'; 
 
 function AddLesson() {
     const [title, setTitle] = useState('');
@@ -11,8 +12,9 @@ function AddLesson() {
     const [description, setDescription] = useState('');
     const [isPublic, setIsPublic] = useState(true);
     const [teacher, setTeacher] = useState(null);
-    const [grade, setGrade] = useState(''); 
+    const [grade, setGrade] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [showPreview, setShowPreview] = useState(false); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -48,7 +50,7 @@ function AddLesson() {
             description,
             is_public: isPublic,
             teacher: teacher?.id,
-            grade, 
+            grade,
         };
 
         fetch('http://localhost:8000/lessons/api/lessonslist/add', {
@@ -178,10 +180,9 @@ function AddLesson() {
                         placeholder="Écrivez le contenu ici..."
                     />
                 </div>
+                <button type="button" onClick={() => setShowPreview(true)}>Prévisualiser</button>
 
                 <p>Ajoutez le texte \newpage lorsque vous souhaitez passer le texte suivant sur une nouvelle page</p>
-                <p>Ajoutez le texte \newline pour sauter une ligne</p>
-                <p>Vous pouvez également ajouter un fichier PDF pour extraire le texte automatiquement avec le bouton ci-dessous</p>
 
                 <input
                     type="file"
@@ -212,6 +213,19 @@ function AddLesson() {
                     <button type="submit">Ajouter la Leçon</button>
                 </div>
             </form>
+
+            {showPreview && (
+                <LessonPreview
+                    lesson={{
+                        title,
+                        subject,
+                        content,
+                        description,
+                        teacher_name: `${teacher.first_name} ${teacher.last_name}`,
+                    }}
+                    onClose={() => setShowPreview(false)}
+                />
+            )}
         </div>
     );
 }
