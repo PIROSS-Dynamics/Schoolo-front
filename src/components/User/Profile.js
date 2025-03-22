@@ -32,7 +32,7 @@ const Profile = () => {
   const [activeSection, setActiveSection] = useState("personalInfo");
   const [menuItems, setMenuItems] = useState([
     { key: "personalInfo", label: "Profil" },
-    { key: "stats", label: "Statistiques" },
+    { key: "report", label: "Bilan" },
     { key: "contacts", label: "Relations" },
   ]);
 
@@ -40,7 +40,7 @@ const Profile = () => {
     if (role === "teacher") {
       setMenuItems((prevMenu) => {
         if (!prevMenu.some((item) => item.key === "create")) {
-          return [...prevMenu, { key: "create", label: "Créer Quiz/Leçon" }];
+          return [...prevMenu, { key: "create", label: "Créer vos contenus" }];
         }
         return prevMenu;
       });
@@ -48,7 +48,7 @@ const Profile = () => {
   }, [role]);
 
   if (role === "teacher" && !menuItems.some((item) => item.key === "create")) {
-    menuItems.push({ key: "create", label: "Créer Quiz/Leçon" });
+    menuItems.push({ key: "create", label: "Créer vos contenus" });
   }
 
   const handleMenuClick = (section) => {
@@ -398,7 +398,7 @@ const Profile = () => {
 
         {activeSection === "contacts" && role === "teacher" && (
           <div>
-            <h2>Élèves</h2>
+            <h2>Vos Élèves</h2>
             {relations.length > 0 ? (
               relations.map((relation) => (
                 <div key={relation.student.id} className="relation-item">
@@ -421,7 +421,7 @@ const Profile = () => {
 
         {activeSection === "contacts" && role === "parent" && (
           <div>
-            <h2>Enfants</h2>
+            <h2>Vos Enfants</h2>
             {relations.length > 0 ? (
               relations.map((relation) => (
                 <div key={relation.student.id} className="relation-item">
@@ -444,7 +444,7 @@ const Profile = () => {
 
         {activeSection === "contacts" && role === "student" && (
           <div>
-            <h2 className="professors">Professeurs</h2>
+            <h2 className="professors">Tes Professeurs</h2>
             {relations.filter((r) => r.relation_type === "school").length >
             0 ? (
               relations
@@ -466,7 +466,7 @@ const Profile = () => {
               <p>Aucun professeur.</p>
             )}
 
-            <h2 className="parents">Parents</h2>
+            <h2 className="parents">Tes Parents</h2>
             {relations.filter((r) => r.relation_type === "parent").length >
             0 ? (
               relations
@@ -511,15 +511,17 @@ const Profile = () => {
 
         {activeSection === "create" && role === "teacher" && (
           <div>
-            <h2>Créer un Quiz ou une Leçon</h2>
-            <button onClick={() => navigate("/add-quiz")}>Créer un Quiz</button>
-            <button onClick={() => navigate("/add-lesson")}>
+            <h2>Créer vos contenus</h2>
+            <button onClick={() => navigate("/quizz/add")}>
+              Créer un Quiz
+            </button>
+            <button onClick={() => navigate("/lessons/add")}>
               Créer une Leçon
             </button>
           </div>
         )}
 
-        {activeSection === "stats" && role === "teacher" && (
+        {activeSection === "report" && role === "teacher" && (
           <div className="profile-column">
             <h2>Quiz créés :</h2>
             <div className="profile-cards-container">
@@ -569,7 +571,7 @@ const Profile = () => {
           </div>
         )}
 
-        {activeSection === "stats" && role === "student" && (
+        {activeSection === "report" && role === "student" && (
           <div className="profile-column">
             <h2>Analyses des résultats obtenus :</h2>
             <div className="filter-container">
