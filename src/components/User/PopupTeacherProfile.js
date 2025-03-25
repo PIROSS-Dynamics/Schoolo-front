@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../../css/User/PopupTeacherProfile.css'; // Ajoute un fichier CSS pour le style
+import '../../css/User/PopupTeacherProfile.css'; 
 import subjectColors from '../../data/subjectColors.json';
 
 function PopupTeacherProfile({ teacherId, teacherName, onClose }) {
@@ -27,49 +27,55 @@ function PopupTeacherProfile({ teacherId, teacherName, onClose }) {
     }, [teacherId]);
 
     return (
-        <div className="popup-overlay">
-            <div className="popup-content">
-                <button className="popup-close-button" onClick={onClose}>✖</button>
-                <h2>Profil de {teacherName}</h2>
+        <div className="teacherpopup-overlay">
+            <div className="teacherpopup-content">
+                <button className="teacherpopup-close-button" onClick={onClose}>✖</button>
+                <h2>Aussi par {teacherName}</h2>
 
                 {loading ? (
                     <p>Chargement des informations...</p>
                 ) : (
-                    <>
-                        <h3>Leçons créées :</h3>
-                        <div className="popup-cards-container">
-                            {lessons.length > 0 ? (
-                                lessons.map((lesson) => (
-                                    <div
-                                        key={lesson.id}
-                                        className="popup-card"
-                                        style={{ backgroundColor: subjectColors[lesson.subject] || '#f0f0f0' }}
-                                    >
-                                        <a href={`/lessons/detail/${lesson.id}`} className="popup-card-link">{lesson.title}</a>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>Aucune leçon trouvée.</p>
-                            )}
+                    <div className="teacherpopup-sections">
+                        <div className="teacherpopup-section">
+                            <h3>Leçons :</h3>
+                            <div className="teacherpopup-cards-container">
+                                {lessons.length > 0 ? (
+                                    lessons.map((lesson) => (
+                                        <button
+                                            key={lesson.id}
+                                            className="teacherpopup-card"
+                                            style={{ backgroundColor: subjectColors[lesson.subject] || '#f0f0f0' }}
+                                            onClick={() => window.location.href = `/lessons/detail/${lesson.id}`}
+                                        >
+                                            {lesson.title}
+                                        </button>
+                                    ))
+                                ) : (
+                                    <p>Aucune leçon trouvée.</p>
+                                )}
+                            </div>
                         </div>
 
-                        <h3>Quiz créés :</h3>
-                        <div className="popup-cards-container">
-                            {quizzes.length > 0 ? (
-                                quizzes.map((quiz) => (
-                                    <div
-                                        key={quiz.id}
-                                        className="popup-card"
-                                        style={{ backgroundColor: subjectColors[quiz.subject] || '#f0f0f0' }}
-                                    >
-                                        <a href={`/quizz/play/${quiz.id}`} className="popup-card-link">{quiz.title}</a>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>Aucun quiz trouvé.</p>
-                            )}
+                        <div className="teacherpopup-section">
+                            <h3>Quiz:</h3>
+                            <div className="teacherpopup-cards-container">
+                                {quizzes.length > 0 ? (
+                                    quizzes.map((quiz) => (
+                                        <button
+                                            key={quiz.id}
+                                            className="teacherpopup-card"
+                                            style={{ backgroundColor: subjectColors[quiz.subject] || '#f0f0f0' }}
+                                            onClick={() => window.location.href = `/quizz/play/${quiz.id}`}
+                                        >
+                                            {quiz.title}
+                                        </button>
+                                    ))
+                                ) : (
+                                    <p>Aucun quiz trouvé.</p>
+                                )}
+                            </div>
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
         </div>
