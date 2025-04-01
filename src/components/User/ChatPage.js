@@ -136,7 +136,7 @@ const ChatPage = () => {
       <div className="chat-messages">
         {selectedContact ? (
           <>
-            <h2>Conversation avec {selectedContact.username}</h2>
+            <h2 className="conversation-title">Conversation avec {selectedContact.username}</h2>
             <div className="messages-list">
               {messages.map((msg, index) => (
                 <div key={index} className={`message ${msg.sender === userId ? "sent" : "received"}`}>
