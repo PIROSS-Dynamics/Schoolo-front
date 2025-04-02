@@ -3,7 +3,7 @@ import { gapi } from 'gapi-script';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 import Select from 'react-select';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';

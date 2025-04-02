@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/style.css';
 import '../css/Header.css';
 import { Link } from 'react-router-dom';
-import { signOut } from './Calendrier/Calendrier.js'
+// import { signOut } from './Calendrier/Calendrier.js'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
