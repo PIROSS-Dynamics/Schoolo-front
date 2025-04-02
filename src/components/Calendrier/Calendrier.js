@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gapi } from 'gapi-script';
-import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Modal from 'react-modal';
 import Select from 'react-select';
+import Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 import '../../css/Calendar.css';
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -12,8 +14,6 @@ const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
 const localizer = momentLocalizer(moment);
-
-const { Agenda } = Views;
 
 export const signOut = () => {
     const authInstance = gapi.auth2.getAuthInstance();
@@ -33,8 +33,8 @@ const GoogleCalendarApp = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [newEvent, setNewEvent] = useState({
         title: '',
-        start: new Date(),
-        end: new Date(),
+        start: moment(), // Use moment to handle dates
+        end: moment(), // Use moment to handle dates
         description: '',
         guests: [],
         recurrence: 'none',
@@ -86,12 +86,13 @@ const GoogleCalendarApp = () => {
         }).then(response => {
             const events = response.result.items.map(event => ({
                 id: event.id,
-                title: event.summary,
-                start: new Date(event.start.dateTime || event.start.date),
-                end: new Date(event.end.dateTime || event.end.date),
-                description: event.description,
+                title: event.summary || 'No Title', // Provide a default value if title is missing
+                start: moment(event.start.dateTime || event.start.date),
+                end: moment(event.end.dateTime || event.end.date),
+                description: event.description || '',
                 attendees: event.attendees || [],
             }));
+            console.log('Fetched Events:', events); // Log the events to verify
             setEvents(events);
         }).catch(error => console.error('Error fetching events:', error));
     };
@@ -240,18 +241,25 @@ const GoogleCalendarApp = () => {
         return { top: 0, left: 0 };
     };
 
-    const views = {
-        week: {
-            ...Views.Week,
-            min: new Date().setHours(8, 0, 0), // Start at 8 AM
-            max: new Date().setHours(19, 0, 0), // End at 7 PM
-        },
-        day: {
-            ...Views.Day,
-            min: new Date().setHours(8, 0, 0), // Start at 8 AM
-            max: new Date().setHours(19, 0, 0), // End at 7 PM
-        },
-        agenda: Agenda,
+    const isValidEndDate = (endDate, startDate) => {
+        return moment(endDate).isAfter(startDate);
+    };
+
+    const isValidStartDate = (startDate) => {
+        return moment(startDate).isSameOrAfter(moment());
+    };
+
+    const handleDatetimeChange = (date, type) => {
+        const updatedDate = moment(date);
+        if (type === 'start') {
+            if (isValidStartDate(updatedDate)) {
+                setNewEvent({ ...newEvent, start: updatedDate });
+            }
+        } else if (type === 'end') {
+            if (isValidEndDate(updatedDate, newEvent.start)) {
+                setNewEvent({ ...newEvent, end: updatedDate });
+            }
+        }
     };
 
     return (
@@ -272,7 +280,6 @@ const GoogleCalendarApp = () => {
                         onSelectEvent={handleEventClick}
                         style={{
                             backgroundColor: 'white',
-                            height: '80vh', // Set a height to enable scrolling
                         }}
                         eventPropGetter={(event) => ({
                             style: {
@@ -280,7 +287,6 @@ const GoogleCalendarApp = () => {
                             },
                             'data-event-id': event.id,
                         })}
-                        views={views}
                     />
 
                     {/* Event Creation/Modification Modal */}
@@ -297,17 +303,32 @@ const GoogleCalendarApp = () => {
                                 />
 
                                 <label>Début:</label>
-                                <input
-                                    type="datetime-local"
-                                    value={newEvent.start.toISOString().slice(0, 16)}
-                                    onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
+                                <Datetime
+                                    dateFormat="DD/MM/YYYY"
+                                    timeFormat="HH:mm"
+                                    value={newEvent.start}
+                                    onChange={(date) => handleDatetimeChange(date, 'start')}
+                                    inputProps={{
+                                        placeholder: 'Début',
+                                    }}
+                                    locale="fr"
+                                    isValidDate={isValidStartDate}
                                 />
 
                                 <label>Fin:</label>
-                                <input
-                                    type="datetime-local"
-                                    value={newEvent.end.toISOString().slice(0, 16)}
-                                    onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
+                                <Datetime
+                                    dateFormat="DD/MM/YYYY"
+                                    timeFormat="HH:mm"
+                                    value={newEvent.end}
+                                    onChange={(date) => handleDatetimeChange(date, 'end')}
+                                    inputProps={{
+                                        placeholder: 'Fin',
+                                    }}
+                                    locale="fr"
+                                    isValidDate={(current) => isValidEndDate(current, newEvent.start)}
+                                    timeConstraints={{
+                                        minutes: { step: 15 },
+                                    }}
                                 />
 
                                 <label>Description:</label>
