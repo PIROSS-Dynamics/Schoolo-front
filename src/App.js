@@ -23,6 +23,7 @@ import ChatPage from './components/User/ChatPage';
 import Notifications from './components/User/Notifications';
 import Profile from './components/User/Profile';
 import './css/style.css';
+import Calendar from './components/Calendrier/Calendrier';
 
 
 function AppContent() {
@@ -92,7 +93,11 @@ function AppContent() {
           <Route path="/notifications" element={<Notifications/>} />
           <Route path="/chat" element={<ChatPage/>} />
 
-            
+
+          {/* Calendar routes */}
+          <Route path="/Calendar" element={<Calendar />} />
+          
+
         </Routes>
 
 

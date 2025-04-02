@@ -7,7 +7,7 @@ const Notifications = () => {
   const [popupContent, setPopupContent] = useState('');
 
    // Cette fonction permet de récupérer les notifications
-   const fetchNotifications = () => {
+    const fetchNotifications = () => {
     const userId = localStorage.getItem('id');
 
     fetch(`http://localhost:8000/activity/api/notifications/?user_id=${userId}`)

@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import '../css/style.css';
 import '../css/Header.css';
 import { Link } from 'react-router-dom';
+import { signOut } from './Calendrier/Calendrier.js'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -92,6 +94,9 @@ const Header = () => {
           <ul className="phone-menu">
             <li><a href="/">Accueil</a></li>
             <li><a href="/#subject-choice-container">Matières</a></li>
+            {user ? (
+            <li><a href="/Calendar">Calendrier</a></li>
+            ):null}
             <li><a href="/quizz">Quiz</a></li>
             <li><a href="/challenges">Défis</a></li>
             <li><a href="/about">À Propos</a></li>
@@ -102,6 +107,9 @@ const Header = () => {
           <ul className="nav-links">
             <li><a href="/">Accueil</a></li>
             <li><a href="/#subject-choice-container">Matières</a></li>
+            {user ? (
+            <li><a href="/Calendar">Calendrier</a></li>
+            ):null}
             <li><a href="/quizz">Quiz</a></li>
             <li><a href="/challenges">Défis</a></li>
             <li><a href="/about">À Propos</a></li>
